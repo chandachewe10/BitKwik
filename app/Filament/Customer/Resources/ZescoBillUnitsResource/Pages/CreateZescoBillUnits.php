@@ -6,6 +6,8 @@ use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\Http;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Models\ZescoBills;
+use Filament\Notifications\Notification;
+
 
 class CreateZescoBillUnits extends CreateRecord
 {
@@ -35,13 +37,13 @@ class CreateZescoBillUnits extends CreateRecord
             if ($bolt11) {
                 $qrCodeImage = QrCode::format('svg')->size(300)->generate($bolt11);
 
-              //  $qrCodeImage = QrCode::format('png')->size(300)->generate($bolt11);
+                //$qrCodeImage = QrCode::format('png')->size(300)->generate($bolt11);
                 $fileName = 'zesco_invoice_' . time() . '.svg';
-                $filePath = public_path('images/qrcodes' . $fileName);
+                $filePath = public_path('images/qrcodes/' . $fileName);
                 file_put_contents($filePath, $qrCodeImage);
 
                 // Store the file path and bolt11 in the DB record
-                $data['qr_code_path'] = 'storage/' . $fileName;
+                $data['qr_code_path'] = $fileName;
                 $data['bolt11'] = $bolt11;
             }
         }
@@ -53,5 +55,15 @@ class CreateZescoBillUnits extends CreateRecord
 
 
         ]);
+    }
+
+
+
+     protected function getCreatedNotification(): ?Notification
+    {
+        return Notification::make()
+            ->success()
+            ->title('Zesco Bill created')
+            ->body('The Zesco Bill has been created successfully. Please check your email for the invoice.');
     }
 }

@@ -32,7 +32,9 @@ return [
 
         'local' => [
             'driver' => 'local',
-            'root' => public_path('images'),
+            'root' => public_path('images/qrcodes'),
+            'url' => env('APP_URL').'/images/qrcodes',
+             'visibility' => 'public',
             'serve' => true,
             'throw' => false,
             'report' => false,

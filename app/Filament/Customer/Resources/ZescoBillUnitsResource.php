@@ -15,6 +15,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Set;
+use Filament\Forms\Get;
 
 class ZescoBillUnitsResource extends Resource
 {
@@ -47,8 +49,22 @@ class ZescoBillUnitsResource extends Resource
             TextInput::make('amount_kwacha')
                 ->label('Amount (ZMW)')
                 ->numeric()
+                ->live(onBlur: true)
                 ->suffix('ZMW')
+               ->afterStateUpdated(function ($state, Set $set, Get $get) {
+                    $amount_kwacha = $state ?? 0;
+                    $amount_sats = $amount_kwacha * 0.03;
+                    $set('amount_btc', number_format( $amount_sats));
+                    return true;
+                })
+                ->minValue(1),
+
+                TextInput::make('amount_btc')
+                ->helperText('Amount in Satoshis')
+                ->label('Sats')
+                ->suffix('SAT')
                 ->required()
+                ->disabled()
                 ->minValue(1),
         ]),
 
@@ -91,22 +107,20 @@ class ZescoBillUnitsResource extends Resource
                     ->searchable(),
                      Tables\Columns\TextColumn::make('amount_kwacha')
                     ->badge(),
-                Tables\Columns\ImageColumn::make('qr_code_path')
-    ->label('QR Code')
-    ->disk('public')
-    ->size(50)
-    ->square(),
-
-
-                Tables\Columns\TextColumn::make('payment_status')
+               Tables\Columns\TextColumn::make('qr_code_path')
+    ->label('Check Invoice')
+    ->formatStateUsing(fn () => 'Check Invoice')
+    ->badge()
+    ->url(fn ($record) => '/images/qrcodes/'.$record->qr_code_path),
+        Tables\Columns\TextColumn::make('payment_status')
                     ->badge()
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                // Tables\Actions\ViewAction::make(),
+                // Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
