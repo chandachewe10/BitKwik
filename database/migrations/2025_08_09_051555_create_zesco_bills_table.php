@@ -16,7 +16,7 @@ return new class extends Migration
              $table->string('meter_number');
             $table->decimal('amount_btc', 16, 8)->nullable();
              $table->decimal('amount_kwacha', 16, 8);
-            $table->string('package')->nullable();
+            $table->string('qr_code_path')->nullable();
 
             // Delivery step fields
             $table->string('customer_name')->nullable();
@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('delivery_email')->nullable();
 
             // Billing step fields
-            $table->string('queue')->index(); // For processing queue
+
             $table->string('payment_status')->default('pending'); // pending, paid, failed
             $table->string('transaction_id')->nullable(); // BTC transaction ID
             $table->timestamp('paid_at')->nullable();

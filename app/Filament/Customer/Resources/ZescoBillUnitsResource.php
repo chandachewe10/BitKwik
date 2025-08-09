@@ -84,7 +84,22 @@ class ZescoBillUnitsResource extends Resource
     {
         return $table
             ->columns([
-                //
+                 Tables\Columns\TextColumn::make('index')
+                ->label('No')
+                ->rowIndex(),
+                Tables\Columns\TextColumn::make('meter_number')
+                    ->searchable(),
+                     Tables\Columns\TextColumn::make('amount_kwacha')
+                    ->badge(),
+                Tables\Columns\ImageColumn::make('qr_code_path')
+    ->label('QR Code')
+    ->disk('public')
+    ->size(50)
+    ->square(),
+
+
+                Tables\Columns\TextColumn::make('payment_status')
+                    ->badge()
             ])
             ->filters([
                 //
