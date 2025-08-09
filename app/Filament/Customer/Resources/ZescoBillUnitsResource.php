@@ -53,7 +53,7 @@ class ZescoBillUnitsResource extends Resource
                 ->suffix('ZMW')
                ->afterStateUpdated(function ($state, Set $set, Get $get) {
                     $amount_kwacha = $state ?? 0;
-                    $amount_sats = $amount_kwacha * 0.03;
+                    $amount_sats = $amount_kwacha / 0.027;
                     $set('amount_btc', number_format( $amount_sats));
                     return true;
                 })

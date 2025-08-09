@@ -2,12 +2,12 @@
 
 ## Requirements
 
-- PHP >= 8.2
+- Xampp (Apache, PHP >= 8)
 
 
 ## How it works
 
-A Bitcoin powered bill payment app tailored for Zambian users
+This is a project from AfricaWorks and BTrust Hackathon. It is a Bitcoin powered bill payment app tailored for Zambian users.
 
 
 
@@ -16,7 +16,7 @@ A Bitcoin powered bill payment app tailored for Zambian users
 ## Installation
 
 ### Clone the repository
-Please follow carefully the installation a.
+Please follow carefully the installation.
 
 ```bash
 1. git clone https://github.com/chandachewe10/BitKwacha.git
