@@ -1,0 +1,119 @@
+<?php
+
+namespace App\Filament\Customer\Resources;
+
+use App\Filament\Customer\Resources\ZescoBillUnitsResource\Pages;
+use App\Filament\Customer\Resources\ZescoBillUnitsResource\RelationManagers;
+use App\Models\ZescoBills;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\Wizard;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Select;
+
+class ZescoBillUnitsResource extends Resource
+{
+    protected static ?string $model = ZescoBills::class;
+
+    protected static ?int $navigationSort = 2;
+    protected static ?string $navigationLabel = 'Pay Zesco Bills';
+    protected static ?string $title = 'Pay Zesco Bills';
+    protected static ?string $modelLabel = 'Pay Zesco Bills';
+    protected static ?string $navigationIcon = 'heroicon-o-bolt';
+
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Wizard::make([
+    // Step 1: Order details
+    Wizard\Step::make('Meter Details')
+        ->schema([
+
+
+            TextInput::make('meter_number')
+                ->label('Meter Number')
+                ->numeric()
+                ->required()
+                ->minLength(6)
+                ->maxLength(20),
+
+            TextInput::make('amount_kwacha')
+                ->label('Amount (ZMW)')
+                ->numeric()
+                ->suffix('ZMW')
+                ->required()
+                ->minValue(1),
+        ]),
+
+    // Step 2: Delivery information
+    Wizard\Step::make('Delivery Information')
+        ->schema([
+            TextInput::make('phone')
+                ->label('Phone Number for SMS token')
+                ->tel()
+                ->required(),
+
+            TextInput::make('email')
+                ->label('Email for receipt')
+                ->email()
+                ->nullable(),
+        ]),
+
+    // Step 3: Bitcoin payment
+    Wizard\Step::make('Billing')
+        ->schema([
+            TextInput::make('email_address')
+                ->label('Your Email Address')
+                ->required()
+                ->helperText('We will generate a Lightning invoice to this address.'),
+
+
+        ]),
+    ]) ->columnSpan('full')
+            ]);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                //
+            ])
+            ->filters([
+                //
+            ])
+            ->actions([
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListZescoBillUnits::route('/'),
+            'create' => Pages\CreateZescoBillUnits::route('/create'),
+            'view' => Pages\ViewZescoBillUnits::route('/{record}'),
+            'edit' => Pages\EditZescoBillUnits::route('/{record}/edit'),
+        ];
+    }
+}
