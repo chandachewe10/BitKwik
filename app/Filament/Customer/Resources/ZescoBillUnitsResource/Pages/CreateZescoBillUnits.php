@@ -72,6 +72,6 @@ class CreateZescoBillUnits extends CreateRecord
         return Notification::make()
             ->success()
             ->title('Zesco Bill created')
-            ->body('The Zesco Bill has been created successfully. Please check your email for the invoice.');
+            ->body('The Zesco Bill has been created successfully. Please check your lightning invoice to make payments.');
     }
 }

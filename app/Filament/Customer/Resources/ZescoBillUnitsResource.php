@@ -46,35 +46,47 @@ class ZescoBillUnitsResource extends Resource
                 ->minLength(6)
                 ->maxLength(20),
 
-            TextInput::make('amount_kwacha')
-                ->label('Amount (ZMW)')
-                ->numeric()
-                ->live(onBlur: true)
-                ->suffix('ZMW')
-               ->afterStateUpdated(function ($state, Set $set, Get $get) {
-                    $amount_kwacha = $state ?? 0;
-                    $amount_sats = $amount_kwacha / 0.027;
-                    $amount_btc = $amount_sats / 100000000;
-                    $set('amount_sats', number_format( $amount_sats));
-                    $set('amount_btc', number_format( $amount_btc));
-                    return true;
-                })
-                ->minValue(1),
+          TextInput::make('amount_kwacha')
+    ->label('Amount (ZMW)')
+    ->numeric()
+    ->live()
+    ->suffix('ZMW')
+    ->afterStateUpdated(function ($state, Set $set) {
+        $amount_kwacha = floatval($state ?? 0);
+        $amount_sats = $amount_kwacha / 0.027;
+        $amount_btc = $amount_sats / 100000000;
 
-                TextInput::make('amount_sats')
-                ->helperText('Amount in Satoshis')
-                ->label('Sats')
-                ->suffix('SAT')
-                ->required()
-                ->disabled()
-                ->minValue(1),
-                TextInput::make('amount_btc')
-                ->helperText('Amount in Bitcoin')
-                ->label('BTC')
-                ->suffix('BTC')
-                ->required()
-                ->disabled()
-                ->minValue(1),
+        $set('amount_sats', round($amount_sats, 0));
+        $set('amount_btc', round($amount_btc, 8));
+    })
+    ->minValue(1),
+
+TextInput::make('amount_sats')
+    ->helperText('Amount in Satoshis')
+    ->label('Sats')
+    ->suffix('SAT')
+    ->numeric()
+    ->live()
+    ->afterStateUpdated(function ($state, Set $set) {
+        $amount_sats = floatval($state ?? 0);
+        $amount_btc = $amount_sats / 100000000;
+        $amount_kwacha = $amount_sats * 0.027;
+
+        $set('amount_btc', round($amount_btc, 8));
+        $set('amount_kwacha', round($amount_kwacha, 2));
+    })
+    ->required()
+    ->disabled(false)
+    ->minValue(1),
+
+TextInput::make('amount_btc')
+    ->helperText('Amount in Bitcoin')
+    ->label('BTC')
+    ->suffix('BTC')
+    ->required()
+    ->readOnly()
+    ->minValue(0.00000001),
+
         ]),
 
     // Step 2: Delivery information
@@ -91,16 +103,7 @@ class ZescoBillUnitsResource extends Resource
                 ->nullable(),
         ]),
 
-    // Step 3: Bitcoin payment
-    Wizard\Step::make('Billing')
-        ->schema([
-            TextInput::make('email_address')
-                ->label('Your Email Address')
-                ->required()
-                ->helperText('We will generate a Lightning invoice to this address.'),
 
-
-        ]),
     ]) ->columnSpan('full')
             ]);
     }

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('zesco_bills', function (Blueprint $table) {
-            $table->string('lightning_invoice_address')->nullable();
+            $table->text('lightning_invoice_address')->nullable()->after('qr_code_path');
         });
     }
 
