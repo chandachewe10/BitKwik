@@ -119,13 +119,25 @@ TextInput::make('amount_btc')
                     ->searchable(),
                      Tables\Columns\TextColumn::make('amount_kwacha')
                     ->badge(),
+                    Tables\Columns\TextColumn::make('amount_sats')
+                    ->badge(),
+                     Tables\Columns\TextColumn::make('amount_btc')
+                    ->badge(),
                Tables\Columns\TextColumn::make('qr_code_path')
     ->label('Check Invoice')
     ->formatStateUsing(fn () => 'Check Invoice')
     ->badge()
     ->url(fn ($record) => '/images/qrcodes/'.$record->qr_code_path),
+     Tables\Columns\TextColumn::make('lightning_invoice_address')
+    ->label('Lightning Invoice')
+    ->formatStateUsing(fn ($state) => $state ? 'Copy Invoice' : 'No Invoice')
+    ->copyable()
+    ->copyMessage('Invoice copied to clipboard!')
+    ->copyMessageDuration(1500)
+    ->badge(),
         Tables\Columns\TextColumn::make('payment_status')
-                    ->badge()
+                    ->badge(),
+
             ])
             ->filters([
                 //
