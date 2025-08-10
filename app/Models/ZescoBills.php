@@ -18,5 +18,6 @@ class ZescoBills extends Model
         'phone',
         'qr_code_path',
         'bolt11',
+        'lightning_invoice_address'
     ];
 }
