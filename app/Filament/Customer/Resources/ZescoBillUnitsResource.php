@@ -54,15 +54,24 @@ class ZescoBillUnitsResource extends Resource
                ->afterStateUpdated(function ($state, Set $set, Get $get) {
                     $amount_kwacha = $state ?? 0;
                     $amount_sats = $amount_kwacha / 0.027;
-                    $set('amount_btc', number_format( $amount_sats));
+                    $amount_btc = $amount_sats / 100000000;
+                    $set('amount_sats', number_format( $amount_sats));
+                    $set('amount_btc', number_format( $amount_btc));
                     return true;
                 })
                 ->minValue(1),
 
-                TextInput::make('amount_btc')
+                TextInput::make('amount_sats')
                 ->helperText('Amount in Satoshis')
                 ->label('Sats')
                 ->suffix('SAT')
+                ->required()
+                ->disabled()
+                ->minValue(1),
+                TextInput::make('amount_btc')
+                ->helperText('Amount in Bitcoin')
+                ->label('BTC')
+                ->suffix('BTC')
                 ->required()
                 ->disabled()
                 ->minValue(1),

@@ -15,9 +15,10 @@ class ZescoBills extends Model
     protected $fillable = [
         'meter_number',
         'amount_kwacha',
+        'amount_sats',
+        'amount_btc',
         'phone',
         'qr_code_path',
-        'bolt11',
         'lightning_invoice_address'
     ];
 }

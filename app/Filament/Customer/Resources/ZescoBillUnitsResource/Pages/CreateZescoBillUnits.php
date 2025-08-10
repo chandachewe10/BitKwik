@@ -48,11 +48,15 @@ class CreateZescoBillUnits extends CreateRecord
             }
         }
 
+
+
+
         return ZescoBills::create([
             'meter_number' => $data['meter_number'],
             'amount_kwacha' => $data['amount_kwacha'],
+            'amount_sats' => $data['amount_sats'],
+            'amount_btc' => $data['amount_btc'],
             'qr_code_path' => $data['qr_code_path'],
-            'bolt11' => $data['bolt11'],
             'lightning_invoice_address' => $bolt11 ?? NULL,
 
         ]);
