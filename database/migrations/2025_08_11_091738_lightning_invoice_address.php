@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('zesco_bills', function (Blueprint $table) {
-             $table->string('amount_sats')->nullable();
+        Schema::table('bit_coin_to_bank_accounts', function (Blueprint $table) {
+        $table->text('lightning_invoice_address')->nullable()->after('qr_code_path');
         });
     }
 
@@ -21,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('zesco_bills', function (Blueprint $table) {
+        Schema::table('bit_coin_to_bank_accounts', function (Blueprint $table) {
             //
         });
     }

@@ -18,7 +18,8 @@ class WaterBillUnitsResource extends Resource
 {
     protected static ?string $model = ZescoBills::class;
 
-    protected static ?int $navigationSort = 3;
+     protected static ?string $navigationGroup = 'Bill Payments';
+    protected static ?int $navigationSort = 5;
     protected static ?string $navigationLabel = 'Pay Lusaka Bills';
     protected static ?string $title = 'Pay Lusaka Bills';
     protected static ?string $modelLabel = 'Pay Lusaka Bills';

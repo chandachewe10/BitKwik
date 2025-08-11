@@ -22,7 +22,8 @@ class ZescoBillUnitsResource extends Resource
 {
     protected static ?string $model = ZescoBills::class;
 
-    protected static ?int $navigationSort = 2;
+    protected static ?string $navigationGroup = 'Bill Payments';
+    protected static ?int $navigationSort = 3;
     protected static ?string $navigationLabel = 'Pay Zesco Bills';
     protected static ?string $title = 'Pay Zesco Bills';
     protected static ?string $modelLabel = 'Pay Zesco Bills';

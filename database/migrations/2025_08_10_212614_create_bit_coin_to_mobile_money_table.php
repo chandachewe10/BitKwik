@@ -11,18 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('zesco_bills', function (Blueprint $table) {
+        Schema::create('bit_coin_to_mobile_money', function (Blueprint $table) {
             $table->id();
-            $table->string('meter_number');
+            $table->string('mobile_number');
             $table->decimal('amount_btc', 16, 8)->nullable();
             $table->decimal('amount_kwacha', 16, 2);
             $table->string('qr_code_path')->nullable();
             $table->string('customer_name')->nullable();
             $table->string('customer_phone')->nullable();
             $table->string('delivery_email')->nullable();
-            $table->string('payment_status')->default('pending');
-            $table->string('transaction_id')->nullable();
-            $table->timestamp('paid_at')->nullable();
             $table->timestamps();
         });
     }
@@ -32,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('zesco_bills');
+        Schema::dropIfExists('bit_coin_to_mobile_money');
     }
 };

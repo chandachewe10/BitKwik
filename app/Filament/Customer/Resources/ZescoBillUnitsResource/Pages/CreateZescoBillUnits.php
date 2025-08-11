@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Filament\Customer\Resources\ZescoBillUnitsResource\Pages;
 
 use App\Filament\Customer\Resources\ZescoBillUnitsResource;
@@ -23,9 +24,9 @@ class CreateZescoBillUnits extends CreateRecord
         ])->post('https://demo.lnbits.com/api/v1/payments', [
             'out' => false,
             'description' => 'Zesco Units Bill Payments',
-            'amount' => $data['amount_kwacha'] ?? 10,
-            'max' => 500,
-            'min' => 50,
+            'amount' => $data['amount_sats'],
+            'max' => 100000000,
+            'min' => 0.00000001,
             'comment_chars' => 200,
             'username' => mt_rand(100000, 999999),
         ]);
@@ -58,16 +59,17 @@ class CreateZescoBillUnits extends CreateRecord
             'amount_btc' => $data['amount_btc'],
             'qr_code_path' => $data['qr_code_path'],
             'lightning_invoice_address' => $bolt11 ?? NULL,
+            "delivery_email" => $data['email'],
 
         ]);
     }
 
-  protected function getRedirectUrl(): string
+    protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');
     }
 
-     protected function getCreatedNotification(): ?Notification
+    protected function getCreatedNotification(): ?Notification
     {
         return Notification::make()
             ->success()

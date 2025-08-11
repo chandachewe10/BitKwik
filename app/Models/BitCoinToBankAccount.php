@@ -4,26 +4,27 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ZescoBills extends Model
+class BitCoinToBankAccount extends Model
 {
-
     /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
      */
     protected $fillable = [
-        'meter_number',
-        'amount_kwacha',
+        'account_number',
         'amount_sats',
         'amount_btc',
-        'phone',
+        'amount_kwacha',
         'qr_code_path',
-        'lightning_invoice_address',
         'customer_name',
         'customer_phone',
         'delivery_email',
         'convenience_fee',
+        'bank_name',
+        'bank_branch',
+        'bank_sort_code',
+        'bank_account_type',
         'lightning_invoice_address',
         'payment_status',
         'paid_at',
