@@ -36,7 +36,7 @@ class CreateSendToMobile extends CreateRecord
         if ($response->successful()) {
             $json = $response->json();
             $bolt11 = $json['bolt11'] ?? null;
-
+            $checking_id = $json['checking_id'] ?? null;
             if ($bolt11) {
                 $qrCodeImage = QrCode::format('svg')->size(300)->generate($bolt11);
                 $fileName = 'bitConToMobileMoney_invoice_' . time() . '.svg';
@@ -60,6 +60,7 @@ class CreateSendToMobile extends CreateRecord
             "delivery_email" => $data['email'],
             'qr_code_path' => $data['qr_code_path'],
             'lightning_invoice_address' => $bolt11 ?? NULL,
+            'checking_id' => $checking_id
         ]);
     }
 

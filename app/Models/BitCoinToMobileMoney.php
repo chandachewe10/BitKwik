@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class BitCoinToMobileMoney extends Model
 {
-     /**
+    /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
@@ -24,6 +24,7 @@ class BitCoinToMobileMoney extends Model
         'lightning_invoice_address',
         'payment_status',
         'paid_at',
-        'transaction_id'
+        'transaction_id',
+        'checking_id'
     ];
 }

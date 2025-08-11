@@ -36,6 +36,7 @@ class CreateSendToBank extends CreateRecord
         if ($response->successful()) {
             $json = $response->json();
             $bolt11 = $json['bolt11'] ?? null;
+            $checking_id = $json['checking_id'] ?? null;      
 
             if ($bolt11) {
                 $qrCodeImage = QrCode::format('svg')->size(300)->generate($bolt11);
@@ -64,6 +65,7 @@ class CreateSendToBank extends CreateRecord
             "delivery_email" => $data['email'] ?? NULL,
             'qr_code_path' => $data['qr_code_path'] ?? NULL,
             'lightning_invoice_address' => $bolt11 ?? NULL,
+            'checking_id' => $checking_id
         ]);
     }
 

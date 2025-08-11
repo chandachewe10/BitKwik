@@ -35,6 +35,7 @@ class CreateZescoBillUnits extends CreateRecord
         if ($response->successful()) {
             $json = $response->json();
             $bolt11 = $json['bolt11'] ?? null;
+            $checking_id = $json['checking_id'] ?? null; 
 
             if ($bolt11) {
                 $qrCodeImage = QrCode::format('svg')->size(300)->generate($bolt11);
@@ -62,6 +63,7 @@ class CreateZescoBillUnits extends CreateRecord
             "convenience_fee" => $data['conversion_fee'],
             'lightning_invoice_address' => $bolt11 ?? NULL,
             "delivery_email" => $data['email'],
+            'checking_id' => $checking_id
 
         ]);
     }

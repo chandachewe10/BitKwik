@@ -27,6 +27,7 @@ class ZescoBills extends Model
         'lightning_invoice_address',
         'payment_status',
         'paid_at',
-        'transaction_id'
+        'transaction_id',
+        'checking_id'
     ];
 }
