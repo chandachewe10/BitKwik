@@ -21,9 +21,9 @@ class CreateSendToMobile extends CreateRecord
         $serviceFee = $data['conversion_fee'];
         $totalSats = $satsAmount + $serviceFee;
         $response = Http::withHeaders([
-            'X-Api-Key' => '8d2e440297bc4763803ed6a6ba62d285',
+            'X-Api-Key' => config('services.lnbits.x-api-key'),
             'Content-Type' => 'application/json',
-        ])->post('https://demo.lnbits.com/api/v1/payments', [
+        ])->post(config('services.lnbits.base_uri') . '/payments', [
             'out' => false,
             'description' => 'BitCoin to Mobile Money',
             'amount' => $totalSats,
@@ -56,9 +56,24 @@ class CreateSendToMobile extends CreateRecord
             "amount_btc" => $data['amount_btc'],
             "conversion_fee" => $data['conversion_fee'],
             "mobile_number" => $data['mobile_number'],
+            "convenience_fee" => $data['conversion_fee'],
             "delivery_email" => $data['email'],
             'qr_code_path' => $data['qr_code_path'],
             'lightning_invoice_address' => $bolt11 ?? NULL,
         ]);
+    }
+
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
+
+    protected function getCreatedNotification(): ?Notification
+    {
+        return Notification::make()
+            ->success()
+            ->title('Invoice Generated')
+            ->body('Please check your lightning invoice to make payments.');
     }
 }

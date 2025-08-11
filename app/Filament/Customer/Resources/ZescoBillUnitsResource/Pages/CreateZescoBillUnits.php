@@ -17,11 +17,12 @@ class CreateZescoBillUnits extends CreateRecord
 
     protected function handleRecordCreation(array $data): \Illuminate\Database\Eloquent\Model
     {
+        
         // dd($data);
         $response = Http::withHeaders([
-            'X-Api-Key' => '8d2e440297bc4763803ed6a6ba62d285',
+            'X-Api-Key' => config('services.lnbits.x-api-key'),
             'Content-Type' => 'application/json',
-        ])->post('https://demo.lnbits.com/api/v1/payments', [
+        ])->post(config('services.lnbits.base_uri').'/payments', [
             'out' => false,
             'description' => 'Zesco Units Bill Payments',
             'amount' => $data['amount_sats'],
@@ -58,6 +59,7 @@ class CreateZescoBillUnits extends CreateRecord
             'amount_sats' => $data['amount_sats'],
             'amount_btc' => $data['amount_btc'],
             'qr_code_path' => $data['qr_code_path'],
+            "convenience_fee" => $data['conversion_fee'],
             'lightning_invoice_address' => $bolt11 ?? NULL,
             "delivery_email" => $data['email'],
 
@@ -73,7 +75,7 @@ class CreateZescoBillUnits extends CreateRecord
     {
         return Notification::make()
             ->success()
-            ->title('Zesco Bill created')
-            ->body('The Zesco Bill has been created successfully. Please check your lightning invoice to make payments.');
+            ->title('Invoice Generated')
+            ->body('Please check your lightning invoice to make payments.');
     }
 }

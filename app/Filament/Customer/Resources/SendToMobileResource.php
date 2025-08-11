@@ -24,6 +24,7 @@ class SendToMobileResource extends Resource
     protected static ?int $navigationSort = 1;
     protected static ?string $model = SendToMobile::class;
     protected static ?string $navigationLabel = 'BitCoin to Mobile';
+    protected static ?string $pluralModelLabel = 'BitCoin to Mobile';
     protected static ?string $title = 'BitCoin to Mobile';
     protected static ?string $modelLabel = 'BitCoin to Mobile';
     protected static ?string $navigationIcon = 'heroicon-o-device-phone-mobile';
@@ -51,7 +52,7 @@ class SendToMobileResource extends Resource
 
                                     $set('amount_sats', round($amount_sats, 0));
                                     $set('amount_btc', round($amount_btc, 8));
-                                    $set('conversion_fee', round($amount_btc * 0.08, 8));
+                                    $set('conversion_fee', round($amount_sats * 0.08, 0));
                                 })
                                 ->minValue(1),
 
@@ -68,7 +69,7 @@ class SendToMobileResource extends Resource
 
                                     $set('amount_btc', round($amount_btc, 8));
                                     $set('amount_kwacha', round($amount_kwacha, 2));
-                                    $set('conversion_fee', round($amount_btc * 0.08, 8));
+                                    $set('conversion_fee', round($amount_sats * 0.08, 0));
                                 })
                                 ->required()
                                 ->disabled(false)
@@ -120,14 +121,41 @@ class SendToMobileResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('index')
+                    ->label('No')
+                    ->rowIndex(),
+                Tables\Columns\TextColumn::make('mobile_number')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('amount_kwacha')
+                    ->badge(),
+                Tables\Columns\TextColumn::make('amount_sats')
+                    ->badge(),
+                Tables\Columns\TextColumn::make('convenience_fee')
+                    ->badge(),
+                Tables\Columns\TextColumn::make('amount_btc')
+                    ->badge(),
+                Tables\Columns\TextColumn::make('qr_code_path')
+                    ->label('Check Invoice')
+                    ->formatStateUsing(fn() => 'Check Invoice')
+                    ->badge()
+                    ->url(fn($record) => '/images/qrcodes/' . $record->qr_code_path),
+                Tables\Columns\TextColumn::make('lightning_invoice_address')
+                    ->label('Lightning Invoice')
+                    ->formatStateUsing(fn($state) => $state ? 'Copy Invoice' : 'No Invoice')
+                    ->copyable()
+                    ->copyMessage('Invoice copied to clipboard!')
+                    ->copyMessageDuration(1500)
+                    ->badge(),
+                Tables\Columns\TextColumn::make('payment_status')
+                    ->badge(),
+
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                // Tables\Actions\ViewAction::make(),
+                // Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

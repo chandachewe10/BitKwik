@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+     'lnbits' => [
+        'x-api-key' => env('LNBITS_ADMIN_KEY'),
+        'base_uri' => env('LNBITS_BASE_URI'),
+    ],
+
 ];

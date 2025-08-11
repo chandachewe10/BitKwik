@@ -14,16 +14,16 @@ class CreateSendToBank extends CreateRecord
 {
     protected static string $resource = SendToBankResource::class;
 
-      protected function handleRecordCreation(array $data): \Illuminate\Database\Eloquent\Model
+    protected function handleRecordCreation(array $data): \Illuminate\Database\Eloquent\Model
     {
-       dd($data);
+        //dd($data);
         $satsAmount = $data['amount_sats'];
         $serviceFee = $data['conversion_fee'];
         $totalSats = $satsAmount + $serviceFee;
         $response = Http::withHeaders([
-            'X-Api-Key' => '8d2e440297bc4763803ed6a6ba62d285',
+            'X-Api-Key' => config('services.lnbits.x-api-key'),
             'Content-Type' => 'application/json',
-        ])->post('https://demo.lnbits.com/api/v1/payments', [
+        ])->post(config('services.lnbits.base_uri') . '/payments', [
             'out' => false,
             'description' => 'BitCoin to Mobile Money',
             'amount' => $totalSats,
@@ -56,10 +56,28 @@ class CreateSendToBank extends CreateRecord
             "amount_btc" => $data['amount_btc'],
             "conversion_fee" => $data['conversion_fee'],
             "account_number" => $data['account_number'],
+            "bank_name" => $data['bank_name'],
+            "bank_branch" => $data['bank_branch'],
+            "bank_sort_code" => $data['bank_sort_code'],
+            "bank_account_type" => $data['bank_account_type'],
+            "convenience_fee" => $data['conversion_fee'],
             "delivery_email" => $data['email'] ?? NULL,
             'qr_code_path' => $data['qr_code_path'] ?? NULL,
             'lightning_invoice_address' => $bolt11 ?? NULL,
-]);
+        ]);
+    }
 
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
+
+    protected function getCreatedNotification(): ?Notification
+    {
+        return Notification::make()
+            ->success()
+            ->title('Invoice Generated')
+            ->body('Please check your lightning invoice to make payments.');
     }
 }
