@@ -101,6 +101,7 @@ class SendToMobileResource extends Resource
                                 ->tel()
                                 ->helperText('Enter the mobile number to receive the payment')
                                 ->numeric()
+                                ->regex('/^(09|07)[5|6|7][0-9]{7}$/')
                                 ->required()
                                 ->minLength(6)
                                 ->maxLength(20),

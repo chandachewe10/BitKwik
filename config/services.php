@@ -40,4 +40,10 @@ return [
         'base_uri' => env('LNBITS_BASE_URI'),
     ],
 
+     'lenco' => [
+        'token' => env('LENCO_TOKEN'),
+        'base_uri' => env('LENCO_BASE_URI'),
+        'wallet_uuid' => env('LENCO_WALLET_UUID'),
+    ],
+
 ];

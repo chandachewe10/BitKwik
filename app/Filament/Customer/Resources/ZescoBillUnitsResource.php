@@ -107,6 +107,7 @@ class ZescoBillUnitsResource extends Resource
                         ->schema([
                             TextInput::make('phone')
                                 ->label('Phone Number for SMS token')
+                                ->regex('/^(09|07)[5|6|7][0-9]{7}$/')
                                 ->tel()
                                 ->required(),
 
