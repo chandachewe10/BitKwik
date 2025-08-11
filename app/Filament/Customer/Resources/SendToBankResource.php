@@ -102,8 +102,32 @@ class SendToBankResource extends Resource
                                 ->required()
                                 ->minLength(6)
                                 ->maxLength(20),
-                            TextInput::make('bank_name')
+                            Select::make('bank_name')
                                 ->label('Bank Name')
+                                ->options([
+                                    '002' => 'Absa Bank',
+                                    '003' => 'Access Bank',
+                                    '005' => 'Access Bank (formerly ATMA)',
+                                    '006' => 'Bank of China',
+                                    '007' => 'Citibank',
+                                    '008' => 'Ecobank',
+                                    '010' => 'Indo Zambia Bank',
+                                    '011' => 'Investrust Bank',
+                                    '012' => 'First Alliance Bank',
+                                    '013' => 'First Capital',
+                                    '014' => 'FNB',
+                                    '016' => 'Stanbic Bank',
+                                    '017' => 'Standard Chartered Bank',
+                                    '022' => 'United Bank for Africa',
+                                    '023' => 'Zanaco',
+                                    '025' => 'ZICB',
+                                    '028' => 'AB Bank',
+                                    '032' => 'Natsave',
+                                    '033' => 'Access Bank',
+                                    '036' => 'Bayport',
+                                    '037' => 'Zambia National Building Society',
+                                ])
+                                ->searchable()
                                 ->required(),
                             TextInput::make('bank_branch')
                                 ->label('Bank Branch')
@@ -130,7 +154,7 @@ class SendToBankResource extends Resource
     {
         return $table
             ->columns([
-                  Tables\Columns\TextColumn::make('index')
+                Tables\Columns\TextColumn::make('index')
                     ->label('No')
                     ->rowIndex(),
                 Tables\Columns\TextColumn::make('account_number')
