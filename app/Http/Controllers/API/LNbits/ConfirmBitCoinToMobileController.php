@@ -23,7 +23,7 @@ class ConfirmBitCoinToMobileController extends Controller
         $data = $request->validate([
             'checking_id' => 'required|string|exists:bit_coin_to_mobile_money,checking_id',
             'pending'       => 'required|boolean',
-            'amount'        => 'required|integer',
+            
         ]);
 
        
