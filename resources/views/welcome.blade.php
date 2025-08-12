@@ -2,373 +2,387 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>{{env('APP_NAME')}}</title>
-  <meta content="" name="description">
+    <title>{{env('APP_NAME')}}</title>
+    <meta content="" name="description">
 
-  <meta name="keywords" content="BitKwacha, Bitcoin Zambia, Lightning Network, crypto payments, pay bills with Bitcoin, send Bitcoin Zambia, ZESCO Bitcoin payment, DStv Bitcoin, Lusaka Water Bitcoin, mobile money crypto, Zambia blockchain payments">
-  <meta name="author" content="BitKwacha">
+    <meta name="keywords" content="BitKwacha, Bitcoin Zambia, Lightning Network, crypto payments, pay bills with Bitcoin, send Bitcoin Zambia, ZESCO Bitcoin payment, DStv Bitcoin, Lusaka Water Bitcoin, mobile money crypto, Zambia blockchain payments">
+    <meta name="author" content="BitKwacha">
 
-  <!-- Favicons -->
-  <link href="{{asset('ui/css/assets/img/fav.png')}}" rel="icon">
-  <link href="{{asset('ui/css/assets/img/apple-touch-icon.png')}}" rel="apple-touch-icon">
+    <!-- Favicons -->
+    <link href="{{asset('ui/css/assets/img/fav.png')}}" rel="icon">
+    <link href="{{asset('ui/css/assets/img/apple-touch-icon.png')}}" rel="apple-touch-icon">
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
-  <!-- Vendor CSS Files -->
-  <link href="{{asset('ui/css/assets/vendor/aos/aos.css')}}" rel="stylesheet">
-  <link href="{{asset('ui/css/assets/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
-  <link href="{{asset('ui/css/assets/vendor/bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet">
-  <link href="{{asset('ui/css/assets/vendor/glightbox/css/glightbox.min.css')}}" rel="stylesheet">
-  <link href="{{asset('ui/css/assets/vendor/remixicon/remixicon.css')}}" rel="stylesheet">
-  <link href="{{asset('ui/css/assets/vendor/swiper/swiper-bundle.min.css')}}" rel="stylesheet">
-  <link href="{{asset('ui/css/assets/css/style.css')}}" rel="stylesheet">
+    <!-- Vendor CSS Files -->
+    <link href="{{asset('ui/css/assets/vendor/aos/aos.css')}}" rel="stylesheet">
+    <link href="{{asset('ui/css/assets/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{asset('ui/css/assets/vendor/bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet">
+    <link href="{{asset('ui/css/assets/vendor/glightbox/css/glightbox.min.css')}}" rel="stylesheet">
+    <link href="{{asset('ui/css/assets/vendor/remixicon/remixicon.css')}}" rel="stylesheet">
+    <link href="{{asset('ui/css/assets/vendor/swiper/swiper-bundle.min.css')}}" rel="stylesheet">
+    <link href="{{asset('ui/css/assets/css/style.css')}}" rel="stylesheet">
 </head>
 
 <body>
 
-  <!-- ======= Header ======= -->
-  <header id="header" class="header fixed-top">
-    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+    <!-- ======= Header ======= -->
+    <header id="header" class="header fixed-top">
+        <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
 
-      <a href="index.html" class="logo d-flex align-items-center">
-        <img src="{{asset('ui/css/assets/img/logo.png')}}" alt="Logo" style="border-radius: 100%;">
-        <span style="color:#333; font-size: 20px;font-weight: bolder;">{{env('APP_NAME')}}</span>
-      </a>
-
-      <nav id="navbar" class="navbar">
-        <ul>
-          <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
-          <li><a class="nav-link scrollto" href="#services">Services</a></li>
-          <li><a class="nav-link scrollto" href="#team">Integration</a></li>
-          </li>
-          <li><a class="nav-link scrollto" href="#about">About</a></li>
-          <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
-          <li><a class="getstarted scrollto" href="{{ 'customer/login' }}">Sign in</a></li>
-        </ul>
-        <i class="bi bi-list mobile-nav-toggle"></i>
-      </nav><!-- .navbar -->
-
-    </div>
-  </header><!-- End Header -->
-
-  <!-- ======= Hero Section ======= -->
-  <section id="hero" class="hero d-flex align-items-center">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-6 d-flex flex-column justify-content-center">
-          <h1 data-aos="fade-up">Pay Bills using BitKwacha seamlessly.</h1>
-          <h2 data-aos="fade-up" data-aos-delay="400">Pay bills in kwacha, using Bitcoin.</h2>
-          <br>
-          <h5 data-aos="fade-up" data-aos-delay="400">Buy Zesco units, or pay for DSTV, GoTv, Lusaka Water in the comfort of your home using bitcoin on our platform</h5>
-          <div data-aos="fade-up" data-aos-delay="600" style="display: flex;">
-            <div class="text-center text-lg-start">
-              <a href="" class="btn-get-started scrollto d-inline-flex align-items-center justify-content-center align-self-center">
-                <span>Get Started</span>
-                <i class="bi bi-arrow-right"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-6 hero-img" data-aos="zoom-out" data-aos-delay="200">
-          <img src="{{asset('ui/css/assets/img/hero.png')}}" class="img-fluid" alt="">
-        </div>
-      </div>
-    </div>
-
-  </section><!-- End Hero -->
-
-  <main id="main">
-    <!-- ======= About Section ======= -->
-
-
-    <!-- ======= Values Section ======= -->
-    <section id="services" class="values">
-
-      <div class="container" data-aos="fade-up">
-
-        <header class="section-header">
-          <h2>Services</h2>
-        </header>
-
-        <div class="row">
-
-          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
-            <div class="box">
-              <img src="{{asset('ui/css/assets/img/receive.png')}}" class="img-fluid" alt="">
-              <h3>Send Money</h3>
-              <p>Easily send money to anyone, anywhere in Zambia.</p>
-              <a class="learn-more" href="">Learn more ></a>
-            </div>
-          </div>
-
-          <div class="col-lg-4 mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="400">
-            <div class="box">
-              <img src="{{asset('ui/css/assets/img/loan.png')}}" class="img-fluid" alt="">
-              <h3>Pay Bill</h3>
-              <p>Pay for water using bitcoin on our self service portal.</p>
-              <a class="learn-more >" href="">Learn more ></a>
-            </div>
-          </div>
-
-          <div class="col-lg-4 mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="600">
-            <div class="box">
-              <img src="{{asset('ui/css/assets/img/send.png')}}" class="img-fluid" alt="">
-              <h3>Other Utilities</h3>
-              <p>Paying for DSTV, GoTv, or Zesco units? It's done with few clicks.</p>
-              <a class="learn-more" href="">Learn more ></a>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-
-    </section><!-- End Values Section -->
-    <!-- ======= Features ======= -->
-
-    <section class="feature">
-      <div class="section-row">
-        <div>
-          <h3>Ready made checkout interfaces</h3>
-          <p>Easily scan the QRcode on our platform to complete your payment quickly.</p>
-          <br>
-          <br>
-          <br>
-          <a class="learn-more" href="">Learn more ></a>
-  </div>
-   <div>
-      <img src="{{asset('ui/css/assets/img/phone.png')}}" width="232" height="">
-    </div>
-</div>
-    </section>
-    <section class="feature">
-      <div class="section-row">
-        <div>
-      <img src="{{asset('ui/css/assets/img/happy.jpg')}}">
-    </div>
-        <div>
-<h3>Pay your bills</h3>
-<p>Settle your ZESCO, Lusaka Water, DStv, and more all in one place with BitKwacha.</p>
-
-          <br>
-          <br>
-          <br>
-          <a class="learn-more" href="">Learn more ></a>
-  </div>
-</div>
-    </section>
-
-<br>
-<br>
-<br>
-
-    <section class="feature">
-      <div class="section-row">
-        <div>
-         <h3>Easy to integrate into your website or app</h3>
-<p>Offer seamless bill payments with the BitKwacha API. Add ZESCO, DStv, and more to your platform in minutes.</p>
-
-          <br>
-          <br>
-          <br>
-          <a class="learn-more" href="">Learn more ></a>
-  </div>
-   <div>
-      <img src="{{asset('ui/css/assets/img/programmer.jpg')}}">
-    </div>
-</div>
-    </section>
-
-
-
-
-    <!-- ======= Contact Section ======= -->
-    <section id="contact" class="contact">
-
-      <div class="container" data-aos="fade-up">
-
-        <header class="section-header">
-          <h2>Contact</h2>
-          <p>Contact Us</p>
-        </header>
-
-        <div class="row gy-4">
-
-          <div class="col-lg-6">
-
-            <div class="row gy-4">
-              <div class="col-md-6">
-                <div class="info-box">
-                  <i class="bi bi-geo-alt"></i>
-                  <h3>Address</h3>
-                  <p>Downtown,<br>Lusaka, LSK 10101</p>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="info-box">
-                  <i class="bi bi-telephone"></i>
-                  <h3>Call Us</h3>
-                  <p>+260 97014.....</p>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="info-box">
-                  <i class="bi bi-envelope"></i>
-                  <h3>Email Us</h3>
-                  <p>info@shopeasygroup.com</p>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="info-box">
-                  <i class="bi bi-clock"></i>
-                  <h3>Open Hours</h3>
-                  <p>Monday - Friday<br>9:00AM - 05:00PM</p>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-          <div class="col-lg-6">
-            <form action="forms/contact.php" method="post" class="php-email-form">
-              <div class="row gy-4">
-
-                <div class="col-md-6">
-                  <input type="text" name="name" class="form-control" placeholder="Your Name" required>
-                </div>
-
-                <div class="col-md-6 ">
-                  <input type="email" class="form-control" name="email" placeholder="Your Email" required>
-                </div>
-
-                <div class="col-md-12">
-                  <input type="text" class="form-control" name="subject" placeholder="Subject" required>
-                </div>
-
-                <div class="col-md-12">
-                  <textarea class="form-control" name="message" rows="6" placeholder="Message" required></textarea>
-                </div>
-
-                <div class="col-md-12 text-center">
-                  <div class="loading">Loading</div>
-                  <div class="error-message"></div>
-                  <div class="sent-message">Your message has been sent. Thank you!</div>
-
-                  <button type="submit">Send Message</button>
-                </div>
-
-              </div>
-            </form>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </section><!-- End Contact Section -->
-
-  </main><!-- End #main -->
-
-  <!-- ======= Footer ======= -->
-  <footer id="footer" class="footer">
-
-    <div class="footer-newsletter">
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-lg-12 text-center">
-            <h4>Our Newsletter</h4>
-            <p>Don't miss important updates from us.</p>
-          </div>
-          <div class="col-lg-6">
-            <form action="" method="post">
-              <input type="email" name="email"><input type="submit" value="Subscribe">
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="footer-top">
-      <div class="container">
-        <div class="row gy-4">
-          <div class="col-lg-5 col-md-12 footer-info">
             <a href="index.html" class="logo d-flex align-items-center">
-              <img src="{{asset('css/assets/img/logo.png')}}" alt="">
-              <span>{{env('APP_NAME')}}</span>
+                <img src="{{asset('ui/css/assets/img/logo.png')}}" alt="Logo" style="border-radius: 100%;">
+                <span style="color:#333; font-size: 20px;font-weight: bolder;">{{env('APP_NAME')}}</span>
             </a>
-            <p>Simplifying payments in Zambia.</p>
-            <div class="social-links mt-3">
-              <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
-              <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-              <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-              <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
-            </div>
-          </div>
 
-          <div class="col-lg-2 col-6 footer-links">
-            <h4>Useful Links</h4>
-            <ul>
-              <li><i class="bi bi-chevron-right"></i> <a href="#">Home</a></li>
-              <li><i class="bi bi-chevron-right"></i> <a href="#">About us</a></li>
-              <li><i class="bi bi-chevron-right"></i> <a href="#">Services</a></li>
-              <li><i class="bi bi-chevron-right"></i> <a href="#">Terms of service</a></li>
-              <li><i class="bi bi-chevron-right"></i> <a href="#">Privacy policy</a></li>
-            </ul>
-          </div>
+            <nav id="navbar" class="navbar">
+                <ul>
+                    <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
+                    <li><a class="nav-link scrollto" href="#services">Services</a></li>
 
-          <div class="col-lg-2 col-6 footer-links">
-            <h4>Our Services</h4>
-            <ul>
-              <li><i class="bi bi-chevron-right"></i> <a href="#">Online checkout</a></li>
-              <li><i class="bi bi-chevron-right"></i> <a href="#">Bill Payments</a></li>
-              <li><i class="bi bi-chevron-right"></i> <a href="#">Money transfer</a></li>
-            </ul>
-          </div>
+                    </li>
 
-          <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
-            <h4>Contact Us</h4>
-            <p>
-              Downtown mall <br>
-              Lusaka, LSK 10101<br>
-              Zambia <br><br>
-              <strong>Phone:</strong> +260 <br>
-              <strong>Email:</strong> info@bitkwacha.com<br>
-            </p>
-
-          </div>
+                    <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+                    <li><a class="getstarted scrollto" href="{{ 'customer/register' }}">Sign up</a></li>
+                    <li><a class="getstarted scrollto" href="{{ 'customer/login' }}">Sign in</a></li>
+                </ul>
+                <i class="bi bi-list mobile-nav-toggle"></i>
+            </nav><!-- .navbar -->
 
         </div>
-      </div>
-    </div>
+    </header><!-- End Header -->
 
-    <div class="container">
-      <div class="copyright">
-        &copy; Copyright <strong><span>{{env('APP_NAME')}}</span></strong>. All Rights Reserved
-      </div>
-      <div class="credits">
+    <!-- ======= Hero Section ======= -->
+    <section id="hero" class="hero d-flex align-items-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 d-flex flex-column justify-content-center">
+                    <h1 data-aos="fade-up">Bitcoin to Kwacha instantly using BitKwik.</h1>
+                    <h2 data-aos="fade-up" data-aos-delay="400">Pay bills in kwacha, using BitCoin.</h2>
+                    <br>
+                    <h5 data-aos="fade-up" data-aos-delay="400">Buy Zesco units, or pay for DSTV, GoTv, Lusaka Water in the comfort of your home using bitcoin on our platform</h5>
+                    <div data-aos="fade-up" data-aos-delay="600" style="display: flex;">
+                        <div class="text-center text-lg-start">
+                            <a href="{{ 'customer/register' }}" class="btn-get-started scrollto d-inline-flex align-items-center justify-content-center align-self-center">
+                                <span>Get Started</span>
+                                <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 hero-img" data-aos="zoom-out" data-aos-delay="200">
+                    <img src="{{asset('ui/css/assets/img/hero.png')}}" class="img-fluid" alt="">
+                </div>
+            </div>
+        </div>
 
-      </div>
-    </div>
-  </footer><!-- End Footer -->
+    </section><!-- End Hero -->
 
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+    <main id="main">
+        <!-- ======= About Section ======= -->
 
-  <!-- Vendor JS Files -->
-  <script src="{{asset('ui/css/assets/vendor/purecounter/purecounter.js')}}"></script>
-  <script src="{{asset('ui/css/assets/vendor/aos/aos.js')}}"></script>
-  <script src="{{asset('ui/css/assets/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-  <script src="{{asset('ui/css/assets/vendor/glightbox/js/glightbox.min.js')}}"></script>
-  <script src="{{asset('ui/css/assets/vendor/isotope-layout/isotope.pkgd.min.js')}}"></script>
-  <script src="{{asset('ui/css/assets/vendor/swiper/swiper-bundle.min.js')}}"></script>
-  <script src="{{asset('css/assets/vendor/php-email-form/validate.js')}}"></script>
 
-  <!-- Template Main JS File -->
-  <script src="{{asset('ui/css/assets/js/main.js')}}"></script>
+        <!-- ======= Values Section ======= -->
+        <section id="services" class="values">
+
+            <div class="container" data-aos="fade-up">
+
+                <header class="section-header">
+                    <h2>Services</h2>
+                </header>
+
+                <div class="row">
+
+                    <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
+                        <div class="box">
+                            <img src="{{asset('ui/css/assets/img/receive.png')}}" class="img-fluid" alt="">
+                            <h3>Send Money</h3>
+                            <p>Easily send money to anyone, anywhere in Zambia.</p>
+
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="400">
+                        <div class="box">
+                            <img src="{{asset('ui/css/assets/img/loan.png')}}" class="img-fluid" alt="">
+                            <h3>Pay Bill</h3>
+                            <p>Pay for water using bitcoin on our self service portal.</p>
+
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="600">
+                        <div class="box">
+                            <img src="{{asset('ui/css/assets/img/send.png')}}" class="img-fluid" alt="">
+                            <h3>Other Utilities</h3>
+                            <p>Paying for DSTV, GoTv, or Zesco units? It's done with few clicks.</p>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section><!-- End Values Section -->
+        <!-- ======= Features ======= -->
+
+        <section class="feature">
+            <div class="section-row">
+                <div>
+                    <h3>Ready made checkout interfaces</h3>
+                    <br>
+                    <p>Easily generate your lightning invoice on our portal. Copy the invoice address or Scan the QRcode on our platform <br> using any lighting mobile/web application.</p>
+
+
+                    <p>Confirm payments and Receive the money or bills purchased instantly.
+                        This streamlined approach removes the complexity of converting Bitcoin into local currency yourself we handle it automatically.</p>
+
+
+
+                </div>
+                <div>
+                    <img src="{{asset('ui/css/assets/img/phone.png')}}" width="232" height="400">
+                </div>
+            </div>
+        </section>
+        <section class="feature">
+            <div class="section-row">
+                <div>
+                    <img src="{{asset('ui/css/assets/img/happy.jpg')}}">
+                </div>
+                <div>
+                    <h3 style="margin-left: 15px;">Pay Your Bills</h3>
+                    <p style="margin-left: 15px;">
+                        With BitKwik, paying your everyday bills using Bitcoin is quick and hassle-free.
+                        Whether it’s your ZESCO electricity, Lusaka Water, DStv subscription, or other essential services,
+                        our platform brings them all together in one convenient place.<br><br>
+                        Simply enter your payment details, generate a Lightning invoice, and settle your bill directly from your Bitcoin wallet
+                        no manual currency conversions or complicated steps required.
+                    </p>
+                    <br>
+                    <br>
+                    <br>
+
+                </div>
+            </div>
+        </section>
+
+        <br>
+        <br>
+        <br>
+
+        <section class="feature">
+            <div class="section-row">
+                <div style="margin-right: 15px;">
+                    <h3>Easy to integrate into your website or app</h3>
+                    <p>We offer seamless bill payments with the BitKwik APIs. Add ZESCO, DStv, and more to your platform in minutes.</p>
+                    <p> Whether you’re running an e-commerce store, a fintech service, or a community platform
+                        BitKwik empowers you to expand your payment options and attract customers who prefer using Bitcoin.<br><br>
+                        With clear documentation, sample code, and dedicated support, integration is smooth and straightforward.
+                        Start offering fast, reliable bill payments today and give your users a modern, crypto-powered payment experience.
+                    </p>
+
+
+                    <br>
+
+                </div>
+                <div>
+                    <img src="{{asset('ui/css/assets/img/programmer.jpg')}}">
+                </div>
+            </div>
+        </section>
+
+
+
+
+        <!-- ======= Contact Section ======= -->
+        <section id="contact" class="contact">
+
+            <div class="container" data-aos="fade-up">
+
+                <header class="section-header">
+                    <h2>Contact</h2>
+                    <p>Contact Us</p>
+                </header>
+
+                <div class="row gy-4">
+
+                    <div class="col-lg-6">
+
+                        <div class="row gy-4">
+                            <div class="col-md-6">
+                                <div class="info-box">
+                                    <i class="bi bi-geo-alt"></i>
+                                    <h3>Address</h3>
+                                    <p>Olympia, 14 Zambezi road,<br>Lusaka, LSK 10101</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="info-box">
+                                    <i class="bi bi-telephone"></i>
+                                    <h3>Call Us</h3>
+                                    <p>+260 769891754.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="info-box">
+                                    <i class="bi bi-envelope"></i>
+                                    <h3>Email Us</h3>
+                                    <p>bitkwik@macroit.org</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="info-box">
+                                    <i class="bi bi-clock"></i>
+                                    <h3>Open Hours</h3>
+                                    <p>Monday - Friday<br>9:00AM - 05:00PM</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-6">
+                        <form action="" method="post" class="php-email-form">
+                            <div class="row gy-4">
+
+                                <div class="col-md-6">
+                                    <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+                                </div>
+
+                                <div class="col-md-6 ">
+                                    <input type="email" class="form-control" name="email" placeholder="Your Email" required>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <input type="text" class="form-control" name="subject" placeholder="Subject" required>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <textarea class="form-control" name="message" rows="6" placeholder="Message" required></textarea>
+                                </div>
+
+                                <div class="col-md-12 text-center">
+                                    <div class="loading">Loading</div>
+                                    <div class="error-message"></div>
+                                    <div class="sent-message">Your message has been sent. Thank you!</div>
+
+                                    <button type="submit">Send Message</button>
+                                </div>
+
+                            </div>
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section><!-- End Contact Section -->
+
+    </main><!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer">
+
+        <div class="footer-newsletter">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-12 text-center">
+                        <h4>Our Newsletter</h4>
+                        <p>Don't miss important updates from us.</p>
+                    </div>
+                    <div class="col-lg-6">
+                        <form action="#" method="post">
+                            <input type="email" name="email"><input type="submit" value="Subscribe">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-top">
+            <div class="container">
+                <div class="row gy-4">
+                    <div class="col-lg-5 col-md-12 footer-info">
+                        <a href="index.html" class="logo d-flex align-items-center">
+                            <img src="{{asset('css/assets/img/logo.png')}}" alt="">
+                            <span>{{env('APP_NAME')}}</span>
+                        </a>
+                        <p>Simplifying payments in Zambia.</p>
+                        <div class="social-links mt-3">
+                            <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+                            <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+                            <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+                            <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2 col-6 footer-links">
+                        <h4>Useful Links</h4>
+                        <ul>
+                            <li><i class="bi bi-chevron-right"></i> <a href="#">Home</a></li>
+                            <li><i class="bi bi-chevron-right"></i> <a href="#">About us</a></li>
+                            <li><i class="bi bi-chevron-right"></i> <a href="#">Services</a></li>
+                            <li><i class="bi bi-chevron-right"></i> <a href="#">Terms of service</a></li>
+                            <li><i class="bi bi-chevron-right"></i> <a href="#">Privacy policy</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-2 col-6 footer-links">
+                        <h4>Our Services</h4>
+                        <ul>
+                            <li><i class="bi bi-chevron-right"></i> <a href="#">Online checkout</a></li>
+                            <li><i class="bi bi-chevron-right"></i> <a href="#">Bill Payments</a></li>
+                            <li><i class="bi bi-chevron-right"></i> <a href="#">Money transfer</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
+                        <h4>Contact Us</h4>
+                        <p>
+                            Downtown mall <br>
+                            Lusaka, LSK 10101<br>
+                            Zambia <br><br>
+                            <strong>Phone:</strong> +260 769891754<br>
+                            <strong>Email:</strong> bitkwik@macroit.org<br>
+                        </p>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="copyright">
+                &copy; Copyright <strong><span>{{env('APP_NAME')}}</span></strong>. All Rights Reserved
+            </div>
+            <div class="credits">
+
+            </div>
+        </div>
+    </footer><!-- End Footer -->
+
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+    <!-- Vendor JS Files -->
+    <script src="{{asset('ui/css/assets/vendor/purecounter/purecounter.js')}}"></script>
+    <script src="{{asset('ui/css/assets/vendor/aos/aos.js')}}"></script>
+    <script src="{{asset('ui/css/assets/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{asset('ui/css/assets/vendor/glightbox/js/glightbox.min.js')}}"></script>
+    <script src="{{asset('ui/css/assets/vendor/isotope-layout/isotope.pkgd.min.js')}}"></script>
+    <script src="{{asset('ui/css/assets/vendor/swiper/swiper-bundle.min.js')}}"></script>
+    <script src="{{asset('css/assets/vendor/php-email-form/validate.js')}}"></script>
+
+    <!-- Template Main JS File -->
+    <script src="{{asset('ui/css/assets/js/main.js')}}"></script>
 
 </body>
 

@@ -26,6 +26,7 @@ class CustomerPanelProvider extends PanelProvider
             ->default()
             ->id('customer')
             ->path('customer')
+             ->registration()
             ->login()
             ->colors([
                 'primary' => Color::Amber,
