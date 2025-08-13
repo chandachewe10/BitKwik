@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Providers\Filament;
+
 use App\Filament\Customer\Pages\CustomerDashboard;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -26,18 +27,21 @@ class CustomerPanelProvider extends PanelProvider
             ->default()
             ->id('customer')
             ->path('customer')
-             ->registration()
+            ->registration()
             ->login()
             ->colors([
                 'primary' => Color::Amber,
             ])
+            ->brandLogo(asset('ui/css/assets/img/logo.png'))
+            ->brandLogoHeight('8rem')
+            ->favicon(asset('ui/css/assets/img/logo.png'))
             ->discoverResources(in: app_path('Filament/Customer/Resources'), for: 'App\\Filament\\Customer\\Resources')
             ->discoverPages(in: app_path('Filament/Customer/Pages'), for: 'App\\Filament\\Customer\\Pages')
             ->pages([
-                               CustomerDashboard::class,
+                CustomerDashboard::class,
 
             ])
-           ->discoverWidgets(in: app_path('Filament/Customer/Widgets'), for: 'App\\Filament\\Customer\\Widgets')
+            ->discoverWidgets(in: app_path('Filament/Customer/Widgets'), for: 'App\\Filament\\Customer\\Widgets')
             ->widgets([
                 // Widgets\AccountWidget::class,
                 // Widgets\FilamentInfoWidget::class,
