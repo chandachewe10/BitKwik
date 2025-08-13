@@ -38,9 +38,10 @@ Start your Application
 php artisan serve
 ```
 ## Screenshots
-<img width="1366" height="693" alt="bitkwik5" src="https://github.com/user-attachments/assets/68da3f77-134f-4f8e-902f-77ab48dc360d" />
-<img width="1365" height="659" alt="bitkwik4" src="https://github.com/user-attachments/assets/c367943e-1c21-47ed-a0f7-78c348db4796" />
-<img width="1360" height="666" alt="bitkwik3" src="https://github.com/user-attachments/assets/1a05c0b4-8db2-4a88-aa5a-0c748f60aa12" />
-<img width="1350" height="622" alt="bitkwik2" src="https://github.com/user-attachments/assets/d3eaeeab-0c2e-4109-b482-d0f5422eacca" />
-<img width="1365" height="683" alt="bitkwik1" src="https://github.com/user-attachments/assets/8f27b4f0-6996-4b81-82f3-46c2017a6f17" />
+<img width="1366" height="693" alt="bitkwik5" src="https://github.com/user-attachments/assets/4c4f8f8f-99ed-4df3-ab19-531232add462" />
+<img width="1365" height="659" alt="bitkwik4" src="https://github.com/user-attachments/assets/4decf4a0-7b09-4865-9baf-f464e91fdbba" />
+<img width="1360" height="666" alt="bitkwik3" src="https://github.com/user-attachments/assets/2e24d2a1-e2dd-4b73-905f-3ac283cf65eb" />
+<img width="1350" height="622" alt="bitkwik2" src="https://github.com/user-attachments/assets/f92138e6-4c95-463d-923d-955b209bdccc" />
+<img width="1365" height="683" alt="bitkwik1" src="https://github.com/user-attachments/assets/f47764d0-6397-4f82-bb53-2e3767becc6c" />
+
 
