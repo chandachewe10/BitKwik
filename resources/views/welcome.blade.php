@@ -8,8 +8,8 @@
     <title>{{env('APP_NAME')}}</title>
     <meta content="" name="description">
 
-    <meta name="keywords" content="BitKwacha, Bitcoin Zambia, Lightning Network, crypto payments, pay bills with Bitcoin, send Bitcoin Zambia, ZESCO Bitcoin payment, DStv Bitcoin, Lusaka Water Bitcoin, mobile money crypto, Zambia blockchain payments">
-    <meta name="author" content="BitKwacha">
+    <meta name="keywords" content="{{env('APP_NAME')}}, Bitcoin Zambia, Lightning Network, crypto payments, pay bills with Bitcoin, send Bitcoin Zambia, ZESCO Bitcoin payment, DStv Bitcoin, Lusaka Water Bitcoin, mobile money crypto, Zambia blockchain payments">
+    <meta name="author" content="MACROIT INFORMATION TECHNOLOGY">
 
     <!-- Favicons -->
     <link href="{{asset('ui/css/assets/img/fav.png')}}" rel="icon">
@@ -61,7 +61,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 d-flex flex-column justify-content-center">
-                    <h1 data-aos="fade-up">Bitcoin to Kwacha instantly using BitKwik.</h1>
+                    <h1 data-aos="fade-up">Bitcoin to Kwacha instantly using {{env('APP_NAME')}}.</h1>
                     <h2 data-aos="fade-up" data-aos-delay="400">Pay bills in kwacha, using BitCoin.</h2>
                     <br>
                     <h5 data-aos="fade-up" data-aos-delay="400">Buy Zesco units, or pay for DSTV, GoTv, Lusaka Water in the comfort of your home using bitcoin on our platform</h5>
@@ -158,7 +158,7 @@
                 <div>
                     <h3 style="margin-left: 15px;">Pay Your Bills</h3>
                     <p style="margin-left: 15px;">
-                        With BitKwik, paying your everyday bills using Bitcoin is quick and hassle-free.
+                        With {{env('APP_NAME')}}, paying your everyday bills using Bitcoin is quick and hassle-free.
                         Whether it’s your ZESCO electricity, Lusaka Water, DStv subscription, or other essential services,
                         our platform brings them all together in one convenient place.<br><br>
                         Simply enter your payment details, generate a Lightning invoice, and settle your bill directly from your Bitcoin wallet
@@ -180,9 +180,9 @@
             <div class="section-row">
                 <div style="margin-right: 15px;">
                     <h3>Easy to integrate into your website or app</h3>
-                    <p>We offer seamless bill payments with the BitKwik APIs. Add ZESCO, DStv, and more to your platform in minutes.</p>
+                    <p>We offer seamless bill payments with the {{env('APP_NAME')}} APIs. Add ZESCO, DStv, and more to your platform in minutes.</p>
                     <p> Whether you’re running an e-commerce store, a fintech service, or a community platform
-                        BitKwik empowers you to expand your payment options and attract customers who prefer using Bitcoin.<br><br>
+                        {{env('APP_NAME')}} empowers you to expand your payment options and attract customers who prefer using Bitcoin.<br><br>
                         With clear documentation, sample code, and dedicated support, integration is smooth and straightforward.
                         Start offering fast, reliable bill payments today and give your users a modern, crypto-powered payment experience.
                     </p>
@@ -233,7 +233,7 @@
                                 <div class="info-box">
                                     <i class="bi bi-envelope"></i>
                                     <h3>Email Us</h3>
-                                    <p>bitkwik@macroit.org</p>
+                                    <p>{{env('APP_NAME')}}@macroit.org</p>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -327,7 +327,7 @@
                 <div class="row gy-4">
                     <div class="col-lg-5 col-md-12 footer-info">
                         <a href="index.html" class="logo d-flex align-items-center">
-                            <img src="{{asset('css/assets/img/logo.png')}}" alt="">
+                            <img src="{{asset('css/assets/img/logo.png')}}" alt="{{env('APP_NAME')}}">
                             <span>{{env('APP_NAME')}}</span>
                         </a>
                         <p>Simplifying payments in Zambia.</p>
