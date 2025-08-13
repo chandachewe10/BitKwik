@@ -106,7 +106,7 @@ class SendToMobileResource extends Resource
                                 ->minLength(6)
                                 ->maxLength(20),
                             TextInput::make('email')
-                                ->label('Email for receipt')
+                                ->label('Email for payment confirmation')
                                 ->email()
                                 ->nullable(),
                         ]),

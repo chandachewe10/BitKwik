@@ -112,7 +112,7 @@ class ZescoBillUnitsResource extends Resource
                                 ->required(),
 
                             TextInput::make('email')
-                                ->label('Email for receipt')
+                                ->label('Email for payment confirmation')
                                 ->email()
                                 ->nullable(),
                         ]),
