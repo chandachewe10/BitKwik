@@ -10,7 +10,8 @@
 
 ## How it works
 
-This is a project from AfricaWorks and BTrust Hackathon. It is a Bitcoin powered bill payment app tailored for Zambian users. It allows customers to pay for bills such Zesco units, water bills, TV Subscription Etc using BitCoin, also customers can transfer their BitCoins to their Mobile Money wallets Instantly!
+This is a project from BitDevs Zambia members during the Africa Free Routing Bootcamp's hackathon in Lusaka, Zambia. 
+It is a Bitcoin powered bill payment app tailored for Zambian users. It allows customers to pay for bills such Zesco units, water bills, TV Subscription Etc using BitCoin, also customers can transfer their BitCoins to their Mobile Money wallets Instantly!
 
 ## Installation
 
