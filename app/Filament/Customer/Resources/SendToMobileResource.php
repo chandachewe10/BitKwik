@@ -38,6 +38,27 @@ class SendToMobileResource extends Resource
                     // Step 1: Order details
                     Wizard\Step::make('Account Details')
                         ->schema([
+
+
+                            TextInput::make('amount_sats')
+                                 ->helperText('Click outside to see the update ZMW & BTC')
+                                ->label('Amount in Sats')
+                                ->suffix('SATS')
+                                ->numeric()
+                                ->live(onBlur: true)
+                                ->afterStateUpdated(function ($state, Set $set) {
+                                    $amount_sats = floatval($state ?? 0);
+                                    $amount_btc = $amount_sats / 100000000;
+                                    $amount_kwacha = $amount_sats * 0.027;
+
+                                    $set('amount_btc', round($amount_btc, 8));
+                                    $set('amount_kwacha', round($amount_kwacha, 2));
+                                    $set('conversion_fee', round($amount_sats * 0.08, 0));
+                                })
+                                ->required()
+                                ->disabled(false)
+                                ->minValue(1),
+
                             TextInput::make('amount_kwacha')
                                 ->helperText('Click outside to see the update BTC & Sats')
                                 ->label('Amount (ZMW)')
@@ -56,24 +77,6 @@ class SendToMobileResource extends Resource
                                 })
                                 ->minValue(1),
 
-                            TextInput::make('amount_sats')
-                                ->helperText('Amount in Satoshis')
-                                ->label('Sats')
-                                ->suffix('SAT')
-                                ->numeric()
-                                ->live(onBlur: true)
-                                ->afterStateUpdated(function ($state, Set $set) {
-                                    $amount_sats = floatval($state ?? 0);
-                                    $amount_btc = $amount_sats / 100000000;
-                                    $amount_kwacha = $amount_sats * 0.027;
-
-                                    $set('amount_btc', round($amount_btc, 8));
-                                    $set('amount_kwacha', round($amount_kwacha, 2));
-                                    $set('conversion_fee', round($amount_sats * 0.08, 0));
-                                })
-                                ->required()
-                                ->disabled(false)
-                                ->minValue(1),
 
                             TextInput::make('amount_btc')
                                 ->helperText('Amount in Bitcoin')
@@ -85,7 +88,7 @@ class SendToMobileResource extends Resource
                             TextInput::make('conversion_fee')
                                 ->helperText('BTC Convenience Rate @8%')
                                 ->label('Bitcoin to Cash Service Fee')
-                                ->suffix('SAT')
+                                ->suffix('SATS')
                                 ->required()
                                 ->readOnly()
                                 ->minValue(0.00000001),
@@ -99,7 +102,7 @@ class SendToMobileResource extends Resource
                             TextInput::make('mobile_number')
                                 ->label('Mobile Number')
                                 ->tel()
-                                ->helperText('Enter the mobile number to receive the payment')
+                                ->helperText('Enter the mobile number which should receive the payment')
                                 ->numeric()
                                 ->regex('/^(09|07)[5|6|7][0-9]{7}$/')
                                 ->required()
