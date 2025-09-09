@@ -10,7 +10,8 @@
 
 ## How it works
 
-This is a project from AfricaWorks and BTrust Hackathon. It is a Bitcoin powered bill payment app tailored for Zambian users. It allows customers to pay for bills such Zesco units, water bills, TV Subscription Etc using BitCoin, also customers can transfer their BitCoins to their Mobile Money wallets Instantly!
+This is a project from BitDevs Zambia members during the Africa Free Routing Bootcamp's hackathon in Lusaka, Zambia. 
+It is a Bitcoin powered bill payment app tailored for Zambian users. It allows customers to pay for bills such Zesco units, water bills, TV Subscription Etc using BitCoin, also customers can transfer their BitCoins to their Mobile Money wallets Instantly!
 
 ## Installation
 
@@ -37,4 +38,12 @@ Start your Application
 ```bash
 php artisan serve
 ```
+## Screenshots
+<img width="1365" height="683" alt="bitkwik1" src="https://github.com/user-attachments/assets/f47764d0-6397-4f82-bb53-2e3767becc6c" />
+<img width="1350" height="622" alt="bitkwik2" src="https://github.com/user-attachments/assets/f92138e6-4c95-463d-923d-955b209bdccc" />
+<img width="1360" height="666" alt="bitkwik3" src="https://github.com/user-attachments/assets/2e24d2a1-e2dd-4b73-905f-3ac283cf65eb" />
+<img width="1365" height="659" alt="bitkwik4" src="https://github.com/user-attachments/assets/4decf4a0-7b09-4865-9baf-f464e91fdbba" />
+<img width="1366" height="693" alt="bitkwik5" src="https://github.com/user-attachments/assets/4c4f8f8f-99ed-4df3-ab19-531232add462" />
+
+
 
