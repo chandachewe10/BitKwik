@@ -46,7 +46,7 @@ class SendToMobileResource extends Resource
                                 ->suffix('SATS')
                                 ->numeric()
                                 ->live(onBlur: true)
-                                ->afterStateUpdated(function ($state, Set $set, Get $get) {
+                                ->afterStateUpdated(function ($state, Set $set) {
                                     $amount_sats = floatval($state ?? 0);
                                     $amount_btc = $amount_sats / 100000000;
                                     $amount_kwacha = $amount_sats * 0.026;
@@ -73,9 +73,9 @@ class SendToMobileResource extends Resource
                                     $amount_btc = $amount_sats / 100000000;
                                     $total_sats = $amount_sats + ($amount_sats * 0.08) + 100; // Including conversion fee and network fee
                                     $set('total_sats', round($total_sats, 8));
-                                    $set('amount_sats', round($amount_sats, 0));
+                                    $set('amount_sats', round($amount_sats, 8));
                                     $set('amount_btc', round($amount_btc, 8));
-                                    $set('conversion_fee', round($amount_sats * 0.08, 0));
+                                    $set('conversion_fee', round($amount_sats * 0.08, 8));
                                 })
                                 ->minValue(1),
 

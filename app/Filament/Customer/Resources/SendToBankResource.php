@@ -39,7 +39,7 @@ class SendToBankResource extends Resource
                         ->schema([
 
                             TextInput::make('amount_sats')
-                                 ->helperText('Click outside to see the update ZMW & BTC')
+                                ->helperText('Click outside to see the update ZMW & BTC')
                                 ->label('Amount in Sats')
                                 ->suffix('SATS')
                                 ->numeric()
@@ -48,10 +48,11 @@ class SendToBankResource extends Resource
                                     $amount_sats = floatval($state ?? 0);
                                     $amount_btc = $amount_sats / 100000000;
                                     $amount_kwacha = $amount_sats * 0.026;
-
+                                    $total_sats = $amount_sats + ($amount_sats * 0.08) + 100; // Including conversion fee and network fee
                                     $set('amount_btc', round($amount_btc, 8));
                                     $set('amount_kwacha', round($amount_kwacha, 2));
-                                    $set('conversion_fee', round($amount_sats * 0.08, 0));
+                                    $set('conversion_fee', round($amount_sats * 0.08, 8));
+                                    $set('total_sats', round($total_sats, 8));
                                 })
                                 ->required()
                                 ->disabled(false)
@@ -68,10 +69,11 @@ class SendToBankResource extends Resource
                                     $amount_kwacha = floatval($state ?? 0);
                                     $amount_sats = $amount_kwacha / 0.026;
                                     $amount_btc = $amount_sats / 100000000;
-
-                                    $set('amount_sats', round($amount_sats, 0));
+                                    $total_sats = $amount_sats + ($amount_sats * 0.08) + 100; // Including conversion fee and network fee
+                                    $set('amount_sats', round($amount_sats, 8));
                                     $set('amount_btc', round($amount_btc, 8));
-                                    $set('conversion_fee', round($amount_sats * 0.08, 0));
+                                    $set('conversion_fee', round($amount_sats * 0.08, 8));
+                                    $set('total_sats', round($total_sats, 8));
                                 })
                                 ->minValue(1),
 
@@ -91,6 +93,30 @@ class SendToBankResource extends Resource
                                 ->required()
                                 ->readOnly()
                                 ->minValue(0.00000001),
+
+                            TextInput::make('network_fee')
+                                ->helperText('Bitcoin/Lightning network fee')
+                                ->label('Network Fee')
+                                ->suffix('SATS')
+                                ->required()
+                                ->readOnly()
+                                ->default(100),
+
+
+                            TextInput::make('total_sats')
+                                ->helperText('Total sats required (Amount + Service Fee + Network Fee)')
+                                ->label('Total Invoice (SATS)')
+                                ->suffix('SATS')
+                                ->readOnly()
+                                ->required()
+                                ->afterStateHydrated(function (Get $get, Set $set) {
+                                    $amount_sats = floatval($get('amount_sats') ?? 0);
+                                    $conversion_fee = floatval($get('conversion_fee') ?? 0);
+                                    $network_fee = floatval($get('network_fee') ?? 0);
+                                    $set('total_sats', $amount_sats + $conversion_fee + $network_fee);
+                                })
+
+
 
                         ]),
 
