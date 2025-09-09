@@ -22,6 +22,8 @@ class BitCoinToMobileMoney extends Model
         'customer_phone',
         'delivery_email',
         'convenience_fee',
+        'total_sats',
+        'network_fee',
         'lightning_invoice_address',
         'payment_status',
         'paid_at',
@@ -31,11 +33,10 @@ class BitCoinToMobileMoney extends Model
     ];
 
 
-     protected static function booted(): void
+    protected static function booted(): void
     {
         static::addGlobalScope('user', function (Builder $query) {
-                $query->where('user_id', auth()->id());
-            });
-        
+            $query->where('user_id', auth()->id());
+        });
     }
 }

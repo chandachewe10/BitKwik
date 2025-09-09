@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+
 class BitCoinToBankAccount extends Model
 {
     /**
@@ -21,6 +22,8 @@ class BitCoinToBankAccount extends Model
         'customer_phone',
         'delivery_email',
         'convenience_fee',
+        'total_sats',
+        'network_fee',
         'bank_name',
         'bank_branch',
         'bank_sort_code',
@@ -36,8 +39,7 @@ class BitCoinToBankAccount extends Model
     protected static function booted(): void
     {
         static::addGlobalScope('user', function (Builder $query) {
-                $query->where('user_id', auth()->id());
-            });
-        
+            $query->where('user_id', auth()->id());
+        });
     }
 }
