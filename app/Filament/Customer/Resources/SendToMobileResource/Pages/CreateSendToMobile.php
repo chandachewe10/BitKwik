@@ -17,9 +17,8 @@ class CreateSendToMobile extends CreateRecord
     protected function handleRecordCreation(array $data): \Illuminate\Database\Eloquent\Model
     {
         //dd($data);
-        $satsAmount = $data['amount_sats'];
-        $serviceFee = $data['conversion_fee'];
-        $totalSats = $satsAmount + $serviceFee;
+
+        $totalSats = $data['total_sats'];
         $response = Http::withHeaders([
             'X-Api-Key' => config('services.lnbits.x-api-key'),
             'Content-Type' => 'application/json',
@@ -54,7 +53,8 @@ class CreateSendToMobile extends CreateRecord
             "amount_kwacha" =>  $data['amount_kwacha'],
             "amount_sats" => $data['amount_sats'],
             "amount_btc" => $data['amount_btc'],
-            "conversion_fee" => $data['conversion_fee'],
+            "network_fee" =>  $data['network_fee'],
+            "total_sats" =>  $data['total_sats'],
             "mobile_number" => $data['mobile_number'],
             "convenience_fee" => $data['conversion_fee'],
             "delivery_email" => $data['email'],

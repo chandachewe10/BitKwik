@@ -17,9 +17,8 @@ class CreateSendToBank extends CreateRecord
     protected function handleRecordCreation(array $data): \Illuminate\Database\Eloquent\Model
     {
         //dd($data);
-        $satsAmount = $data['amount_sats'];
-        $serviceFee = $data['conversion_fee'];
-        $totalSats = $satsAmount + $serviceFee;
+
+        $totalSats =  $data['total_sats'];
         $response = Http::withHeaders([
             'X-Api-Key' => config('services.lnbits.x-api-key'),
             'Content-Type' => 'application/json',
@@ -36,7 +35,7 @@ class CreateSendToBank extends CreateRecord
         if ($response->successful()) {
             $json = $response->json();
             $bolt11 = $json['bolt11'] ?? null;
-            $checking_id = $json['checking_id'] ?? null;      
+            $checking_id = $json['checking_id'] ?? null;
 
             if ($bolt11) {
                 $qrCodeImage = QrCode::format('svg')->size(300)->generate($bolt11);
@@ -55,7 +54,8 @@ class CreateSendToBank extends CreateRecord
             "amount_kwacha" =>  $data['amount_kwacha'],
             "amount_sats" => $data['amount_sats'],
             "amount_btc" => $data['amount_btc'],
-            "conversion_fee" => $data['conversion_fee'],
+            "network_fee" =>  $data['network_fee'],
+            "total_sats" =>  $data['total_sats'],
             "account_number" => $data['account_number'],
             "bank_name" => $data['bank_name'],
             "bank_branch" => $data['bank_branch'],
