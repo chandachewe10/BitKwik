@@ -160,6 +160,10 @@ class SendToMobileResource extends Resource
                     ->badge(),
                 Tables\Columns\TextColumn::make('convenience_fee')
                     ->badge(),
+                Tables\Columns\TextColumn::make('network_fee')
+                    ->badge(),
+                Tables\Columns\TextColumn::make('total_sats')
+                    ->badge(),
                 Tables\Columns\TextColumn::make('amount_btc')
                     ->badge(),
                 Tables\Columns\TextColumn::make('qr_code_path')
