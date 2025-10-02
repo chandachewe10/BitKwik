@@ -7,8 +7,8 @@ use App\Http\Controllers\API\LNbits\ConfirmBitCoinToMobileController;
 
 
 
-Route::get('/confirm-bitcoin-to-bank', [ConfirmBitCoinToBankController::class, 'confirmBitCoinToBankPayments']);
-Route::get('/confirm-bitcoin-to-mobile', [ConfirmBitCoinToMobileController::class, 'confirmBitCoinToMobileMoneyPayments']);
+Route::post('/confirm-bitcoin-to-bank', [ConfirmBitCoinToBankController::class, 'confirmBitCoinToBankPayments']);
+Route::post('/confirm-bitcoin-to-mobile', [ConfirmBitCoinToMobileController::class, 'confirmBitCoinToMobileMoneyPayments']);
 
 Route::get('/user', function (Request $request) {
     return $request->user();
