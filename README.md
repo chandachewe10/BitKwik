@@ -19,7 +19,7 @@ It is a Bitcoin powered bill payment app tailored for Zambian users. It allows c
 Please follow carefully the installation.
 
 ```bash
-1. git clone https://github.com/chandachewe10/BitKwacha.git
+1. git clone https://github.com/chandachewe10/BitKwik.git
 2. composer update
 3. copy .env.example .env 
 4. Set DB Credentials and LNbits Keys in .env
