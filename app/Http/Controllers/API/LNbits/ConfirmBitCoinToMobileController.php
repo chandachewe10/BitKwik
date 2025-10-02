@@ -35,7 +35,7 @@ public function confirmBitCoinToMobileMoneyPayments(Request $request)
         }
 
         $payment = BitCoinToMobileMoney::where('checking_id', $data['checking_id'])->first();
-
+        Log::info('Payments Data: ', $payments);
         if (!$payment) {
             Log::warning('Webhook with invalid checking_id received', [
                 'checking_id' => $data['checking_id']
