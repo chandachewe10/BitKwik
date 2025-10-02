@@ -31,7 +31,7 @@ class ContactUsMail extends Mailable
                         'name'    => $this->name,
                         'email'   => $this->email,
                         'subject' => $this->subjectLine,
-                        'message' => $this->messageContent,
+                        'body' => $this->messageContent,
                     ]);
     }
 }

@@ -33,6 +33,7 @@ return view('welcome');
      */
     public function contactUs(Request $request)
     {
+        
         $request->validate([
             'name'    => 'required|string|max:255',
             'email'   => 'required|email',
