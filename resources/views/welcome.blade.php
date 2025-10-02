@@ -395,7 +395,8 @@
                 <div class="row gy-4">
                     <div class="col-lg-5 col-md-12 footer-info">
                         <a href="index.html" class="logo d-flex align-items-center">
-                            <img src="{{asset('css/assets/img/logo.png')}}" alt="{{env('APP_NAME')}}" class="img-fluid" style="max-height: 40px;">
+                             <img src="{{asset('ui/css/assets/img/logo.png')}}" alt="Logo" style="border-radius: 100%; max-height: 40px;">
+                           
                             <span class="ms-2">{{env('APP_NAME')}}</span>
                         </a>
                         <p class="mt-3">Simplifying payments in Zambia.</p>
