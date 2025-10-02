@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Http;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Models\BitCoinToBankAccount;
 use Filament\Notifications\Notification;
+use Exception;
 
 class CreateSendToBank extends CreateRecord
 {
@@ -16,59 +17,71 @@ class CreateSendToBank extends CreateRecord
 
     protected function handleRecordCreation(array $data): \Illuminate\Database\Eloquent\Model
     {
-        //dd($data);
+        try {
+            $totalSats = $data['total_sats'];
+            $response = Http::withHeaders([
+                'X-Api-Key' => config('services.lnbits.x-api-key'),
+                'Content-Type' => 'application/json',
+            ])->post(config('services.lnbits.base_uri') . '/payments', [
+                'out' => false,
+                'description' => 'BitCoin to Bank Account',
+                'amount' => $totalSats,
+                'max' => 100000000,
+                'min' => 0.00000001,
+                'comment_chars' => 200,
+                'username' => mt_rand(100000, 999999),
+            ]);
 
-        $totalSats =  $data['total_sats'];
-        $response = Http::withHeaders([
-            'X-Api-Key' => config('services.lnbits.x-api-key'),
-            'Content-Type' => 'application/json',
-        ])->post(config('services.lnbits.base_uri') . '/payments', [
-            'out' => false,
-            'description' => 'BitCoin to Mobile Money',
-            'amount' => $totalSats,
-            'max' => 100000000,
-            'min' => 0.00000001,
-            'comment_chars' => 200,
-            'username' => mt_rand(100000, 999999),
-        ]);
+            $bolt11 = null;
+            $checking_id = null;
+            $qrCodeFileName = null;
 
-        if ($response->successful()) {
-            $json = $response->json();
-            $bolt11 = $json['bolt11'] ?? null;
-            $checking_id = $json['checking_id'] ?? null;
+            if ($response->successful()) {
+                $json = $response->json();
+                $bolt11 = $json['bolt11'] ?? null;
+                $checking_id = $json['checking_id'] ?? null;
 
-            if ($bolt11) {
-                $qrCodeImage = QrCode::format('svg')->size(300)->generate($bolt11);
-                $fileName = 'bitConToMobileMoney_invoice_' . time() . '.svg';
-                $filePath = public_path('images/qrcodes/' . $fileName);
-                file_put_contents($filePath, $qrCodeImage);
-                $data['qr_code_path'] = $fileName;
-                $data['bolt11'] = $bolt11;
+                if ($bolt11) {
+                    $qrCodeImage = QrCode::format('svg')->size(300)->generate($bolt11);
+                    $qrCodeFileName = 'bitConToBank_invoice_' . time() . '.svg';
+                    $filePath = public_path('images/qrcodes/' . $qrCodeFileName);
+                    file_put_contents($filePath, $qrCodeImage);
+                    $data['qr_code_path'] = $qrCodeFileName;
+                    $data['bolt11'] = $bolt11;
+                }
             }
+
+            // Create the database record
+            return BitCoinToBankAccount::create([
+                "amount_kwacha" => $data['amount_kwacha'],
+                "amount_sats" => $data['amount_sats'],
+                "amount_btc" => $data['amount_btc'],
+                "network_fee" => $data['network_fee'],
+                "total_sats" => $data['total_sats'],
+                "account_number" => $data['account_number'],
+                "bank_name" => $data['bank_name'],
+                "bank_branch" => $data['bank_branch'],
+                "bank_sort_code" => $data['bank_sort_code'],
+                "bank_account_type" => $data['bank_account_type'],
+                "convenience_fee" => $data['conversion_fee'],
+                "delivery_email" => $data['email'] ?? null,
+                'qr_code_path' => $qrCodeFileName,
+                'lightning_invoice_address' => $bolt11,
+                'checking_id' => $checking_id
+            ]);
+
+        } catch (Exception $e) {
+            \Log::error('Error creating SendToBank record: ' . $e->getMessage());
+
+            Notification::make()
+                ->danger()
+                ->title('Failed to generate invoice')
+                ->body('An error occurred: ' . $e->getMessage())
+                ->send();
+
+           
         }
-
-
-
-
-        return BitCoinToBankAccount::create([
-            "amount_kwacha" =>  $data['amount_kwacha'],
-            "amount_sats" => $data['amount_sats'],
-            "amount_btc" => $data['amount_btc'],
-            "network_fee" =>  $data['network_fee'],
-            "total_sats" =>  $data['total_sats'],
-            "account_number" => $data['account_number'],
-            "bank_name" => $data['bank_name'],
-            "bank_branch" => $data['bank_branch'],
-            "bank_sort_code" => $data['bank_sort_code'],
-            "bank_account_type" => $data['bank_account_type'],
-            "convenience_fee" => $data['conversion_fee'],
-            "delivery_email" => $data['email'] ?? NULL,
-            'qr_code_path' => $data['qr_code_path'] ?? NULL,
-            'lightning_invoice_address' => $bolt11 ?? NULL,
-            'checking_id' => $checking_id
-        ]);
     }
-
 
     protected function getRedirectUrl(): string
     {
