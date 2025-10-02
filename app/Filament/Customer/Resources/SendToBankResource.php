@@ -17,6 +17,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Set;
 use Filament\Forms\Get;
+use Filament\Tables\Columns\ImageColumn;
 
 class SendToBankResource extends Resource
 {
@@ -183,6 +184,7 @@ class SendToBankResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+         ->recordUrl(null)
             ->columns([
                 Tables\Columns\TextColumn::make('index')
                     ->label('No')
@@ -201,11 +203,10 @@ class SendToBankResource extends Resource
                     ->badge(),
                 Tables\Columns\TextColumn::make('total_sats')
                     ->badge(),
-                Tables\Columns\TextColumn::make('qr_code_path')
-                    ->label('Check Invoice')
-                    ->formatStateUsing(fn() => 'Check Invoice')
-                    ->badge()
-                    ->url(fn($record) => '/images/qrcodes/' . $record->qr_code_path),
+                 ImageColumn::make('qr_code_path')
+                 ->label('QR Code')
+                 ->getStateUsing(fn ($record) => asset('images/qrcodes/' . $record->qr_code_path))
+                 ->height(150),
                 Tables\Columns\TextColumn::make('lightning_invoice_address')
                     ->label('Lightning Invoice')
                     ->formatStateUsing(fn($state) => $state ? 'Copy Invoice' : 'No Invoice')

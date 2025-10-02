@@ -52,7 +52,7 @@ return view('welcome');
         );
 
         Alert::success('Message Sent', 'Your message has been sent successfully. We will get back to you soon.');
-return view('welcome');
+        return view('welcome');
 
 
     }
