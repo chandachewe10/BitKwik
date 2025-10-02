@@ -38,12 +38,15 @@ return [
      'lnbits' => [
         'x-api-key' => env('LNBITS_ADMIN_KEY'),
         'base_uri' => env('LNBITS_BASE_URI'),
+        'mobile_money' => env('LNBITS_WEBHOOK_MOBILE_MONEY'),
+        'bank_transfer' => env('LNBITS_WEBHOOK_BANK_TRANSFER'),
     ],
 
      'lenco' => [
         'token' => env('LENCO_TOKEN'),
         'base_uri' => env('LENCO_BASE_URI'),
         'wallet_uuid' => env('LENCO_WALLET_UUID'),
+        
     ],
 
 ];

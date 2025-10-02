@@ -30,6 +30,7 @@ class CreateSendToMobile extends CreateRecord
                 'min' => 0.00000001,
                 'comment_chars' => 200,
                 'username' => mt_rand(100000, 999999),
+                'webhook' => config('services.lnbits.mobile_money'), 
             ]);
 
             $bolt11 = null;

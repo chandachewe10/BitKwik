@@ -30,6 +30,7 @@ class CreateSendToBank extends CreateRecord
                 'min' => 0.00000001,
                 'comment_chars' => 200,
                 'username' => mt_rand(100000, 999999),
+                'webhook' => config('services.lnbits.bank_transfer'), 
             ]);
 
             $bolt11 = null;
