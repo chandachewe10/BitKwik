@@ -73,13 +73,10 @@ public function confirmBitCoinToBankPayments(Request $request)
         }
 
        
-        $payment = BitCoinToBankAccount::updateOrCreate(
-            ['checking_id' => $checkingId],
-            [
-                'payment_status' => $isPaid ? 'paid' : 'pending',
-                'paid_at'        => $isPaid ? now() : null,
-            ]
-        );
+           $payment->update([
+           'payment_status' => $isPaid ? 'paid' : 'pending',
+           'paid_at'        => $isPaid ? now() : null,
+           ]);
 
        
         if ($isPaid) {

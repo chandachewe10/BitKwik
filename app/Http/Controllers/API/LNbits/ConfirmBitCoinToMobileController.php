@@ -34,6 +34,19 @@ public function confirmBitCoinToMobileMoneyPayments(Request $request)
             throw new \Exception('Missing checking_id');
         }
 
+        $payment = BitCoinToMobileMoney::where('checking_id', $data['checking_id'])->first();
+
+        if (!$payment) {
+            Log::warning('Webhook with invalid checking_id received', [
+                'checking_id' => $data['checking_id']
+            ]);
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Invalid checking_id',
+            ], 400);
+        }
+
+
        
         $isPaid = false;
         if (array_key_exists('pending', $data)) {
@@ -43,13 +56,10 @@ public function confirmBitCoinToMobileMoneyPayments(Request $request)
         }
 
 
-        $payment = BitCoinToMobileMoney::updateOrCreate(
-            ['checking_id' => $data['checking_id']],
-            [
-                'payment_status' => $isPaid ? 'paid' : 'pending',
-                'paid_at'        => $isPaid ? now() : null,
-            ]
-        );
+      $payment->update([
+      'payment_status' => $isPaid ? 'paid' : 'pending',
+       'paid_at'        => $isPaid ? now() : null,
+]        );
 
         // If paid, trigger Lenco transfer
         if ($isPaid) {
