@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Http;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Models\BitCoinToBankAccount;
 use Filament\Notifications\Notification;
+use Illuminate\Support\Facades\Log;
 use Exception;
 
 class CreateSendToBank extends CreateRecord
@@ -38,6 +39,7 @@ class CreateSendToBank extends CreateRecord
             $qrCodeFileName = null;
 
             if ($response->successful()) {
+                 Log::info('LNbits Received For BitCoin To Bank:', $response->json());
                 $json = $response->json();
                 $bolt11 = $json['bolt11'] ?? null;
                 $checking_id = $json['checking_id'] ?? null;

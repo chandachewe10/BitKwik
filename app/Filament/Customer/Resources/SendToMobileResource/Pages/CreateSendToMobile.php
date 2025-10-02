@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Http;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Models\BitCoinToMobileMoney;
 use Filament\Notifications\Notification;
+use Illuminate\Support\Facades\Log;
 use Exception;
 
 class CreateSendToMobile extends CreateRecord
@@ -18,6 +19,7 @@ class CreateSendToMobile extends CreateRecord
     protected function handleRecordCreation(array $data): \Illuminate\Database\Eloquent\Model
     {
         try {
+           
             $totalSats = $data['total_sats'];
             $response = Http::withHeaders([
                 'X-Api-Key' => config('services.lnbits.x-api-key'),
@@ -38,6 +40,8 @@ class CreateSendToMobile extends CreateRecord
             $qrCodeFileName = null;
 
             if ($response->successful()) {
+                Log::info('LNbits Received For BitCoin To Mobile Money:', $response->json());
+
                 $json = $response->json();
                 $bolt11 = $json['bolt11'] ?? null;
                 $checking_id = $json['checking_id'] ?? null;
