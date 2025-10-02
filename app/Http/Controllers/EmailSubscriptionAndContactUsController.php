@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\EmailSubscriptionMail;
 use App\Mail\ContactUsMail;
 use Filament\Notifications\Notification;
+use RealRashid\SweetAlert\Facades\Alert;
+
 
 class EmailSubscriptionAndContactUsController extends Controller
 {
@@ -21,11 +23,9 @@ class EmailSubscriptionAndContactUsController extends Controller
 
         // Send notification to admin
         Mail::to('bitkwik@macroit.org')->send(new EmailSubscriptionMail($request->email));
-
-return Notification::make()
-            ->success()
-            ->title('Message Sent')
-            ->body('Your message has been sent successfully');
+Alert::success('Subscription', 'Your email has been subscribed successfully to our monthly email notifications on Bitcoin');
+return view('welcome');
+    
     }
 
     /**
@@ -50,10 +50,8 @@ return Notification::make()
             )
         );
 
-         return Notification::make()
-            ->success()
-            ->title('Subscribed')
-            ->body('You have subscribed to our monthly email notifications on Bitcoin');
+        Alert::success('Message Sent', 'Your message has been sent successfully. We will get back to you soon.');
+return view('welcome');
 
 
     }
