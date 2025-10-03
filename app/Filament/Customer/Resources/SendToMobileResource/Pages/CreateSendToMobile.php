@@ -57,7 +57,7 @@ class CreateSendToMobile extends CreateRecord
             }
 
             // Create the record in database
-            $record = BitCoinToMobileMoney::create([
+            return BitCoinToMobileMoney::create([
                 "amount_kwacha" => $data['amount_kwacha'],
                 "amount_sats" => $data['amount_sats'],
                 "amount_btc" => $data['amount_btc'],
@@ -70,7 +70,6 @@ class CreateSendToMobile extends CreateRecord
                 'lightning_invoice_address' => $bolt11,
                 'checking_id' => $checking_id
             ]);
-            
 
         } catch (Exception $e) {
             // Log the exception (optional)

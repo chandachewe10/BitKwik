@@ -55,7 +55,7 @@ class CreateSendToBank extends CreateRecord
             }
 
             // Create the database record
-            $record = BitCoinToBankAccount::create([
+            return BitCoinToBankAccount::create([
                 "amount_kwacha" => $data['amount_kwacha'],
                 "amount_sats" => $data['amount_sats'],
                 "amount_btc" => $data['amount_btc'],
@@ -72,11 +72,6 @@ class CreateSendToBank extends CreateRecord
                 'lightning_invoice_address' => $bolt11,
                 'checking_id' => $checking_id
             ]);
-
-            \DB::commit();  
-            \DB::beginTransaction();  
-
-            return $record;
 
         } catch (Exception $e) {
             \Log::error('Error creating SendToBank record: ' . $e->getMessage());
