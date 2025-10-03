@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('bit_coin_to_bank_accounts', function (Blueprint $table) {
-             $table->string('checking_id', 64)->unique()->nullable();
+             $table->string('checking_id', 255)->unique()->nullable();
         });
     }
 

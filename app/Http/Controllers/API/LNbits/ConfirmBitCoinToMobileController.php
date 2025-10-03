@@ -9,12 +9,16 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 
+
 class ConfirmBitCoinToMobileController extends Controller
 {
-    public function confirmBitCoinToMobileMoneyPayments(Request $request)
+
+
+public function confirmBitCoinToMobileMoneyPayments(Request $request)
 {
     try {
         Log::info('LNbits Webhook Raw:', $request->all());
+
 
         $payload = $request->all();
         if (count($payload) === 1 && is_string($payload[0])) {
@@ -25,60 +29,81 @@ class ConfirmBitCoinToMobileController extends Controller
 
         Log::info('LNbits Webhook Decoded:', $data);
 
+       
         if (empty($data['checking_id'])) {
             throw new \Exception('Missing checking_id');
         }
 
-        // Reduced retry logic since record should exist now
-        $payment = null;
-        $maxAttempts = 3;
-        $delay = 1;
-
-        for ($attempt = 1; $attempt <= $maxAttempts; $attempt++) {
-            $payment = BitCoinToMobileMoney::where('checking_id', $data['checking_id'])->first();
-            
-            if ($payment) {
-                Log::info('Payment found on attempt ' . $attempt);
-                break;
-            }
-
-            if ($attempt < $maxAttempts) {
-                Log::info('Payment not found, attempt ' . $attempt . ', retrying in ' . $delay . ' seconds');
-                sleep($delay);
-                $delay *= 2;
-            }
-        }
-
+        $payment = BitCoinToMobileMoney::withoutGlobalScope('user')->where('checking_id', $data['checking_id'])->first();
+       // Log::info('Payments Data: ', $payment);
         if (!$payment) {
-            Log::warning('Webhook with invalid checking_id received after ' . $maxAttempts . ' attempts', [
+            Log::warning('Webhook with invalid checking_id received', [
                 'checking_id' => $data['checking_id']
             ]);
             return response()->json([
                 'status'  => 'error',
-                'message' => 'Invalid checking_id - payment not found',
+                'message' => 'Invalid checking_id',
             ], 400);
         }
 
-        // Rest of your webhook logic...
-        $isPaid = ($data['status'] === 'success');
 
-        $payment->update([
-            'payment_status' => $isPaid ? 'paid' : 'pending',
-            'paid_at'        => $isPaid ? now() : null,
-        ]);
+       
+        $isPaid = false;
+        if (array_key_exists('pending', $data)) {
+            $isPaid = ($data['pending'] === false);
+        } elseif (array_key_exists('status', $data)) {
+            $isPaid = ($data['status'] === 'success');
+        }
 
+
+      $payment->update([
+      'payment_status' => $isPaid ? 'paid' : 'pending',
+       'paid_at'        => $isPaid ? now() : null,
+]        );
+
+        // If paid, trigger Lenco transfer
         if ($isPaid) {
-            $this->processMobileMoneyTransfer($payment);
+            $number = preg_replace('/\D/', '', $payment->mobile_number);
+            $prefix = substr($number, 0, 3);
+
+            $operator = match ($prefix) {
+                '097', '077' => 'airtel',
+                '096', '076' => 'mtn',
+                '095', '075' => 'zamtel',
+                default      => 'unknown',
+            };
+
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . config('services.lenco.token'),
+                'Accept'        => 'application/json',
+                'Content-Type'  => 'application/json',
+            ])->post(config('services.lenco.base_uri') . '/transfers/mobile-money', [
+                'accountId'           => config('services.lenco.wallet_uuid'),
+                'amount'              => $payment->amount_kwacha,
+                'narration'           => 'BitCoin Transfer to Mobile Money',
+                'reference'           => $payment->id . '-' . mt_rand(),
+                'transferRecipientId' => '',
+                'phone'               => $payment->mobile_number,
+                'operator'            => $operator,
+                'country'             => 'zm',
+            ]);
+
+            if ($response->successful()) {
+                Log::info('Lenco Mobile Money Transfer Successful:', $response->json());
+            } else {
+                Log::error('Lenco Mobile Money Transfer Failed:', $response->json());
+            }
         }
 
         return response()->json(['status' => 'success', 'payment' => $payment]);
 
     } catch (\Throwable $e) {
-        Log::error('Webhook Exception:', ['message' => $e->getMessage()]);
+        Log::error('API Call Exception:', ['message' => $e->getMessage()]);
         return response()->json([
             'status'  => 'error',
             'message' => $e->getMessage(),
         ], 500);
     }
 }
+
 }
