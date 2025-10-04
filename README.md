@@ -1,33 +1,35 @@
-### BitKwacha Software.
+### BitKwik Software.
+
+## Overview
+
+BitKwik is a Bitcoin powered bill payment and transfer application tailored for Zambian users.  
+It enables customers to:
+
+- Instantly transfer Bitcoin to mobile money wallets
+- Use Bitcoin seamlessly in local commerce
+
+---
 
 ## Requirements
 
-- [Xampp (Apache Server, PHP >= 8.2)](https://www.apachefriends.org/download.html)
-- [Composer](https://getcomposer.org/download)
-- [LNbits X-Api-Key AND Admin-Key](https://lnbits.com/)
+- [XAMPP (Apache Server, PHP >= 8.2)](https://www.apachefriends.org/download.html)  
+- [Composer](https://getcomposer.org/download)  
+- [OpenNode](https://opennode.com/)
 
-
-
-## How it works
-
-This is a project from BitDevs Zambia members during the Africa Free Routing Bootcamp's hackathon in Lusaka, Zambia. 
-It is a Bitcoin powered bill payment app tailored for Zambian users. It allows customers to pay for bills such Zesco units, water bills, TV Subscription Etc using BitCoin, also customers can transfer their BitCoins to their Mobile Money wallets Instantly!
+---
 
 ## Installation
 
-### Clone the repository
-Please follow carefully the installation.
+Please follow these steps carefully:
 
 ```bash
 1. git clone https://github.com/chandachewe10/BitKwik.git
 2. composer update
-3. copy .env.example .env 
-4. Set DB Credentials and LNbits Keys in .env
-4. php artisan key:generate
-5. php artisan migrate 
+3. cp .env.example .env
+4. Set DB credentials and OpenNode keys in .env
+5. php artisan key:generate
+6. php artisan migrate
 
-```
- 
 create a customer user on the terminal by running the following script and follow the prompts
 
 ```bash
