@@ -2,19 +2,21 @@ Copyright © 2025 BitKwik.
 
 All rights reserved.
 
-This software and its source code are the property of MacroIt Information Technology.  
-No part of this project may be copied, modified, distributed, sublicensed, or used for any commercial or non-commercial purpose without explicit written permission from the owners.
+This software and its source code are the exclusive property of MacroIt Information Technology.
+No part of this project may be copied, modified, distributed, sublicensed, or used for any commercial or non-commercial purpose without explicit written permission from the copyright holders.
 
-You are allowed to:
-- View the source code for personal reference
-- Run the software locally for evaluation, testing purposes and making PR's
+### Permitted:
+- Viewing the source code for personal reference only
+- Running the software locally for evaluation or testing
+- Submitting pull requests (PRs) strictly for review, without any ownership or usage rights
 
-You are NOT allowed to:
-- Use the code in any commercial or public-facing application
-- Copy or redistribute any part of the codebase
-- Modify and publish derivatives
-- Rebrand or package the software for resale or reuse
+### Not Permitted:
+- Using the code in any commercial or public-facing application
+- Copying, redistributing, or hosting any part of the codebase
+- Modifying and publishing derivatives
+- Rebranding, relicensing, or packaging the software for resale or reuse
+- Claiming authorship or contribution rights without written permission
 
-For licensing inquiries, contact the project maintainers.
-chewec03@gmail.com
-Chanda.Chewe@macroit.org
+For licensing or permission requests, contact:
+- chewec03@gmail.com
+- chanda.chewe@macroit.org
