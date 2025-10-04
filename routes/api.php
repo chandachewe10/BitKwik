@@ -2,8 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\API\LNbits\ConfirmBitCoinToBankController;
-use App\Http\Controllers\API\LNbits\ConfirmBitCoinToMobileController;
+use App\Http\Controllers\API\OPENNODE\ConfirmBitCoinToBankController;
+use App\Http\Controllers\API\OPENNODE\ConfirmBitCoinToMobileController;
 
 
 
