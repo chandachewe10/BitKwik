@@ -29,6 +29,7 @@ Please follow these steps carefully:
 4. Set DB credentials and OpenNode keys in .env
 5. php artisan key:generate
 6. php artisan migrate
+```
 
 create a customer user on the terminal by running the following script and follow the prompts
 
