@@ -35,11 +35,11 @@ return [
         ],
     ],
 
-     'lnbits' => [
-        'x-api-key' => env('LNBITS_ADMIN_KEY'),
-        'base_uri' => env('LNBITS_BASE_URI'),
-        'mobile_money' => env('LNBITS_WEBHOOK_MOBILE_MONEY'),
-        'bank_transfer' => env('LNBITS_WEBHOOK_BANK_TRANSFER'),
+     'opennode' => [
+        'api_key' => env('OPENNODE_API_KEY'),
+        'base_uri' => env('OPENNODE_BASE_URI'),
+        'mobile_money' => env('OPENNODE_WEBHOOK_MOBILE_MONEY'),
+        'bank_transfer' => env('OPENNODE_WEBHOOK_BANK_TRANSFER'),
     ],
 
      'lenco' => [

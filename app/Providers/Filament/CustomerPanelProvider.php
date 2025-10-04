@@ -33,7 +33,7 @@ class CustomerPanelProvider extends PanelProvider
                 'primary' => Color::Amber,
             ])
             ->brandLogo(asset('ui/css/assets/img/logo.png'))
-            ->brandLogoHeight('8rem')
+            ->brandLogoHeight('6rem')
             ->favicon(asset('ui/css/assets/img/logo.png'))
             ->discoverResources(in: app_path('Filament/Customer/Resources'), for: 'App\\Filament\\Customer\\Resources')
             ->discoverPages(in: app_path('Filament/Customer/Pages'), for: 'App\\Filament\\Customer\\Pages')

@@ -19,20 +19,24 @@ class CreateSendToMobile extends CreateRecord
     protected function handleRecordCreation(array $data): \Illuminate\Database\Eloquent\Model
     {
         try {
-           
-            $totalSats = $data['total_sats'];
+
+
             $response = Http::withHeaders([
-                'X-Api-Key' => config('services.lnbits.x-api-key'),
+                'Authorization' => 'Bearer ' . config('services.opennode.api_key'),
                 'Content-Type' => 'application/json',
-            ])->post(config('services.lnbits.base_uri') . '/payments', [
-                'out' => false,
+            ])->post(config('services.opennode.base_uri') . '/charges', [
+                'amount' => $data['total_sats'],
                 'description' => 'BitCoin to Mobile Money',
-                'amount' => $totalSats,
-                'max' => 100000000,
-                'min' => 0.00000001,
-                'comment_chars' => 200,
-                'username' => mt_rand(100000, 999999),
-                'webhook' => config('services.lnbits.mobile_money'), 
+                'customer_name' => auth()->user()->name,
+                'customer_name' => auth()->user()->email,
+                'order_id' => '',
+                'callback_url' => config('services.opennode.mobile_money'),
+                'success_url' => env('APP_URL') . '/customer',
+                'auto_settle' => true,
+                'split_to_btc_bps' => 0,
+                'ttl' => 10,
+                'notify_receiver' => true
+
             ]);
 
             $bolt11 = null;
@@ -40,11 +44,15 @@ class CreateSendToMobile extends CreateRecord
             $qrCodeFileName = null;
 
             if ($response->successful()) {
-                Log::info('LNbits Received For BitCoin To Mobile Money:', $response->json());
 
-                $json = $response->json();
-                $bolt11 = $json['bolt11'] ?? null;
-                $checking_id = $json['checking_id'] ?? null;
+                Log::info('Opennode Received For BitCoin To Mobile Money:', $response->json());
+
+                $json = $response->json()['data'];
+
+
+                $bolt11 = $json['lightning_invoice']['payreq'] ?? null;
+
+                $checking_id = $json['id'] ?? null;
 
                 if ($bolt11) {
                     $qrCodeImage = QrCode::format('svg')->size(300)->generate($bolt11);
@@ -56,7 +64,6 @@ class CreateSendToMobile extends CreateRecord
                 }
             }
 
-            // Create the record in database
             return BitCoinToMobileMoney::create([
                 "amount_kwacha" => $data['amount_kwacha'],
                 "amount_sats" => $data['amount_sats'],
@@ -68,12 +75,12 @@ class CreateSendToMobile extends CreateRecord
                 "delivery_email" => $data['email'],
                 'qr_code_path' => $qrCodeFileName,
                 'lightning_invoice_address' => $bolt11,
-                'checking_id' => $checking_id
+                'checking_id' => $checking_id,
+                'checkout_url' => $json['hosted_checkout_url'] ?? null,
             ]);
-
         } catch (Exception $e) {
             // Log the exception (optional)
-            \Log::error('Error creating SendToMobile record: ' . $e->getMessage());
+            Log::error('Error creating SendToMobile record: ' . $e->getMessage());
 
             // Throw a Filament notification error to the frontend
             Notification::make()
@@ -81,7 +88,6 @@ class CreateSendToMobile extends CreateRecord
                 ->title('Failed to generate invoice')
                 ->body('An error occurred: ' . $e->getMessage())
                 ->send();
-
         }
     }
 

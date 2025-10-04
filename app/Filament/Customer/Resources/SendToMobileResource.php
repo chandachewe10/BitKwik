@@ -51,7 +51,7 @@ class SendToMobileResource extends Resource
                                     $amount_sats = floatval($state ?? 0);
                                     $amount_btc = $amount_sats / 100000000;
                                     $amount_kwacha = $amount_sats * 0.026;
-                                    $total_sats = $amount_sats + ($amount_sats * 0.08) + 100; 
+                                    $total_sats = $amount_sats + ($amount_sats * 0.08) + 100;
                                     $set('amount_btc', round($amount_btc, 8));
                                     $set('amount_kwacha', round($amount_kwacha, 2));
                                     $set('conversion_fee', round($amount_sats * 0.08, 0));
@@ -59,7 +59,7 @@ class SendToMobileResource extends Resource
                                 })
                                 ->required()
                                 ->disabled(false)
-                                 ->maxValue(5000)
+                                ->maxValue(5000)
                                 ->minValue(200),
 
                             TextInput::make('amount_kwacha')
@@ -150,7 +150,7 @@ class SendToMobileResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-        ->recordUrl(null)
+            ->recordUrl(null)
             ->columns([
                 Tables\Columns\TextColumn::make('index')
                     ->label('No')
@@ -169,12 +169,18 @@ class SendToMobileResource extends Resource
                     ->badge(),
                 Tables\Columns\TextColumn::make('amount_btc')
                     ->badge(),
-               
-ImageColumn::make('qr_code_path')
-    ->label('QR Code')
-->getStateUsing(fn ($record) => asset('images/qrcodes/' . $record->qr_code_path))
 
-    ->height(150),
+                Tables\Columns\TextColumn::make('checkout_url')
+
+                    ->label('QR Code')
+                    ->formatStateUsing(function ($state) {
+                        return "<a href='{$state}' target='_blank' class='text-primary underline'>Check Qrcode</a>";
+                    })
+                    ->badge()
+                    ->html()
+                    ->searchable(),
+
+
                 Tables\Columns\TextColumn::make('lightning_invoice_address')
                     ->label('Lightning Invoice')
                     ->formatStateUsing(fn($state) => $state ? 'Copy Invoice' : 'No Invoice')

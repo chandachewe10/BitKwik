@@ -33,7 +33,8 @@ class BitCoinToBankAccount extends Model
         'paid_at',
         'transaction_id',
         'checking_id',
-        'user_id'
+        'user_id',
+        'checkout_url'
     ];
 
     protected static function booted(): void

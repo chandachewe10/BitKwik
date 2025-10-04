@@ -16,7 +16,7 @@ class ConfirmZescoBillsPaymentsController extends Controller
     public function confirmZescoBillsPayments(Request $request)
     {
 
-        Log::info('LNbits Webhook Received For Zesco Bills To Mobile Money:', $request->all());
+        Log::info('OPENNODE Webhook Received For Zesco Bills To Mobile Money:', $request->all());
 
         
         $data = $request->validate([
