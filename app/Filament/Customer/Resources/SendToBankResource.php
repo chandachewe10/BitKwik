@@ -49,7 +49,7 @@ class SendToBankResource extends Resource
                                     $amount_sats = floatval($state ?? 0);
                                     $amount_btc = $amount_sats / 100000000;
                                     $amount_kwacha = $amount_sats * 0.026;
-                                    $total_sats = $amount_sats + ($amount_sats * 0.08) + 100;
+                                    $total_sats = $amount_sats + ($amount_sats * 0.08) + 400;
                                     $set('amount_btc', round($amount_btc, 8));
                                     $set('amount_kwacha', round($amount_kwacha, 2));
                                     $set('conversion_fee', round($amount_sats * 0.08, 8));
@@ -71,7 +71,7 @@ class SendToBankResource extends Resource
                                     $amount_kwacha = floatval($state ?? 0);
                                     $amount_sats = $amount_kwacha / 0.026;
                                     $amount_btc = $amount_sats / 100000000;
-                                    $total_sats = $amount_sats + ($amount_sats * 0.08) + 100;
+                                    $total_sats = $amount_sats + ($amount_sats * 0.08) + 400;
                                     $set('amount_sats', round($amount_sats, 8));
                                     $set('amount_btc', round($amount_btc, 8));
                                     $set('conversion_fee', round($amount_sats * 0.08, 8));
@@ -102,7 +102,7 @@ class SendToBankResource extends Resource
                                 ->suffix('SATS')
                                 ->required()
                                 ->readOnly()
-                                ->default(100),
+                                ->default(400),
 
 
                             TextInput::make('total_sats')
