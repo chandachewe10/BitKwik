@@ -43,8 +43,11 @@ class CustomerPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Customer/Widgets'), for: 'App\\Filament\\Customer\\Widgets')
             ->widgets([
-                // Widgets\AccountWidget::class,
-                // Widgets\FilamentInfoWidget::class,
+                \App\Filament\Customer\Widgets\StatsOverview::class,
+                \App\Filament\Customer\Widgets\TotalSentMobileMoney::class,
+                \App\Filament\Customer\Widgets\TotalSentBank::class,
+                
+
             ])
             ->middleware([
                 EncryptCookies::class,
