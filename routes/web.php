@@ -12,3 +12,11 @@ Route::post('/emailSubscriptions',[EmailSubscriptionAndContactUsController::clas
 
 Route::post('/contact', [EmailSubscriptionAndContactUsController::class,'contactUs'])
     ->name('contactUs');
+
+Route::get('/subscription/payment', function () {
+    $data = session()->get('pending_transaction_data');
+    return view('gateways.Lenco.LencoPayments', ['data' => $data]);
+})->name('subscription.lenco');
+
+Route::post('completeSubscription/{amount}',[SubscriptionsController::class,'completeSubscription'])
+->name('completeSubscription');
