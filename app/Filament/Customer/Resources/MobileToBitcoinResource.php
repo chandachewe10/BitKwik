@@ -52,11 +52,11 @@ return $form
                                     $amount_btc = $amount_sats / 100000000;
                                     $total_amount = $amount_kwacha + ($amount_kwacha * 0.08) + 5;
                                     $set('total_amount', round($total_amount, 2));
-                                    $set('amount_sats', round($amount_sats, 8));
+                                    $set('amount_sats', round($amount_sats, 0));
                                     $set('amount_btc', round($amount_btc, 8));
                                     $set('conversion_fee', round($amount_kwacha * 0.08, 2));
                                 })
-                                ->minValue(50),
+                                ->minValue(5),
 
 
 
