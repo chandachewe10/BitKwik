@@ -154,7 +154,7 @@ Tables\Columns\TextColumn::make('qr_code_path')
 
                 Tables\Columns\TextColumn::make('lnurl')
                     ->label('Lightning Payment Address')
-                    ->formatStateUsing(fn($state) => $state ? 'Copy Address' : 'No Address')
+                    ->formatStateUsing(fn($state) => $state ? 'Copy Lightning Address' : 'No Address')
                     ->copyable()
                     ->copyMessage('Address copied to clipboard!')
                     ->copyMessageDuration(1500)
