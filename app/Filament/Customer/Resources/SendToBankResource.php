@@ -48,7 +48,7 @@ class SendToBankResource extends Resource
                                 ->afterStateUpdated(function ($state, Set $set) {
                                     $amount_sats = floatval($state ?? 0);
                                     $amount_btc = $amount_sats / 100000000;
-                                    $amount_kwacha = $amount_sats * 0.026;
+                                    $amount_kwacha = $amount_sats * 0.023;
                                     $total_sats = $amount_sats + ($amount_sats * 0.08) + 400;
                                     $set('amount_btc', round($amount_btc, 8));
                                     $set('amount_kwacha', round($amount_kwacha, 2));
@@ -69,7 +69,7 @@ class SendToBankResource extends Resource
                                 ->suffix('ZMW')
                                 ->afterStateUpdated(function ($state, Set $set) {
                                     $amount_kwacha = floatval($state ?? 0);
-                                    $amount_sats = $amount_kwacha / 0.026;
+                                    $amount_sats = $amount_kwacha / 0.023;
                                     $amount_btc = $amount_sats / 100000000;
                                     $total_sats = $amount_sats + ($amount_sats * 0.08) + 400;
                                     $set('amount_sats', round($amount_sats, 8));
