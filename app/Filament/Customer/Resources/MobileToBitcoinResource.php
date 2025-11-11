@@ -68,7 +68,7 @@ return $form
                                  ->required()
                                  ->readOnly()
                                 ->maxValue(100000)
-                                ->minValue(2000),
+                                ->minValue(200),
 
                             
                             TextInput::make('amount_btc')
