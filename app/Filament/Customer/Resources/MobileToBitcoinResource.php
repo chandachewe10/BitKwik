@@ -56,7 +56,7 @@ return $form
                                     $set('amount_btc', round($amount_btc, 8));
                                     $set('conversion_fee', round($amount_kwacha * 0.08, 2));
                                 })
-                                ->minValue(5),
+                                ->minValue(50),
 
 
 
@@ -68,7 +68,7 @@ return $form
                                  ->required()
                                  ->readOnly()
                                 ->maxValue(100000)
-                                ->minValue(200),
+                                ->minValue(2000),
 
                             
                             TextInput::make('amount_btc')
