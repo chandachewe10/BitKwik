@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmailSubscriptionAndContactUsController;
+use App\Http\Controllers\Lenco\PaymentController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -18,5 +19,5 @@ Route::get('/subscription/payment', function () {
     return view('gateways.Lenco.LencoPayments', ['data' => $data]);
 })->name('subscription.lenco');
 
-Route::post('completeSubscription/{amount}',[SubscriptionsController::class,'completeSubscription'])
-->name('completeSubscription');
+Route::post('/complete-subscription', [PaymentController::class, 'completeSubscription'])
+    ->name('complete.subscription');
