@@ -38,7 +38,7 @@
                     .then(res => res.json())
                     .then(data => {
                         if (data.status === "success") {
-                            alert("✅ Bitcoin withdrawal created successfully! Scan the QR code using your walletto receive the payment.");
+                            alert("✅ Bitcoin withdrawal created successfully! Scan the QR code using your wallet to receive the payment.");
 
                             // If QR code is returned, show it
                             window.location.href = "/customer/mobile-to-bitcoins";
