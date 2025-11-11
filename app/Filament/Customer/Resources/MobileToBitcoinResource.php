@@ -61,7 +61,7 @@ return $form
 
 
                             TextInput::make('amount_sats')
-                                ->helperText('Click outside to see the update ZMW & BTC')
+                               
                                 ->label('Amount in Sats')
                                 ->suffix('SATS')
                                 ->numeric()
@@ -105,19 +105,7 @@ return $form
 
                         ]),
 
-                    // Step 2: Delivery information
-                    Wizard\Step::make('Delivery Information')
-                        ->schema([
-
-                            Textarea::make('destination_bitcoin_address')
-                                ->label('Lightning Destination Address')
-                                ->required()
-                                ,
-                            TextInput::make('email')
-                                ->label('Email for payment confirmation')
-                                ->email()
-                                ->nullable(),
-                        ]),
+                    
 
 
                 ])->columnSpan('full')
@@ -132,8 +120,7 @@ return $form
                 Tables\Columns\TextColumn::make('index')
                     ->label('No')
                     ->rowIndex(),
-                Tables\Columns\TextColumn::make('mobile_number')
-                    ->searchable(),
+                
                 Tables\Columns\TextColumn::make('amount_kwacha')
                     ->badge(),
                 Tables\Columns\TextColumn::make('amount_sats')
@@ -142,23 +129,30 @@ return $form
                     ->badge(),
                 Tables\Columns\TextColumn::make('network_fee')
                     ->badge(),
-                Tables\Columns\TextColumn::make('total_sats')
-                    ->badge(),
+                
                 Tables\Columns\TextColumn::make('amount_btc')
                     ->badge(),
 
-                Tables\Columns\TextColumn::make('checkout_url')
 
+Tables\Columns\TextColumn::make('qr_code_path')
                     ->label('QR Code')
-                    ->formatStateUsing(function ($state) {
-                        return "<a href='{$state}' target='_blank' class='text-primary underline'>Check Qrcode</a>";
-                    })
+                    ->formatStateUsing(fn($state) => $state ? 'View QR Code' : 'No QR Code')
                     ->badge()
-                    ->html()
-                    ->searchable(),
+                    ->color(fn($state) => $state ? 'success' : 'gray')
+                    ->action(
+                        Tables\Actions\Action::make('viewQrCode')
+                            ->label('View QR Code')
+                            ->modalHeading('QR Code')
+                            ->modalContent(fn($record) => $record->qr_code_path 
+                                ? new \Illuminate\Support\HtmlString('<div style="text-align: center;"><img src="' . asset('images/qrcodes/' . $record->qr_code_path) . '" alt="QR Code" style="max-width: 100%; height: auto;" /></div>')
+                                : new \Illuminate\Support\HtmlString('<p>No QR code available</p>'))
+                            ->modalSubmitAction(false)
+                            ->modalCancelActionLabel('Close')
+                    ),
 
 
-                Tables\Columns\TextColumn::make('lightning_invoice_address')
+
+                Tables\Columns\TextColumn::make('lnurl')
                     ->label('Lightning Invoice')
                     ->formatStateUsing(fn($state) => $state ? 'Copy Invoice' : 'No Invoice')
                     ->copyable()
@@ -167,7 +161,10 @@ return $form
                     ->badge(),
                 Tables\Columns\TextColumn::make('payment_status')
                     ->badge(),
-
+                Tables\Columns\TextColumn::make('is_used')
+                    ->formatStateUsing(fn($state) => $state ? 'true' : 'false')
+                    ->badge(),
+                
             ])
             ->filters([
                 //
