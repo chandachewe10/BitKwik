@@ -30,8 +30,8 @@ class PaymentController extends Controller
                 'Authorization' => 'Bearer ' . config('services.opennode.api_key_withdrawal'),
                 'Content-Type' => 'application/json',
             ])->post(config('services.opennode.base_uri_withdrawal') . '/lnurl-withdrawal', [
-                "min_amt"      => 100,
-                "max_amt"      => $amount,
+                "min_amt"      => 50,
+                "max_amt"      => (int) ($sessionData['amount_sats'] ?? null),
                 "callback_url" => config('services.opennode.withdrawal'),
                 "external_id"  => $reference,
                 "expiry_date"  => time() + (10 * 60), // 10 minutes
