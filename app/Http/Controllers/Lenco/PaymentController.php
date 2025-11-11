@@ -29,7 +29,7 @@ class PaymentController extends Controller
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . config('services.opennode.api_key_withdrawal'),
                 'Content-Type' => 'application/json',
-            ])->post(config('services.opennode.base_uri') . '/lnurl-withdrawal', [
+            ])->post(config('services.opennode.base_uri_withdrawal') . '/lnurl-withdrawal', [
                 "min_amt"      => 100,
                 "max_amt"      => $amount,
                 "callback_url" => config('services.opennode.withdrawal'),

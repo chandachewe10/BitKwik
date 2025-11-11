@@ -39,6 +39,7 @@ return [
         'api_key' => env('OPENNODE_API_KEY'),
         'api_key_withdrawal' => env('OPENNODE_WITHDRAWAL_API_KEY'),
         'base_uri' => env('OPENNODE_BASE_URI'),
+        'base_uri_withdrawal' => env('OPENNODE_BASE_URI_FOR_WITHDRAWAL'),
         'mobile_money' => env('OPENNODE_WEBHOOK_MOBILE_MONEY'),
         'bank_transfer' => env('OPENNODE_WEBHOOK_BANK_TRANSFER'),
         'withdrawal' => env('OPENNODE_WEBHOOK_WITHDRAWAL_CALLBACK')
