@@ -153,10 +153,10 @@ Tables\Columns\TextColumn::make('qr_code_path')
 
 
                 Tables\Columns\TextColumn::make('lnurl')
-                    ->label('Lightning Invoice')
-                    ->formatStateUsing(fn($state) => $state ? 'Copy Invoice' : 'No Invoice')
+                    ->label('Lightning Payment Address')
+                    ->formatStateUsing(fn($state) => $state ? 'Copy Address' : 'No Address')
                     ->copyable()
-                    ->copyMessage('Invoice copied to clipboard!')
+                    ->copyMessage('Address copied to clipboard!')
                     ->copyMessageDuration(1500)
                     ->badge(),
                 Tables\Columns\TextColumn::make('payment_status')
