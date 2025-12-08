@@ -11,8 +11,11 @@ class BitCoinToMobileMoneyObserver
      */
     public function created(BitCoinToMobileMoney $bitCoinToMobileMoney): void
     {
-        $bitCoinToMobileMoney->user_id = auth()->user()->id;
-        $bitCoinToMobileMoney->save();
+        // Only set user_id if user is authenticated (for public transactions, user_id is already null)
+        if (auth()->check() && !$bitCoinToMobileMoney->user_id) {
+            $bitCoinToMobileMoney->user_id = auth()->id();
+            $bitCoinToMobileMoney->save();
+        }
     }
 
     /**

@@ -21,6 +21,10 @@ class PaymentController extends Controller
             // Get session data for additional fields
             $sessionData = session()->get('pending_transaction_data', []);
             
+            // Get customer info from payment data or session (no authentication required)
+            $customerEmail = $paymentData['customer']['email'] ?? $sessionData['email'] ?? 'customer@bitkwik.com';
+            $customerName = $paymentData['customer']['firstName'] ?? $sessionData['name'] ?? 'Customer';
+            
             // Calculate convenience_fee: use from session (conversion_fee) or calculate as 8% of amount
             $convenienceFee = $sessionData['conversion_fee'] ?? ($amount * 0.08);
             $networkFee = $sessionData['network_fee'] ?? 5; // Default network fee is 5 ZMW
@@ -35,7 +39,7 @@ class PaymentController extends Controller
                 "callback_url" => config('services.opennode.withdrawal'),
                 "external_id"  => $reference,
                 "expiry_date"  => time() + (10 * 60), // 10 minutes
-                "description"  => "Mobile to Bitcoin Transaction for " . auth()->user()->email,
+                "description"  => "Mobile to Bitcoin Transaction for " . $customerEmail,
             ]);
 
             if (!$response->successful()) {
@@ -59,19 +63,19 @@ class PaymentController extends Controller
                 file_put_contents($filePath, $qrCodeImage);
             }
 
-            // Save to database
+            // Save to database (user_id is nullable for public transactions)
             MobileToBitcoin::create([
-                "user_id" => auth()->id(),
+                "user_id" => auth()->check() ? auth()->id() : null, // Only set if user is authenticated
                 "checking_id" => $checkingId,
                 "amount_kwacha" => $amount,
                 "amount_sats" => $sessionData['amount_sats'] ?? null,
                 "amount_btc" => $sessionData['amount_btc'] ?? null,
-                "phone_number" => $paymentData['customer']['phone'] ?? '',
+                "phone_number" => $paymentData['customer']['phone'] ?? $sessionData['phone'] ?? '',
                 "convenience_fee" => round($convenienceFee, 2),
                 "network_fee" => $networkFee,
                 "lnurl" => $lnurl,
                 "qr_code_path" => $qrCodeFileName,
-                "description" => $data['description'] ?? '',
+                "description" => $data['description'] ?? "Mobile to Bitcoin Transaction for " . $customerEmail,
                 "payment_status" => 'paid',
             ]);
 

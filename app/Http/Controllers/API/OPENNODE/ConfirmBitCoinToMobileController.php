@@ -5,7 +5,6 @@ namespace App\Http\Controllers\API\OPENNODE;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\BitCoinToMobileMoney;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 
@@ -28,8 +27,7 @@ class ConfirmBitCoinToMobileController extends Controller
             }
 
 
-            $payment = BitCoinToMobileMoney::withoutGlobalScope('user')
-                ->where('checking_id', $data['id'])
+            $payment = BitCoinToMobileMoney::where('checking_id', $data['id'])
                 ->first();
 
             if (!$payment) {

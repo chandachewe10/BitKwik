@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Lenco Payment</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://pay.lenco.co/js/v1/inline.js"></script>
 </head>
 <body>
@@ -14,14 +15,14 @@
             LencoPay.getPaid({
                 key: "{{ env('LENCO_PUBLIC_KEY') }}",
                 reference: 'ref-' + Date.now(),
-                email: "{{ auth()->user()->email }}",
+                email: "{{ $data['email'] ?? 'customer@bitkwik.com' }}",
                 amount: {{ $data['total_amount'] }},
                 currency: "ZMW",
                 channels: ["card", "mobile-money"],
                 customer: {
-                    firstName: "{{ auth()->user()->name }}",
+                    firstName: "{{ $data['name'] ?? 'Customer' }}",
                     lastName: "",
-                    phone: "",
+                    phone: "{{ $data['phone'] ?? '' }}",
                 },
 
                 onSuccess: function (response) {
@@ -38,10 +39,20 @@
                     .then(res => res.json())
                     .then(data => {
                         if (data.status === "success") {
-                            alert("✅ Bitcoin withdrawal created successfully! Scan the QR code using your wallet to receive the payment. The QRCode will also be available in your transaction history and expires after 10 minutes.");
-
-                            // If QR code is returned, show it
-                            window.location.href = "/customer/mobile-to-bitcoins";
+                            alert("✅ Bitcoin withdrawal created successfully! Scan the QR code using your wallet to receive the payment. The QRCode expires after 10 minutes.");
+                            
+                            // Show QR code on the page
+                            if (data.qr_code_path) {
+                                let qrContainer = document.createElement("div");
+                                qrContainer.style.cssText = "text-align: center; padding: 20px;";
+                                qrContainer.innerHTML = `
+                                    <h3>Scan this QR code with your Lightning wallet:</h3>
+                                    <img src="/images/qrcodes/${data.qr_code_path}" style="max-width: 400px; margin: 20px auto; display: block;" />
+                                    <p>Or copy this Lightning invoice:</p>
+                                    <p style="word-break: break-all; padding: 10px; background: #f0f0f0; border-radius: 5px;">${data.lnurl || ''}</p>
+                                `;
+                                document.body.appendChild(qrContainer);
+                            }
                         } else {
                             alert("⚠️ " + data.message);
                         }
@@ -54,7 +65,7 @@
 
                 onClose: function () {
                 alert('Payment was not complete, please try again.');
-                window.location.href = "/customer/mobile-to-bitcoins";
+                window.location.href = "/";
             },
                 onConfirmationPending: function () {
                     alert('Your subscription will complete when payment is confirmed.');
