@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Lenco\PaymentController;
 use App\Http\Controllers\SellBitcoinController;
+use App\Http\Controllers\ExchangeRateController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -42,3 +43,6 @@ Route::post('/complete-subscription', [PaymentController::class, 'completeSubscr
 
 Route::post('/generate-invoice', [SellBitcoinController::class, 'generateInvoice'])
     ->name('generate.invoice');
+
+Route::get('/api/exchange-rates', [ExchangeRateController::class, 'getRates'])
+    ->name('exchange.rates');

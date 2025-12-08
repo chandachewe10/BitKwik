@@ -6,7 +6,7 @@
     <title>{{env('APP_NAME')}} - Instant Bitcoin & Kwacha Exchange</title>
     <meta content="Convert Bitcoin to Kwacha instantly or buy Bitcoin with Kwacha. Fast, secure, no account required." name="description">
     <meta name="keywords" content="{{env('APP_NAME')}}, Bitcoin Zambia, Lightning Network, crypto payments, Bitcoin exchange Zambia">
-    
+
     <!-- Favicons -->
     <link href="{{asset('ui/css/assets/img/fav.png')}}" rel="icon" type="image/png">
     <link href="{{asset('ui/css/assets/img/apple-touch-icon.png')}}" rel="apple-touch-icon" sizes="180x180">
@@ -34,10 +34,10 @@
     
     <!-- LinkedIn -->
     <meta property="og:locale" content="en_US">
-    
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
+
     <!-- Bootstrap -->
     <link href="{{asset('ui/css/assets/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{asset('ui/css/assets/vendor/bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet">
@@ -102,7 +102,7 @@
             padding: 100px 0 60px;
             text-align: center;
         }
-
+        
         .hero h1 {
             font-size: 3rem;
             font-weight: 800;
@@ -141,7 +141,7 @@
             transition: all 0.3s;
             font-size: 1rem;
         }
-
+        
         .tab-btn.active {
             background: var(--primary);
             color: white;
@@ -192,10 +192,10 @@
 
         .form-group {
             margin-bottom: 1.5rem;
-        }
-
+            }
+            
         .form-label {
-            display: block;
+                display: block;
             font-weight: 600;
             margin-bottom: 0.5rem;
             color: var(--text-dark);
@@ -206,7 +206,7 @@
         }
 
         .form-control {
-            width: 100%;
+                width: 100%;
             padding: 1rem;
             border: 2px solid var(--border);
             border-radius: 0.75rem;
@@ -230,13 +230,13 @@
         }
 
         .swap-icon {
-            text-align: center;
+                text-align: center;
             margin: 1rem 0;
             font-size: 1.5rem;
             color: var(--primary);
             opacity: 0.8;
-        }
-
+            }
+            
         .calculation-box {
             background: var(--bg-light);
             border-radius: 0.75rem;
@@ -319,10 +319,10 @@
         }
 
         .feature-item {
-            text-align: center;
+                text-align: center;
             padding: 1.5rem;
-        }
-
+            }
+            
         .feature-icon {
             width: 60px;
             height: 60px;
@@ -332,8 +332,8 @@
             align-items: center;
             justify-content: center;
             margin: 0 auto 1rem;
-        }
-
+            }
+            
         .feature-icon i {
             font-size: 1.5rem;
             color: white;
@@ -356,11 +356,11 @@
             color: white;
             padding: 3rem 0 1rem;
             margin-top: 60px;
-        }
-
+            }
+            
         .footer-content {
             max-width: 1200px;
-            margin: 0 auto;
+                margin: 0 auto;
             padding: 0 1rem;
             text-align: center;
         }
@@ -368,18 +368,18 @@
         .footer p {
             opacity: 0.8;
             margin-top: 1rem;
-        }
-
+            }
+            
         /* Responsive */
         @media (max-width: 768px) {
             .hero h1 {
                 font-size: 2rem;
             }
-
+            
             .hero p {
                 font-size: 1rem;
             }
-
+            
             .conversion-card {
                 padding: 1.5rem;
             }
@@ -389,7 +389,7 @@
                 font-size: 0.9rem;
             }
         }
-
+        
         .loading {
             display: none;
             text-align: center;
@@ -417,14 +417,14 @@
 
         .modal-overlay.active {
             display: flex;
-        }
-
+            }
+            
         .modal-content {
             background: white;
             border-radius: 1.5rem;
             padding: 2rem;
             max-width: 500px;
-            width: 100%;
+                width: 100%;
             max-height: 90vh;
             overflow-y: auto;
             position: relative;
@@ -447,8 +447,8 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1.5rem;
-        }
-
+            }
+            
         .modal-header h3 {
             font-size: 1.5rem;
             font-weight: 700;
@@ -472,13 +472,13 @@
         .qr-code-container {
             text-align: center;
             margin: 1.5rem 0;
-        }
-
+            }
+            
         .qr-code-container img {
             max-width: 100%;
             border-radius: 0.5rem;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
+            }
 
         .invoice-address {
             background: var(--bg-light);
@@ -550,7 +550,7 @@
     </style>
 </head>
 <body>
-    @include('sweetalert::alert')
+@include('sweetalert::alert')
 
     <!-- Header -->
     <nav class="navbar">
@@ -567,7 +567,7 @@
         <div class="container">
             <h1>Instant Bitcoin ↔ Kwacha Exchange</h1>
             <p>Convert between Bitcoin and Kwacha instantly. Fast, secure, no account required.</p>
-        </div>
+                        </div>
     </section>
 
     <!-- Conversion Section -->
@@ -580,7 +580,7 @@
                 <button class="tab-btn" onclick="switchTab('sell')">
                     <i class="bi bi-arrow-up-circle"></i> Sell Bitcoin (BTC → ZMW)
                 </button>
-            </div>
+                    </div>
 
             <!-- Buy Bitcoin Card -->
             <div id="buy-card" class="conversion-card active">
@@ -594,7 +594,7 @@
                     <div class="form-group">
                         <label class="form-label">Phone Number</label>
                         <input type="tel" name="phone" class="form-control" placeholder="09XXXXXXXX" required>
-                    </div>
+        </div>
 
                     <div class="form-group">
                         <label class="form-label">Amount in Kwacha (ZMW)</label>
@@ -632,15 +632,15 @@
                         <div class="calc-row">
                             <span>Service Fee (8%):</span>
                             <span id="buy-fee-display">0.00 ZMW</span>
-                        </div>
+                    </div>
                         <div class="calc-row">
                             <span>Network Fee:</span>
                             <span>5.00 ZMW</span>
-                        </div>
+                </div>
                         <div class="calc-row">
                             <span>Total to Pay:</span>
                             <span id="buy-total-display">0.00 ZMW</span>
-                        </div>
+            </div>
                     </div>
 
                     <div class="info-badge">
@@ -666,7 +666,7 @@
                 <div class="card-header">
                     <h2>Sell Bitcoin for Kwacha</h2>
                     <p>Send Bitcoin, receive Kwacha to your mobile money</p>
-                </div>
+                    </div>
 
                 <form id="sell-form" onsubmit="handleSell(event)">
                     <div class="form-group">
@@ -681,7 +681,7 @@
                                    placeholder="Enter amount" min="200" step="1" required 
                                    oninput="calculateSell()">
                             <span class="input-suffix">SATS</span>
-                        </div>
+            </div>
                     </div>
 
                     <div class="swap-icon">
@@ -694,26 +694,26 @@
                             <input type="text" id="sell-kwacha" class="form-control" readonly 
                                    value="0.00">
                             <span class="input-suffix">ZMW</span>
-                        </div>
-                    </div>
+                </div>
+            </div>
 
                     <div class="calculation-box" id="sell-calc" style="display: none;">
                         <div class="calc-row">
                             <span>Amount (SATS):</span>
                             <span id="sell-sats-display">0</span>
-                        </div>
+                                </div>
                         <div class="calc-row">
                             <span>Service Fee (8%):</span>
                             <span id="sell-fee-display">0 SATS</span>
-                        </div>
+                            </div>
                         <div class="calc-row">
                             <span>Network Fee:</span>
                             <span>400 SATS</span>
-                        </div>
+                                </div>
                         <div class="calc-row">
                             <span>Total SATS:</span>
                             <span id="sell-total-display">0 SATS</span>
-                        </div>
+                            </div>
                         <div class="calc-row">
                             <span>You'll Receive:</span>
                             <span id="sell-receive-display">0.00 ZMW</span>
@@ -723,7 +723,7 @@
                     <div class="info-badge">
                         <i class="bi bi-info-circle"></i>
                         <span>Rate: 1 SAT = {{ config('services.bitcoin.conversion_rate') }} ZMW | Min: 200 SATS</span>
-                    </div>
+                                </div>
 
                     <input type="hidden" name="amount_sats" id="sell-sats-hidden">
                     <input type="hidden" name="amount_btc" id="sell-btc">
@@ -737,8 +737,8 @@
                         Generate Lightning Invoice <i class="bi bi-lightning-charge"></i>
                     </button>
                 </form>
-            </div>
-        </div>
+                                </div>
+                                </div>
     </section>
 
     <!-- Features Section -->
@@ -747,17 +747,17 @@
             <div class="feature-item">
                 <div class="feature-icon">
                     <i class="bi bi-lightning-charge-fill"></i>
-                </div>
+                                </div>
                 <h3>Lightning Fast</h3>
                 <p>Instant transactions using Lightning Network</p>
-            </div>
+                                </div>
             <div class="feature-item">
                 <div class="feature-icon">
                     <i class="bi bi-lock-fill"></i>
-                </div>
+                            </div>
                 <h3>Secure</h3>
                 <p>Enterprise-grade security and encryption</p>
-            </div>
+                    </div>
             <div class="feature-item">
                 <div class="feature-icon">
                     <i class="bi bi-person-x"></i>
@@ -771,8 +771,8 @@
                 </div>
                 <h3>Low Fees</h3>
                 <p>Transparent pricing with minimal fees</p>
-            </div>
-        </div>
+                    </div>
+                            </div>
     </section>
 
         <!-- Modal -->
@@ -781,7 +781,7 @@
                 <div class="modal-header">
                     <h3>Lightning Invoice</h3>
                     <button class="modal-close" onclick="closeModal()">&times;</button>
-                </div>
+                    </div>
                 <div id="modalBody">
                     <!-- Content will be inserted here -->
                 </div>
@@ -794,13 +794,78 @@
             <div class="logo" style="justify-content: center; color: white;">
                 <img src="{{asset('ui/css/assets/img/logo.png')}}" alt="{{env('APP_NAME')}} Logo">
                 <span>{{env('APP_NAME')}}</span>
-            </div>
+                        </div>
             <p>&copy; {{ date('Y') }} {{env('APP_NAME')}}. All Rights Reserved</p>
             <p style="margin-top: 0.5rem;">Olympia, 14 Zambezi road, Lusaka, LSK 10101 | info@bit2kwacha.info</p>
-        </div>
+                    </div>
     </footer>
 
     <script>
+        // Global variables for exchange rates
+        let liveConversionRate = {{ config('services.bitcoin.conversion_rate') }}; // Default fallback rate (SAT to ZMW)
+        let btcUsdRate = null;
+        const usdToZmwRate = 24; // Approximate USD to ZMW rate (can be made configurable)
+
+        // Fetch live exchange rates on page load
+        async function fetchExchangeRates() {
+            try {
+                const response = await fetch('{{ route("exchange.rates") }}');
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    // OpenNode returns BTCZMW with ZMW value (amount of ZMW per 1 BTC)
+                    if (result.btc_zmw) {
+                        // 1 BTC = result.btc_zmw ZMW
+                        // 1 SAT = result.btc_zmw / 100,000,000 ZMW
+                        liveConversionRate = result.btc_zmw / 100000000;
+                        btcUsdRate = result.btc_usd;
+                    } else if (result.btc_usd) {
+                        // Fallback: convert via USD if ZMW not available
+                        // 1 SAT = (BTC_USD * USD_ZMW) / 100,000,000
+                        btcUsdRate = result.btc_usd;
+                        liveConversionRate = (btcUsdRate * usdToZmwRate) / 100000000;
+                    }
+                    
+                    // Update rate display
+                    updateRateDisplay();
+                    
+                    // Recalculate if user has already entered amounts
+                    const buyAmount = document.getElementById('buy-amount').value;
+                    const sellAmount = document.getElementById('sell-sats').value;
+                    if (buyAmount && parseFloat(buyAmount) >= 50) {
+                        calculateBuy();
+                    }
+                    if (sellAmount && parseFloat(sellAmount) >= 200) {
+                        calculateSell();
+                    }
+                } else {
+                    console.warn('Failed to fetch exchange rates, using default rate');
+                }
+            } catch (error) {
+                console.error('Error fetching exchange rates:', error);
+                // Continue with default rate
+            }
+        }
+
+        // Update rate display with live rates
+        function updateRateDisplay() {
+            const buyRateText = `Rate: 1 ZMW = ~${(1 / liveConversionRate).toFixed(2)} SATS | Min: 50 ZMW`;
+            const sellRateText = `Rate: 1 SAT = ${liveConversionRate.toFixed(4)} ZMW | Min: 200 SATS`;
+            
+            const buyInfoBadge = document.querySelector('#buy-card .info-badge span');
+            const sellInfoBadge = document.querySelector('#sell-card .info-badge span');
+            
+            if (buyInfoBadge) {
+                buyInfoBadge.textContent = buyRateText;
+            }
+            if (sellInfoBadge) {
+                sellInfoBadge.textContent = sellRateText;
+            }
+        }
+
+        // Fetch rates when page loads
+        fetchExchangeRates();
+
         // Tab switching
         function switchTab(tab) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -824,7 +889,7 @@
                 return;
             }
 
-            const conversionRate = {{ config('services.bitcoin.conversion_rate') }}; // SAT to ZMW rate
+            const conversionRate = liveConversionRate; // Use live SAT to ZMW rate
             const serviceFeeRate = {{ config('services.bitcoin.service_fee_rate') }}; // Service fee rate
             const networkFee = {{ config('services.bitcoin.buy_network_fee') }}; // Network fee for buying
 
@@ -858,7 +923,7 @@
                 return;
             }
 
-            const conversionRate = {{ config('services.bitcoin.conversion_rate') }}; // SAT to ZMW rate
+            const conversionRate = liveConversionRate; // Use live SAT to ZMW rate
             const serviceFeeRate = {{ config('services.bitcoin.service_fee_rate') }}; // Service fee rate
             const networkFee = {{ config('services.bitcoin.sell_network_fee') }}; // Network fee for selling
 
@@ -1051,26 +1116,26 @@
             modalBody.innerHTML = `
                 <div class="success-icon">
                     <i class="bi bi-check-circle-fill"></i>
-                </div>
+            </div>
                 <h4 style="text-align: center; margin-bottom: 1rem;">Invoice Generated Successfully!</h4>
                 <p style="text-align: center; color: var(--text-gray); margin-bottom: 1.5rem;">
                     Scan the QR code with your Lightning wallet to pay. You'll receive ${data.amount_kwacha} ZMW to ${document.querySelector('#sell-form [name="phone"]').value}
                 </p>
                 <div class="qr-code-container">
                     <img src="${window.location.protocol}//${window.location.host}/images/qrcodes/${data.qr_code_path}" alt="Lightning Invoice QR Code">
-                </div>
+        </div>
                 <div>
                     <label style="font-weight: 600; margin-bottom: 0.5rem; display: block;">Lightning Invoice:</label>
                     <div class="invoice-address" id="invoiceAddress">${data.bolt11}</div>
                     <button class="copy-btn" onclick="copyInvoice(this)">
                         <i class="bi bi-clipboard"></i> Copy Invoice
                     </button>
-                </div>
+            </div>
                 <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
                     <p style="font-size: 0.875rem; color: var(--text-gray); text-align: center;">
                         <i class="bi bi-info-circle"></i> This invoice expires in 10 minutes. After payment, you'll receive ${data.amount_kwacha} ZMW to your mobile money.
                     </p>
-                </div>
+        </div>
             `;
             
             modal.classList.add('active');
