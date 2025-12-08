@@ -645,7 +645,7 @@
 
                     <div class="info-badge">
                         <i class="bi bi-info-circle"></i>
-                        <span>Rate: 1 ZMW = ~43.48 SATS | Min: 50 ZMW</span>
+                        <span>Rate: 1 ZMW = ~{{ number_format(1 / config('services.bitcoin.conversion_rate'), 2) }} SATS | Min: 50 ZMW</span>
                     </div>
 
                     <input type="hidden" name="total_amount" id="buy-total">
@@ -722,7 +722,7 @@
 
                     <div class="info-badge">
                         <i class="bi bi-info-circle"></i>
-                        <span>Rate: 1 SAT = 0.023 ZMW | Min: 200 SATS</span>
+                        <span>Rate: 1 SAT = {{ config('services.bitcoin.conversion_rate') }} ZMW | Min: 200 SATS</span>
                     </div>
 
                     <input type="hidden" name="amount_sats" id="sell-sats-hidden">
@@ -796,7 +796,7 @@
                 <span>{{env('APP_NAME')}}</span>
             </div>
             <p>&copy; {{ date('Y') }} {{env('APP_NAME')}}. All Rights Reserved</p>
-            <p style="margin-top: 0.5rem;">Olympia, 14 Zambezi road, Lusaka, LSK 10101 | +260 769891754</p>
+            <p style="margin-top: 0.5rem;">Olympia, 14 Zambezi road, Lusaka, LSK 10101 | info@bit2kwacha.info</p>
         </div>
     </footer>
 
@@ -824,9 +824,9 @@
                 return;
             }
 
-            const conversionRate = 0.023; // ZMW to SAT rate
-            const serviceFeeRate = 0.08; // 8%
-            const networkFee = 5;
+            const conversionRate = {{ config('services.bitcoin.conversion_rate') }}; // SAT to ZMW rate
+            const serviceFeeRate = {{ config('services.bitcoin.service_fee_rate') }}; // Service fee rate
+            const networkFee = {{ config('services.bitcoin.buy_network_fee') }}; // Network fee for buying
 
             const amountSats = amountKwacha / conversionRate;
             const amountBtc = amountSats / 100000000;
@@ -858,9 +858,9 @@
                 return;
             }
 
-            const conversionRate = 0.023; // SAT to ZMW rate
-            const serviceFeeRate = 0.08; // 8%
-            const networkFee = 400;
+            const conversionRate = {{ config('services.bitcoin.conversion_rate') }}; // SAT to ZMW rate
+            const serviceFeeRate = {{ config('services.bitcoin.service_fee_rate') }}; // Service fee rate
+            const networkFee = {{ config('services.bitcoin.sell_network_fee') }}; // Network fee for selling
 
             const amountBtc = amountSats / 100000000;
             const conversionFee = amountSats * serviceFeeRate;
@@ -1062,7 +1062,7 @@
                 <div>
                     <label style="font-weight: 600; margin-bottom: 0.5rem; display: block;">Lightning Invoice:</label>
                     <div class="invoice-address" id="invoiceAddress">${data.bolt11}</div>
-                    <button class="copy-btn" onclick="copyInvoice()">
+                    <button class="copy-btn" onclick="copyInvoice(this)">
                         <i class="bi bi-clipboard"></i> Copy Invoice
                     </button>
                 </div>
@@ -1082,20 +1082,63 @@
         }
 
         // Copy invoice to clipboard
-        function copyInvoice() {
+        function copyInvoice(btnElement) {
             const invoiceText = document.getElementById('invoiceAddress').textContent;
-            navigator.clipboard.writeText(invoiceText).then(() => {
-                const btn = event.target.closest('.copy-btn');
-                const originalText = btn.innerHTML;
-                btn.innerHTML = '<i class="bi bi-check"></i> Copied!';
-                btn.style.background = 'var(--success)';
-                setTimeout(() => {
-                    btn.innerHTML = originalText;
-                    btn.style.background = '';
-                }, 2000);
-            }).catch(err => {
-                alert('Failed to copy. Please select and copy manually.');
-            });
+            
+            // Fallback method for older browsers or non-HTTPS
+            const fallbackCopy = () => {
+                const textArea = document.createElement('textarea');
+                textArea.value = invoiceText;
+                textArea.style.position = 'fixed';
+                textArea.style.left = '-999999px';
+                textArea.style.top = '-999999px';
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                
+                try {
+                    const successful = document.execCommand('copy');
+                    if (successful) {
+                        const originalText = btnElement.innerHTML;
+                        btnElement.innerHTML = '<i class="bi bi-check"></i> Copied!';
+                        btnElement.style.background = 'var(--success)';
+                        setTimeout(() => {
+                            btnElement.innerHTML = originalText;
+                            btnElement.style.background = '';
+                        }, 2000);
+                    } else {
+                        throw new Error('execCommand failed');
+                    }
+                } catch (err) {
+                    // Select text for manual copy
+                    const range = document.createRange();
+                    range.selectNodeContents(document.getElementById('invoiceAddress'));
+                    const selection = window.getSelection();
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                    alert('Please press Ctrl+C (or Cmd+C on Mac) to copy the invoice.');
+                }
+                document.body.removeChild(textArea);
+            };
+            
+            // Try modern clipboard API first
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(invoiceText).then(() => {
+                    const originalText = btnElement.innerHTML;
+                    btnElement.innerHTML = '<i class="bi bi-check"></i> Copied!';
+                    btnElement.style.background = 'var(--success)';
+                    setTimeout(() => {
+                        btnElement.innerHTML = originalText;
+                        btnElement.style.background = '';
+                    }, 2000);
+                }).catch(err => {
+                    // Fallback if clipboard API fails
+                    fallbackCopy();
+                });
+            } else {
+                // Use fallback for older browsers
+                fallbackCopy();
+            }
         }
 
         // Close modal when clicking outside
