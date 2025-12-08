@@ -46,3 +46,9 @@ Route::post('/generate-invoice', [SellBitcoinController::class, 'generateInvoice
 
 Route::get('/api/exchange-rates', [ExchangeRateController::class, 'getRates'])
     ->name('exchange.rates');
+
+Route::post('/api/check-balance', [ExchangeRateController::class, 'checkBalance'])
+    ->name('check.balance');
+
+Route::get('/api/get-balance', [ExchangeRateController::class, 'getBalance'])
+    ->name('get.balance');

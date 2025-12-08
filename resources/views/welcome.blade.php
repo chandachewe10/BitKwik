@@ -863,6 +863,45 @@
             }
         }
 
+        // Fetch and display current balance
+        async function fetchBalance() {
+            try {
+                const response = await fetch('{{ route("get.balance") }}');
+                const result = await response.json();
+                
+                const balanceText = document.getElementById('balance-text');
+                
+                if (result.status === 'success') {
+                    const balanceBtc = result.balance_btc || 0;
+                    const balanceSats = Math.round(result.balance_sats || 0);
+                    
+                    balanceText.innerHTML = `Available Balance: <strong>${balanceBtc.toFixed(8)} BTC</strong> (${balanceSats.toLocaleString()} SATS)`;
+                    balanceText.style.color = '#10b981';
+                    
+                    // Log raw response for debugging
+                    console.log('Balance fetched successfully:', {
+                        balance_btc: balanceBtc,
+                        balance_sats: balanceSats,
+                        raw_response: result.raw_response
+                    });
+                } else {
+                    balanceText.innerHTML = `Balance: <strong>Error loading balance</strong> - ${result.message || 'Unknown error'}`;
+                    balanceText.style.color = '#ef4444';
+                    
+                    // Log error for debugging
+                    console.error('Balance fetch error:', result);
+                    if (result.raw_response) {
+                        console.error('Raw API response:', result.raw_response);
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching balance:', error);
+                const balanceText = document.getElementById('balance-text');
+                balanceText.innerHTML = `Balance: <strong>Error loading balance</strong> - ${error.message}`;
+                balanceText.style.color = '#ef4444';
+            }
+        }
+
         // Fetch rates when page loads
         fetchExchangeRates();
 
@@ -951,41 +990,118 @@
         }
 
         // Handle Buy form submission
-        function handleBuy(event) {
+        async function handleBuy(event) {
             event.preventDefault();
             const form = event.target;
+            const btn = document.getElementById('buy-btn');
             
             // Ensure all hidden fields are set
             const amountKwacha = document.getElementById('buy-amount').value;
             if (!amountKwacha || parseFloat(amountKwacha) < 50) {
-                alert('Please enter an amount of at least 50 ZMW');
+                showErrorModal('Validation Error', 'Please enter an amount of at least 50 ZMW');
                 return;
             }
             
-            // Update amount_kwacha field
-            if (!form.querySelector('[name="amount_kwacha"]')) {
-                const hiddenInput = document.createElement('input');
-                hiddenInput.type = 'hidden';
-                hiddenInput.name = 'amount_kwacha';
-                hiddenInput.value = amountKwacha;
-                form.appendChild(hiddenInput);
-            } else {
-                form.querySelector('[name="amount_kwacha"]').value = amountKwacha;
+            // Ensure calculations are done
+            calculateBuy();
+            
+            // Get the amount of SATS they want to buy
+            const amountSats = parseFloat(document.getElementById('buy-sats').value) || 0;
+            if (!amountSats || amountSats < 1) {
+                showErrorModal('Calculation Error', 'Please wait for the calculation to complete or enter a valid amount.');
+                return;
             }
             
-            // Add CSRF token
-            if (!form.querySelector('[name="_token"]')) {
-                const csrfInput = document.createElement('input');
-                csrfInput.type = 'hidden';
-                csrfInput.name = '_token';
-                csrfInput.value = '{{ csrf_token() }}';
-                form.appendChild(csrfInput);
-            }
+            // Show loading state
+            btn.disabled = true;
+            btn.classList.add('btn-loading');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = 'Checking Balance...';
+            btn.style.pointerEvents = 'none';
             
-            // Submit form
-            form.action = '{{ route("subscription.lenco") }}';
-            form.method = 'POST';
-            form.submit();
+            try {
+                // Check balance before proceeding
+                const balanceResponse = await fetch('{{ route("check.balance") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        amount_sats: amountSats
+                    })
+                });
+                
+                const balanceResult = await balanceResponse.json();
+                
+                // Log balance check result for debugging
+                console.log('Balance check result:', {
+                    status: balanceResult.status,
+                    sufficient: balanceResult.sufficient,
+                    balance_btc: balanceResult.balance_btc,
+                    balance_sats: balanceResult.balance_sats,
+                    required_btc: balanceResult.required_btc,
+                    required_sats: balanceResult.required_sats,
+                    amount_sats_requested: amountSats
+                });
+                
+                // Reset button
+                btn.disabled = false;
+                btn.classList.remove('btn-loading');
+                btn.style.pointerEvents = '';
+                btn.innerHTML = originalText;
+                
+                if (balanceResult.status === 'error') {
+                    console.error('Balance check error:', balanceResult);
+                    showErrorModal('Balance Check Failed', balanceResult.message || 'Unable to verify account balance. Please try again later.');
+                    return;
+                }
+                
+                if (!balanceResult.sufficient) {
+                    const balanceSats = Math.round(balanceResult.balance_sats || 0).toLocaleString();
+                    const requiredSats = Math.round(balanceResult.required_sats || 0).toLocaleString();
+                    showErrorModal(
+                        'Insufficient Balance', 
+                        `We currently don't have enough Bitcoin in stock to fulfill your order. You requested ${requiredSats} SATS, but we only have few SATS available. Please try again later or contact support.`
+                    );
+                    return;
+                }
+                
+                // Balance is sufficient, proceed with payment
+                // Update amount_kwacha field
+                if (!form.querySelector('[name="amount_kwacha"]')) {
+                    const hiddenInput = document.createElement('input');
+                    hiddenInput.type = 'hidden';
+                    hiddenInput.name = 'amount_kwacha';
+                    hiddenInput.value = amountKwacha;
+                    form.appendChild(hiddenInput);
+                } else {
+                    form.querySelector('[name="amount_kwacha"]').value = amountKwacha;
+                }
+                
+                // Add CSRF token
+                if (!form.querySelector('[name="_token"]')) {
+                    const csrfInput = document.createElement('input');
+                    csrfInput.type = 'hidden';
+                    csrfInput.name = '_token';
+                    csrfInput.value = '{{ csrf_token() }}';
+                    form.appendChild(csrfInput);
+                }
+                
+                // Submit form
+                form.action = '{{ route("subscription.lenco") }}';
+                form.method = 'POST';
+                form.submit();
+                
+            } catch (error) {
+                console.error('Balance check error:', error);
+                btn.disabled = false;
+                btn.classList.remove('btn-loading');
+                btn.style.pointerEvents = '';
+                btn.innerHTML = originalText;
+                showErrorModal('Network Error', 'Failed to check balance. Please check your internet connection and try again.');
+            }
         }
 
         // Handle Sell form submission
