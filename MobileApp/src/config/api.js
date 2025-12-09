@@ -1,16 +1,21 @@
 import axios from 'axios';
 
 // Update this with your Laravel API base URL
-const API_BASE_URL = 'https://5458ca2b9366.ngrok-free.app';
+// Production URL
+const API_BASE_URL = 'https://bit2kwacha.info';
+// Development URL (ngrok) - uncomment to use for local development
+// const API_BASE_URL = 'https://5458ca2b9366.ngrok-free.app';
 
 const api = axios.create({
   baseURL: API_BASE_URL.endsWith('/') ? API_BASE_URL.slice(0, -1) : API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
-    'ngrok-skip-browser-warning': 'true', // Skip ngrok browser warning
+    // Only add ngrok header if using ngrok URL
+    ...(API_BASE_URL.includes('ngrok') && { 'ngrok-skip-browser-warning': 'true' }),
   },
   timeout: 30000, // 30 second timeout
+  withCredentials: false, // Don't send cookies to avoid CSRF issues
 });
 
 // Add CSRF token interceptor for Laravel

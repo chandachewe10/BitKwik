@@ -9,6 +9,7 @@ import {
   Alert,
   ActivityIndicator,
   Modal,
+  Image,
 } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import { exchangeService } from '../services/exchangeService';
@@ -207,6 +208,11 @@ export default function SellScreen() {
                       size={250}
                       color={theme.colors.text}
                       backgroundColor={theme.colors.white}
+                      logo={require('../../assets/icon.png')}
+                      logoSize={50}
+                      logoBackgroundColor={theme.colors.white}
+                      logoMargin={5}
+                      logoBorderRadius={10}
                     />
                   </View>
                 </View>
@@ -366,7 +372,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   qrCodeWrapper: {
-    borderRadius: 125, // Half of QR code size (250/2) for perfect circle
+    borderRadius: theme.borderRadius.md, // Square with rounded corners
     overflow: 'hidden',
     padding: theme.spacing.sm,
     backgroundColor: theme.colors.white,

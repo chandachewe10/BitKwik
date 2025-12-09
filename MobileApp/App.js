@@ -1,3 +1,6 @@
+// Polyfill for TextEncoder/TextDecoder (required for react-native-qrcode-svg)
+import 'text-encoding';
+
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
