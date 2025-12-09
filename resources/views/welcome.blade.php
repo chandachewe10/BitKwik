@@ -600,7 +600,7 @@
                         <label class="form-label">Amount in Kwacha (ZMW)</label>
                         <div class="input-wrapper">
                             <input type="number" id="buy-amount" name="amount_kwacha" class="form-control" 
-                                   placeholder="Enter amount" min="50" step="0.01" required 
+                                   placeholder="Enter amount" min="2" step="0.01" required 
                                    oninput="calculateBuy()">
                             <span class="input-suffix">ZMW</span>
                         </div>
@@ -645,7 +645,7 @@
 
                     <div class="info-badge">
                         <i class="bi bi-info-circle"></i>
-                        <span>Rate: 1 ZMW = ~{{ number_format(1 / config('services.bitcoin.conversion_rate'), 2) }} SATS | Min: 50 ZMW</span>
+                        <span>Rate: 1 ZMW = ~{{ number_format(1 / config('services.bitcoin.conversion_rate'), 2) }} SATS | Min: 2 ZMW</span>
                     </div>
 
                     <input type="hidden" name="total_amount" id="buy-total">
@@ -832,7 +832,7 @@
                     // Recalculate if user has already entered amounts
                     const buyAmount = document.getElementById('buy-amount').value;
                     const sellAmount = document.getElementById('sell-sats').value;
-                    if (buyAmount && parseFloat(buyAmount) >= 50) {
+                    if (buyAmount && parseFloat(buyAmount) >= 2) {
                         calculateBuy();
                     }
                     if (sellAmount && parseFloat(sellAmount) >= 200) {
@@ -849,7 +849,7 @@
 
         // Update rate display with live rates
         function updateRateDisplay() {
-            const buyRateText = `Rate: 1 ZMW = ~${(1 / liveConversionRate).toFixed(2)} SATS | Min: 50 ZMW`;
+            const buyRateText = `Rate: 1 ZMW = ~${(1 / liveConversionRate).toFixed(2)} SATS | Min: 2 ZMW`;
             const sellRateText = `Rate: 1 SAT = ${liveConversionRate.toFixed(4)} ZMW | Min: 200 SATS`;
             
             const buyInfoBadge = document.querySelector('#buy-card .info-badge span');
@@ -923,7 +923,7 @@
         function calculateBuy() {
             const amountKwacha = parseFloat(document.getElementById('buy-amount').value) || 0;
             
-            if (amountKwacha < 50) {
+            if (amountKwacha < 2) {
                 document.getElementById('buy-calc').style.display = 'none';
                 return;
             }
@@ -997,8 +997,8 @@
             
             // Ensure all hidden fields are set
             const amountKwacha = document.getElementById('buy-amount').value;
-            if (!amountKwacha || parseFloat(amountKwacha) < 50) {
-                showErrorModal('Validation Error', 'Please enter an amount of at least 50 ZMW');
+            if (!amountKwacha || parseFloat(amountKwacha) < 2) {
+                showErrorModal('Validation Error', 'Please enter an amount of at least 2 ZMW');
                 return;
             }
             
