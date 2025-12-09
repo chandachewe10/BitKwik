@@ -109,9 +109,11 @@ class SellBitcoinController extends Controller
                 'status' => 'success',
                 'bolt11' => $bolt11,
                 'qr_code_path' => $qrCodeFileName,
+                'qr_code_url' => asset('images/qrcodes/' . $qrCodeFileName),
                 'checking_id' => $checkingId,
                 'amount_kwacha' => $data['amount_kwacha'],
                 'amount_sats' => $data['amount_sats'],
+                'message' => 'Invoice generated successfully. Please scan the QR code to pay.',
             ]);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
