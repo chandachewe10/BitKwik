@@ -54,6 +54,12 @@ return [
         
     ],
 
+    'whatsapp' => [
+        'version' => env('WHATSAPP_VERSION', 'v19.0'), // WhatsApp Business API version
+        'business_phone_number_id' => env('WHATSAPP_BUSINESS_PHONE_NUMBER_ID'), // Your WhatsApp Business Phone Number ID
+        'token' => env('WHATSAPP_TOKEN'), // WhatsApp Business API Access Token
+    ],
+
     'bitcoin' => [
         'conversion_rate' => env('BITCOIN_CONVERSION_RATE', 0.023), // SAT to ZMW rate (1 SAT = 0.023 ZMW)
         'service_fee_rate' => env('BITCOIN_SERVICE_FEE_RATE', 0.08), // 8% service fee

@@ -8,20 +8,19 @@ import {
   ScrollView,
   Alert,
   ActivityIndicator,
-  Modal,
+  Linking,
 } from 'react-native';
-import QRCode from 'react-native-qrcode-svg';
 import { exchangeService } from '../services/exchangeService';
 import { theme } from '../config/theme';
+import { API_BASE_URL } from '../config/api';
 
 export default function BuyScreen() {
   const [phone, setPhone] = useState('');
   const [amountKwacha, setAmountKwacha] = useState('');
   const [conversionRate, setConversionRate] = useState(0.023);
   const [loading, setLoading] = useState(false);
+  const [loadingText, setLoadingText] = useState('Proceed to Payment');
   const [calculations, setCalculations] = useState(null);
-  const [paymentModal, setPaymentModal] = useState(false);
-  const [paymentData, setPaymentData] = useState(null);
 
   useEffect(() => {
     fetchExchangeRates();
@@ -78,6 +77,7 @@ export default function BuyScreen() {
     }
 
     setLoading(true);
+    setLoadingText('Checking Balance...');
 
     try {
       // Check balance first
@@ -86,6 +86,7 @@ export default function BuyScreen() {
       if (balanceCheck.status === 'error') {
         Alert.alert('Balance Check Failed', balanceCheck.message || 'Unable to verify account balance');
         setLoading(false);
+        setLoadingText('Proceed to Payment');
         return;
       }
 
@@ -97,37 +98,42 @@ export default function BuyScreen() {
           `We currently don't have enough Bitcoin in stock. You requested ${requiredSats} SATS, but we only have ${balanceSats} SATS available.`
         );
         setLoading(false);
+        setLoadingText('Proceed to Payment');
         return;
       }
 
-      // Proceed to payment - call completeSubscription API
-      const paymentPayload = {
-        amount_kwacha: parseFloat(amountKwacha),
+      // Balance is sufficient, proceed to payment
+      setLoadingText('Proceeding to Payment...');
+      
+      // Submit data to subscription/payment route and open in browser
+      const paymentUrl = `${API_BASE_URL}/subscription/payment`;
+      
+      // Build query parameters
+      const params = new URLSearchParams({
         phone: phone,
-        amount_sats: Math.round(calculations.amountSats),
-        amount_btc: calculations.amountBtc,
-        conversion_fee: calculations.conversionFee,
-        network_fee: 5, // ZMW
-      };
+        amount_kwacha: parseFloat(amountKwacha).toString(),
+        amount_sats: Math.round(calculations.amountSats).toString(),
+        amount_btc: calculations.amountBtc.toString(),
+        conversion_fee: calculations.conversionFee.toString(),
+        network_fee: '5',
+        total_amount: calculations.totalAmount.toString(),
+        type: 'buy',
+      });
 
-      const paymentResult = await exchangeService.completeSubscription(paymentPayload);
-
-      if (paymentResult.status === 'error') {
-        Alert.alert('Payment Error', paymentResult.message || 'Failed to initiate payment. Please try again.');
-        setLoading(false);
-        return;
-      }
-
-      if (paymentResult.status === 'success') {
-        setPaymentData(paymentResult);
-        setPaymentModal(true);
+      const fullUrl = `${paymentUrl}?${params.toString()}`;
+      
+      // Open payment page in browser
+      const canOpen = await Linking.canOpenURL(fullUrl);
+      if (canOpen) {
+        await Linking.openURL(fullUrl);
       } else {
-        Alert.alert('Error', 'Unexpected response from payment service');
+        Alert.alert('Error', 'Unable to open payment page. Please check your internet connection.');
       }
       
     } catch (error) {
       console.error('Payment error:', error);
       Alert.alert('Error', error.message || 'An error occurred. Please try again.');
+      setLoadingText('Proceed to Payment');
     } finally {
       setLoading(false);
     }
@@ -148,6 +154,7 @@ export default function BuyScreen() {
             onChangeText={setPhone}
             keyboardType="phone-pad"
           />
+          <Text style={styles.helperText}>QR code will be sent to this number via WhatsApp after payment</Text>
         </View>
 
         <View style={styles.formGroup}>
@@ -205,59 +212,15 @@ export default function BuyScreen() {
           disabled={loading}
         >
           {loading ? (
-            <ActivityIndicator color="#fff" />
+            <View style={styles.buttonLoading}>
+              <ActivityIndicator color="#fff" size="small" />
+              <Text style={styles.buttonText}>{loadingText}</Text>
+            </View>
           ) : (
             <Text style={styles.buttonText}>Proceed to Payment</Text>
           )}
         </TouchableOpacity>
       </View>
-
-      {/* Payment QR Code Modal */}
-      <Modal
-        visible={paymentModal}
-        animationType="slide"
-        transparent={true}
-        onRequestClose={() => setPaymentModal(false)}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Payment QR Code</Text>
-            {paymentData && (
-              <>
-                <Text style={styles.modalText}>
-                  Scan this QR code with your Lightning wallet to receive your Bitcoin.
-                </Text>
-                <View style={styles.qrContainer}>
-                  <View style={styles.qrCodeWrapper}>
-                    <QRCode
-                      value={paymentData.lnurl || ''}
-                      size={250}
-                      color={theme.colors.text}
-                      backgroundColor={theme.colors.white}
-                      logo={require('../../assets/icon.png')}
-                      logoSize={50}
-                      logoBackgroundColor={theme.colors.white}
-                      logoMargin={5}
-                      logoBorderRadius={10}
-                    />
-                  </View>
-                </View>
-                {paymentData.lnurl && (
-                  <Text style={styles.invoiceText} selectable>
-                    {paymentData.lnurl}
-                  </Text>
-                )}
-                <TouchableOpacity
-                  style={styles.closeButton}
-                  onPress={() => setPaymentModal(false)}
-                >
-                  <Text style={styles.closeButtonText}>Close</Text>
-                </TouchableOpacity>
-              </>
-            )}
-          </View>
-        </View>
-      </Modal>
     </ScrollView>
   );
 }
@@ -299,6 +262,11 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: theme.colors.text,
     marginBottom: theme.spacing.xs,
+  },
+  helperText: {
+    fontSize: 12,
+    color: theme.colors.textGray,
+    marginTop: theme.spacing.xs,
   },
   inputWrapper: {
     flexDirection: 'row',
@@ -360,73 +328,13 @@ const styles = StyleSheet.create({
   buttonDisabled: {
     opacity: 0.6,
   },
+  buttonLoading: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+  },
   buttonText: {
-    color: theme.colors.white,
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalContent: {
-    backgroundColor: theme.colors.white,
-    borderRadius: theme.borderRadius.xl,
-    padding: theme.spacing.lg,
-    width: '90%',
-    maxWidth: 400,
-    alignItems: 'center',
-  },
-  modalTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: theme.colors.text,
-    marginBottom: theme.spacing.md,
-  },
-  modalText: {
-    fontSize: 14,
-    color: theme.colors.textGray,
-    textAlign: 'center',
-    marginBottom: theme.spacing.lg,
-  },
-  qrContainer: {
-    backgroundColor: theme.colors.white,
-    padding: theme.spacing.md,
-    borderRadius: theme.borderRadius.md,
-    marginBottom: theme.spacing.md,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  qrCodeWrapper: {
-    borderRadius: theme.borderRadius.md,
-    overflow: 'hidden',
-    padding: theme.spacing.sm,
-    backgroundColor: theme.colors.white,
-    width: 250,
-    height: 250,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  invoiceText: {
-    fontSize: 10,
-    color: theme.colors.text,
-    textAlign: 'center',
-    marginBottom: theme.spacing.lg,
-    padding: theme.spacing.sm,
-    backgroundColor: theme.colors.background,
-    borderRadius: theme.borderRadius.sm,
-    fontFamily: 'monospace',
-  },
-  closeButton: {
-    backgroundColor: theme.colors.primary,
-    borderRadius: theme.borderRadius.md,
-    padding: theme.spacing.md,
-    width: '100%',
-    alignItems: 'center',
-  },
-  closeButtonText: {
     color: theme.colors.white,
     fontSize: 16,
     fontWeight: '600',

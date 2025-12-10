@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Models\MobileToBitcoin;
+use App\Services\WhatsAppService;
 
 class PaymentController extends Controller
 {
@@ -89,7 +90,7 @@ class PaymentController extends Controller
             }
 
             // Save to database (user_id is nullable for public transactions)
-            MobileToBitcoin::create([
+            $transaction = MobileToBitcoin::create([
                 "user_id" => auth()->check() ? auth()->id() : null, // Only set if user is authenticated
                 "checking_id" => $checkingId,
                 "amount_kwacha" => $amount,
@@ -103,6 +104,34 @@ class PaymentController extends Controller
                 "description" => $data['description'] ?? "Mobile to Bitcoin Transaction for " . $customerEmail,
                 "payment_status" => 'paid',
             ]);
+
+            // Send WhatsApp message with QR code and Lightning link
+            // Use phone number from payment (user can change it in Lenco payment UI)
+            $whatsappPhone = $phone;
+            if ($whatsappPhone && $lnurl) {
+                // Use absolute URL for QR code image
+                $qrCodeUrl = $qrCodeFileName ? url('images/qrcodes/' . $qrCodeFileName) : null;
+                try {
+                    WhatsAppService::sendPaymentQRCode(
+                        $whatsappPhone,
+                        $lnurl,
+                        $qrCodeUrl,
+                        $amountSats ?? 0,
+                        $amount
+                    );
+                    Log::info('WhatsApp notification sent', [
+                        'phone' => $whatsappPhone,
+                        'transaction_id' => $transaction->id
+                    ]);
+                } catch (\Exception $e) {
+                    // Don't fail the request if WhatsApp fails
+                    Log::error('Failed to send WhatsApp notification: ' . $e->getMessage(), [
+                        'phone' => $whatsappPhone,
+                        'transaction_id' => $transaction->id,
+                        'trace' => $e->getTraceAsString()
+                    ]);
+                }
+            }
 
             return response()->json([
                 'status' => 'success',

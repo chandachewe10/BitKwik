@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "afa3e7bc1f7fd1f84a71a9c6e0e4553c",
+    "content-hash": "31bacb7955b1bf1da652240bdbfa9e9f",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -404,6 +404,50 @@
                 }
             ],
             "time": "2024-02-09T16:56:22+00:00"
+        },
+        {
+            "name": "chandachewe/whatsapp",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/chandachewe10/whatsapp-api.git",
+                "reference": "63a68460aa0fe83e66bcd6d019300a093267d9b1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/chandachewe10/whatsapp-api/zipball/63a68460aa0fe83e66bcd6d019300a093267d9b1",
+                "reference": "63a68460aa0fe83e66bcd6d019300a093267d9b1",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^7.8",
+                "vlucas/phpdotenv": "^5.6"
+            },
+            "require-dev": {
+                "pestphp/pest": "^2.34"
+            },
+            "type": "project",
+            "autoload": {
+                "psr-4": {
+                    "Chandachewe\\Whatsapp\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "chandachewe10",
+                    "email": "chewec03@gmail.com"
+                }
+            ],
+            "description": "A PHP Package for Business Whatsapp API",
+            "support": {
+                "issues": "https://github.com/chandachewe10/whatsapp-api/issues",
+                "source": "https://github.com/chandachewe10/whatsapp-api/tree/v1.0.0"
+            },
+            "time": "2024-03-19T11:08:27+00:00"
         },
         {
             "name": "danharrin/date-format-converter",

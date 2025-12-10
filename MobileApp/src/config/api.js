@@ -2,9 +2,9 @@ import axios from 'axios';
 
 // Update this with your Laravel API base URL
 // Production URL
-const API_BASE_URL = 'https://bit2kwacha.info';
+export const API_BASE_URL = 'https://bit2kwacha.info';
 // Development URL (ngrok) - uncomment to use for local development
-// const API_BASE_URL = 'https://5458ca2b9366.ngrok-free.app';
+// export const API_BASE_URL = 'https://5458ca2b9366.ngrok-free.app';
 
 const api = axios.create({
   baseURL: API_BASE_URL.endsWith('/') ? API_BASE_URL.slice(0, -1) : API_BASE_URL,
