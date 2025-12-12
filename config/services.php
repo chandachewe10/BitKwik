@@ -38,6 +38,8 @@ return [
      'opennode' => [
         'api_key' => env('OPENNODE_API_KEY'),
         'api_key_withdrawal' => env('OPENNODE_WITHDRAWAL_API_KEY'),
+        'exchange_rates_token' => env('EXCHANGE_RATES_TOKEN'),
+        'balance_check_token' => env('BALANCE_CHECK_TOKEN'),
         'base_uri' => env('OPENNODE_BASE_URI'),
         'base_uri_withdrawal' => env('OPENNODE_BASE_URI_FOR_WITHDRAWAL'),
         'mobile_money' => env('OPENNODE_WEBHOOK_MOBILE_MONEY'),
@@ -50,6 +52,19 @@ return [
         'base_uri' => env('LENCO_BASE_URI'),
         'wallet_uuid' => env('LENCO_WALLET_UUID'),
         
+    ],
+
+    'whatsapp' => [
+        'version' => env('WHATSAPP_VERSION', 'v19.0'), // WhatsApp Business API version
+        'business_phone_number_id' => env('WHATSAPP_BUSINESS_PHONE_NUMBER_ID'), // Your WhatsApp Business Phone Number ID
+        'token' => env('WHATSAPP_TOKEN'), // WhatsApp Business API Access Token
+    ],
+
+    'bitcoin' => [
+        'conversion_rate' => env('BITCOIN_CONVERSION_RATE', 0.023), // SAT to ZMW rate (1 SAT = 0.023 ZMW)
+        'service_fee_rate' => env('BITCOIN_SERVICE_FEE_RATE', 0.08), // 8% service fee
+        'buy_network_fee' => env('BITCOIN_BUY_NETWORK_FEE', 5), // Network fee for buying (ZMW)
+        'sell_network_fee' => env('BITCOIN_SELL_NETWORK_FEE', 400), // Network fee for selling (SATS)
     ],
 
 ];

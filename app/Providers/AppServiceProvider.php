@@ -28,5 +28,15 @@ class AppServiceProvider extends ServiceProvider
         BitCoinToBankAccount::observe(BitCoinToBankAccountObserver::class);
         BitCoinToMobileMoney::observe(BitCoinToMobileMoneyObserver::class);
         ZescoBills::observe(ZescoBillsObserver::class);
+        
+        // Force HTTPS URLs when request is secure (for ngrok and production)
+        // Check if request is secure or forwarded as HTTPS
+        $isSecure = request()->isSecure() || 
+                    request()->header('X-Forwarded-Proto') === 'https' ||
+                    request()->server('HTTP_X_FORWARDED_PROTO') === 'https';
+        
+        if ($isSecure) {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
+        }
     }
 }

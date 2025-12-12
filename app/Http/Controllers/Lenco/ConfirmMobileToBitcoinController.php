@@ -5,15 +5,10 @@ namespace App\Http\Controllers\Lenco;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\MobileToBitcoin;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Http;
-
 
 class ConfirmMobileToBitcoinController extends Controller
 {
-
-
     public function confirmMobileToBitcoinPayments(Request $request)
     {
         try {
@@ -46,15 +41,13 @@ class ConfirmMobileToBitcoinController extends Controller
             ]);
 
             // Try to find payment by main id first
-            $payment = MobileToBitcoin::withoutGlobalScope('user')
-                ->where('checking_id', $checkingId)
+            $payment = MobileToBitcoin::where('checking_id', $checkingId)
                 ->first();
             
             // If not found and we have lnurl_withdrawal.id, try that
             if (!$payment && $lnurlWithdrawalId) {
                 Log::info('Trying lnurl_withdrawal.id as checking_id');
-                $payment = MobileToBitcoin::withoutGlobalScope('user')
-                    ->where('checking_id', $lnurlWithdrawalId)
+                $payment = MobileToBitcoin::where('checking_id', $lnurlWithdrawalId)
                     ->first();
             }
 
@@ -79,22 +72,17 @@ class ConfirmMobileToBitcoinController extends Controller
                 'is_used'        => $isConfirmed,
             ]);
 
-                return response()->json([
+            return response()->json([
                 'status'  => 'success',
                 'payment' => $payment,
             ]);
-               
-            
 
-
-        }catch (\Throwable $e) {
+        } catch (\Throwable $e) {
             Log::error('API Error:', ['message' => $e->getMessage()]);
             return response()->json([
                 'status'  => 'error',
                 'message' => $e->getMessage(),
             ], 500);
         }
-    
-}
-
+    }
 }

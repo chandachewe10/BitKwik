@@ -3,8 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
-
 
 class MobileToBitcoin extends Model
 {
@@ -28,11 +26,4 @@ class MobileToBitcoin extends Model
         'paid_at',
         'is_used',
     ];
-
-     protected static function booted(): void
-    {
-        static::addGlobalScope('user', function (Builder $query) {
-            $query->where('user_id', auth()->id());
-        });
-    }
 }

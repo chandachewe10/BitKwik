@@ -27,8 +27,7 @@ class ConfirmBitCoinToBankController extends Controller
 
             $checkingId = $data['id'];
 
-            $payment = BitCoinToBankAccount::withoutGlobalScope('user')
-                ->where('checking_id', $checkingId)
+            $payment = BitCoinToBankAccount::where('checking_id', $checkingId)
                 ->first();
 
             if (!$payment) {

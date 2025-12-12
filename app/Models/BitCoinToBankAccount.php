@@ -3,15 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 
 class BitCoinToBankAccount extends Model
 {
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
         'account_number',
         'amount_sats',
@@ -36,11 +30,4 @@ class BitCoinToBankAccount extends Model
         'user_id',
         'checkout_url'
     ];
-
-    protected static function booted(): void
-    {
-        static::addGlobalScope('user', function (Builder $query) {
-            $query->where('user_id', auth()->id());
-        });
-    }
 }

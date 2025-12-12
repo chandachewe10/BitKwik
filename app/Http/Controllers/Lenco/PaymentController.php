@@ -8,22 +8,52 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Models\MobileToBitcoin;
+use App\Services\WhatsAppService;
 
 class PaymentController extends Controller
 {
     public function completeSubscription(Request $request)
     {
         try {
-            $amount = (float) $request->input('amount');
-            $paymentData = json_decode($request->input('payment_data'), true);
+            // For mobile app, accept data directly from request body
+            // For web, use session data or request data
+            $amount = (float) ($request->input('amount') ?? $request->input('amount_kwacha', 0));
+            $paymentData = $request->has('payment_data') 
+                ? (is_array($request->input('payment_data')) 
+                    ? $request->input('payment_data') 
+                    : json_decode($request->input('payment_data'), true))
+                : [];
             $reference = 'ref-' . now()->timestamp;
 
-            // Get session data for additional fields
+            // Get session data for additional fields (web requests)
             $sessionData = session()->get('pending_transaction_data', []);
             
-            // Calculate convenience_fee: use from session (conversion_fee) or calculate as 8% of amount
-            $convenienceFee = $sessionData['conversion_fee'] ?? ($amount * 0.08);
-            $networkFee = $sessionData['network_fee'] ?? 5; // Default network fee is 5 ZMW
+            // For mobile app, get data from request body; for web, use session or payment data
+            $customerEmail = $request->input('email') 
+                ?? $paymentData['customer']['email'] 
+                ?? $sessionData['email'] 
+                ?? 'customer@bitkwik.com';
+            $customerName = $request->input('name') 
+                ?? $paymentData['customer']['firstName'] 
+                ?? $sessionData['name'] 
+                ?? 'Customer';
+            $phone = $request->input('phone') 
+                ?? $paymentData['customer']['phone'] 
+                ?? $sessionData['phone'] 
+                ?? '';
+            
+            // Get amounts from request (mobile app) or session (web)
+            $amountSats = $request->input('amount_sats') ?? $sessionData['amount_sats'] ?? null;
+            $amountBtc = $request->input('amount_btc') ?? $sessionData['amount_btc'] ?? null;
+            
+            // Calculate convenience_fee: use from request, session, or calculate as 8% of amount
+            $convenienceFee = $request->input('conversion_fee') 
+                ?? $request->input('convenience_fee')
+                ?? $sessionData['conversion_fee'] 
+                ?? ($amount * 0.08);
+            $networkFee = $request->input('network_fee') 
+                ?? $sessionData['network_fee'] 
+                ?? 5; // Default network fee is 5 ZMW
 
             
             $response = Http::withHeaders([
@@ -31,11 +61,11 @@ class PaymentController extends Controller
                 'Content-Type' => 'application/json',
             ])->post(config('services.opennode.base_uri_withdrawal') . '/lnurl-withdrawal', [
                 "min_amt"      => 50,
-                "max_amt"      => (int) ($sessionData['amount_sats'] ?? null),
+                "max_amt"      => (int) ($amountSats ?? 0),
                 "callback_url" => config('services.opennode.withdrawal'),
                 "external_id"  => $reference,
                 "expiry_date"  => time() + (10 * 60), // 10 minutes
-                "description"  => "Mobile to Bitcoin Transaction for " . auth()->user()->email,
+                "description"  => "Mobile to Bitcoin Transaction for " . $customerEmail,
             ]);
 
             if (!$response->successful()) {
@@ -63,26 +93,57 @@ class PaymentController extends Controller
                 file_put_contents($filePath, $qrCodeImage);
             }
 
-            // Save to database
-            MobileToBitcoin::create([
-                "user_id" => auth()->id(),
+            // Save to database (user_id is nullable for public transactions)
+            $transaction = MobileToBitcoin::create([
+                "user_id" => auth()->check() ? auth()->id() : null, // Only set if user is authenticated
                 "checking_id" => $checkingId,
                 "amount_kwacha" => $amount,
-                "amount_sats" => $sessionData['amount_sats'] ?? null,
-                "amount_btc" => $sessionData['amount_btc'] ?? null,
-                "phone_number" => $paymentData['customer']['phone'] ?? '',
+                "amount_sats" => $amountSats,
+                "amount_btc" => $amountBtc,
+                "phone_number" => $phone,
                 "convenience_fee" => round($convenienceFee, 2),
                 "network_fee" => $networkFee,
                 "lnurl" => $lnurl,
                 "qr_code_path" => $qrCodeFileName,
-                "description" => $data['description'] ?? '',
+                "description" => $data['description'] ?? "Mobile to Bitcoin Transaction for " . $customerEmail,
                 "payment_status" => 'paid',
             ]);
+
+            // Send WhatsApp message with QR code and Lightning link
+            // Use phone number from payment (user can change it in Lenco payment UI)
+            $whatsappPhone = $phone;
+            if ($whatsappPhone && $lnurl) {
+                // Use absolute URL for QR code image
+                $qrCodeUrl = $qrCodeFileName ? url('images/qrcodes/' . $qrCodeFileName) : null;
+                try {
+                    WhatsAppService::sendPaymentQRCode(
+                        $whatsappPhone,
+                        $lnurl,
+                        $qrCodeUrl,
+                        $amountSats ?? 0,
+                        $amount
+                    );
+                    Log::info('WhatsApp notification sent', [
+                        'phone' => $whatsappPhone,
+                        'transaction_id' => $transaction->id
+                    ]);
+                } catch (\Exception $e) {
+                    // Don't fail the request if WhatsApp fails
+                    Log::error('Failed to send WhatsApp notification: ' . $e->getMessage(), [
+                        'phone' => $whatsappPhone,
+                        'transaction_id' => $transaction->id,
+                        'trace' => $e->getTraceAsString()
+                    ]);
+                }
+            }
 
             return response()->json([
                 'status' => 'success',
                 'lnurl' => $lnurl,
                 'qr_code_path' => $qrCodeFileName,
+                'qr_code_url' => $qrCodeFileName ? asset('images/qrcodes/' . $qrCodeFileName) : null,
+                'checking_id' => $checkingId,
+                'message' => 'Payment initiated successfully. Please scan the QR code to complete the transaction.',
             ]);
 
         } catch (\Exception $e) {

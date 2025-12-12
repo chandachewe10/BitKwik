@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('zesco_bills', function (Blueprint $table) {
             $table->decimal('amount_sats', 16, 8)->nullable();
-             $table->decimal('convenience_fee', 16, 8)->nullable();
+            $table->decimal('convenience_fee', 16, 8)->nullable();
         });
     }
 
