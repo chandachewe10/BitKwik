@@ -54,13 +54,22 @@ class CreateSendToBank extends CreateRecord
 
                 if ($bolt11) {
                     $logoPath = public_path('ui/css/assets/img/logo.png');
+                    // Process logo to add rounded corners
+                    $processedLogoPath = $this->addRoundedCorners($logoPath);
+                    
                     $qrCodeImage = QrCode::format('png')
                         ->size(300)
-                        ->merge($logoPath, .25, true)
+                        ->merge($processedLogoPath, .12, true)
                         ->generate($bolt11);
                     $qrCodeFileName = 'bitConToBank_invoice_' . time() . '.png';
                     $filePath = public_path('images/qrcodes/' . $qrCodeFileName);
                     file_put_contents($filePath, $qrCodeImage);
+                    
+                    // Clean up temporary logo file
+                    if ($processedLogoPath !== $logoPath && file_exists($processedLogoPath)) {
+                        unlink($processedLogoPath);
+                    }
+                    
                     $data['qr_code_path'] = $qrCodeFileName;
                     $data['bolt11'] = $bolt11;
                 }
@@ -110,5 +119,86 @@ class CreateSendToBank extends CreateRecord
             ->success()
             ->title('Invoice Generated')
             ->body('Please check your lightning invoice to make payments.');
+    }
+
+    private function addRoundedCorners($logoPath, $radius = 20)
+    {
+        if (!file_exists($logoPath) || !function_exists('imagecreatefrompng')) {
+            return $logoPath;
+        }
+
+        $image = imagecreatefrompng($logoPath);
+        if (!$image) {
+            return $logoPath;
+        }
+
+        // Enable alpha blending and save alpha
+        imagealphablending($image, false);
+        imagesavealpha($image, true);
+
+        // Get image dimensions
+        $width = imagesx($image);
+        $height = imagesy($image);
+
+        // Adjust radius if it's too large
+        $radius = min($radius, $width / 2, $height / 2);
+
+        // Create mask for rounded corners
+        for ($x = 0; $x < $width; $x++) {
+            for ($y = 0; $y < $height; $y++) {
+                // Check if pixel is in corner regions
+                $inCorner = false;
+                
+                // Top-left corner
+                if ($x < $radius && $y < $radius) {
+                    $dx = $radius - $x;
+                    $dy = $radius - $y;
+                    $distance = sqrt($dx * $dx + $dy * $dy);
+                    if ($distance > $radius) {
+                        $inCorner = true;
+                    }
+                }
+                // Top-right corner
+                elseif ($x >= $width - $radius && $y < $radius) {
+                    $dx = $x - ($width - $radius);
+                    $dy = $radius - $y;
+                    $distance = sqrt($dx * $dx + $dy * $dy);
+                    if ($distance > $radius) {
+                        $inCorner = true;
+                    }
+                }
+                // Bottom-left corner
+                elseif ($x < $radius && $y >= $height - $radius) {
+                    $dx = $radius - $x;
+                    $dy = $y - ($height - $radius);
+                    $distance = sqrt($dx * $dx + $dy * $dy);
+                    if ($distance > $radius) {
+                        $inCorner = true;
+                    }
+                }
+                // Bottom-right corner
+                elseif ($x >= $width - $radius && $y >= $height - $radius) {
+                    $dx = $x - ($width - $radius);
+                    $dy = $y - ($height - $radius);
+                    $distance = sqrt($dx * $dx + $dy * $dy);
+                    if ($distance > $radius) {
+                        $inCorner = true;
+                    }
+                }
+
+                // Make corner pixels transparent
+                if ($inCorner) {
+                    $transparent = imagecolorallocatealpha($image, 255, 255, 255, 127);
+                    imagesetpixel($image, $x, $y, $transparent);
+                }
+            }
+        }
+
+        // Save processed logo to temporary file
+        $tempPath = sys_get_temp_dir() . '/logo_rounded_' . time() . '.png';
+        imagepng($image, $tempPath);
+        imagedestroy($image);
+
+        return $tempPath;
     }
 }
