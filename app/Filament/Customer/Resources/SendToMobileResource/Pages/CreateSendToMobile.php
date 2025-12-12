@@ -56,13 +56,22 @@ class CreateSendToMobile extends CreateRecord
 
                 if ($bolt11) {
                     $logoPath = public_path('ui/css/assets/img/logo.png');
+                    // Process logo to remove background
+                    $processedLogoPath = $this->removeLogoBackground($logoPath);
+                    
                     $qrCodeImage = QrCode::format('png')
                         ->size(300)
-                        ->merge($logoPath, .2, true)
+                        ->merge($processedLogoPath, .2, true)
                         ->generate($bolt11);
                     $qrCodeFileName = 'bitConToMobileMoney_invoice_' . time() . '.png';
                     $filePath = public_path('images/qrcodes/' . $qrCodeFileName);
                     file_put_contents($filePath, $qrCodeImage);
+                    
+                    // Clean up temporary logo file
+                    if ($processedLogoPath !== $logoPath && file_exists($processedLogoPath)) {
+                        unlink($processedLogoPath);
+                    }
+                    
                     $data['qr_code_path'] = $qrCodeFileName;
                     $data['bolt11'] = $bolt11;
                 }
@@ -106,5 +115,49 @@ class CreateSendToMobile extends CreateRecord
             ->success()
             ->title('Invoice Generated')
             ->body('Please check your lightning invoice to make payments.');
+    }
+
+    private function removeLogoBackground($logoPath)
+    {
+        if (!file_exists($logoPath) || !function_exists('imagecreatefrompng')) {
+            return $logoPath;
+        }
+
+        $image = imagecreatefrompng($logoPath);
+        if (!$image) {
+            return $logoPath;
+        }
+
+        // Enable alpha blending and save alpha
+        imagealphablending($image, false);
+        imagesavealpha($image, true);
+
+        // Get image dimensions
+        $width = imagesx($image);
+        $height = imagesy($image);
+
+        // Make white/light backgrounds transparent
+        $transparent = imagecolorallocatealpha($image, 255, 255, 255, 127);
+        for ($x = 0; $x < $width; $x++) {
+            for ($y = 0; $y < $height; $y++) {
+                $rgb = imagecolorat($image, $x, $y);
+                $r = ($rgb >> 16) & 0xFF;
+                $g = ($rgb >> 8) & 0xFF;
+                $b = $rgb & 0xFF;
+                $a = ($rgb >> 24) & 0x7F;
+
+                // If pixel is white or very light, make it transparent
+                if ($r > 240 && $g > 240 && $b > 240) {
+                    imagesetpixel($image, $x, $y, $transparent);
+                }
+            }
+        }
+
+        // Save processed logo to temporary file
+        $tempPath = sys_get_temp_dir() . '/logo_transparent_' . time() . '.png';
+        imagepng($image, $tempPath);
+        imagedestroy($image);
+
+        return $tempPath;
     }
 }
