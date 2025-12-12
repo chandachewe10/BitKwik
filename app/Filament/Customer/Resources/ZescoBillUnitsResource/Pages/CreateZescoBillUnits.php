@@ -39,22 +39,14 @@ class CreateZescoBillUnits extends CreateRecord
 
             if ($bolt11) {
                 $logoPath = public_path('ui/css/assets/img/logo.png');
-                // Process logo to make it circular
-                $processedLogoPath = $this->makeLogoCircular($logoPath);
-                
                 $qrCodeImage = QrCode::format('png')
                     ->size(300)
-                    ->merge($processedLogoPath, .2, true)
+                    ->merge($logoPath, .25, true)
                     ->generate($bolt11);
 
                 $fileName = 'zesco_invoice_' . time() . '.png';
                 $filePath = public_path('images/qrcodes/' . $fileName);
                 file_put_contents($filePath, $qrCodeImage);
-                
-                // Clean up temporary logo file
-                if ($processedLogoPath !== $logoPath && file_exists($processedLogoPath)) {
-                    unlink($processedLogoPath);
-                }
 
                 // Store the file path and bolt11 in the DB record
                 $data['qr_code_path'] = $fileName;
@@ -90,67 +82,5 @@ class CreateZescoBillUnits extends CreateRecord
             ->success()
             ->title('Invoice Generated')
             ->body('Please check your lightning invoice to make payments.');
-    }
-
-    private function makeLogoCircular($logoPath)
-    {
-        if (!file_exists($logoPath) || !function_exists('imagecreatefrompng')) {
-            return $logoPath;
-        }
-
-        $image = imagecreatefrompng($logoPath);
-        if (!$image) {
-            return $logoPath;
-        }
-
-        // Enable alpha blending and save alpha
-        imagealphablending($image, false);
-        imagesavealpha($image, true);
-
-        // Get image dimensions
-        $width = imagesx($image);
-        $height = imagesy($image);
-        $size = min($width, $height);
-
-        // Create a new square image with transparent background
-        $circularImage = imagecreatetruecolor($size, $size);
-        imagealphablending($circularImage, false);
-        imagesavealpha($circularImage, true);
-        $transparent = imagecolorallocatealpha($circularImage, 255, 255, 255, 127);
-        imagefill($circularImage, 0, 0, $transparent);
-
-        // Calculate center and radius
-        $centerX = $size / 2;
-        $centerY = $size / 2;
-        $radius = $size / 2;
-
-        // Copy pixels within the circle
-        for ($x = 0; $x < $size; $x++) {
-            for ($y = 0; $y < $size; $y++) {
-                $dx = $x - $centerX;
-                $dy = $y - $centerY;
-                $distance = sqrt($dx * $dx + $dy * $dy);
-
-                if ($distance <= $radius) {
-                    // Calculate source coordinates (center the original image)
-                    $srcX = ($width - $size) / 2 + $x;
-                    $srcY = ($height - $size) / 2 + $y;
-
-                    if ($srcX >= 0 && $srcX < $width && $srcY >= 0 && $srcY < $height) {
-                        $rgb = imagecolorat($image, (int)$srcX, (int)$srcY);
-                        imagesetpixel($circularImage, $x, $y, $rgb);
-                    }
-                }
-            }
-        }
-
-        imagedestroy($image);
-
-        // Save processed logo to temporary file
-        $tempPath = sys_get_temp_dir() . '/logo_circular_' . time() . '.png';
-        imagepng($circularImage, $tempPath);
-        imagedestroy($circularImage);
-
-        return $tempPath;
     }
 }
