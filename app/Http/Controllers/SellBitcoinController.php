@@ -72,9 +72,12 @@ class SellBitcoinController extends Controller
                 ], 400);
             }
 
-            // Generate QR code
-            $qrCodeFileName = 'sell_bitcoin_' . time() . '.svg';
-            $qrCodeImage = QrCode::format('svg')->size(400)->generate($bolt11);
+            // Generate QR code with logo
+            $logoPath = public_path('ui/css/assets/img/logo.png');
+            $qrCodeImage = QrCode::format('png')
+                ->size(400)
+                ->merge($logoPath, .3, true)
+                ->generate($bolt11);
             $qrCodeDir = public_path('images/qrcodes');
             
             // Ensure directory exists
@@ -82,6 +85,7 @@ class SellBitcoinController extends Controller
                 mkdir($qrCodeDir, 0755, true);
             }
             
+            $qrCodeFileName = 'sell_bitcoin_' . time() . '.png';
             $filePath = $qrCodeDir . '/' . $qrCodeFileName;
             file_put_contents($filePath, $qrCodeImage);
 
