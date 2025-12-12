@@ -38,10 +38,13 @@ class CreateZescoBillUnits extends CreateRecord
             $checking_id = $json['checking_id'] ?? null; 
 
             if ($bolt11) {
-                $qrCodeImage = QrCode::format('svg')->size(300)->generate($bolt11);
+                $logoPath = public_path('ui/css/assets/img/logo.png');
+                $qrCodeImage = QrCode::format('png')
+                    ->size(300)
+                    ->merge($logoPath, .3, true)
+                    ->generate($bolt11);
 
-                //$qrCodeImage = QrCode::format('png')->size(300)->generate($bolt11);
-                $fileName = 'zesco_invoice_' . time() . '.svg';
+                $fileName = 'zesco_invoice_' . time() . '.png';
                 $filePath = public_path('images/qrcodes/' . $fileName);
                 file_put_contents($filePath, $qrCodeImage);
 

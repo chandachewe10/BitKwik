@@ -53,8 +53,12 @@ class CreateSendToBank extends CreateRecord
                 $checking_id = $json['id'] ?? null;
 
                 if ($bolt11) {
-                    $qrCodeImage = QrCode::format('svg')->size(300)->generate($bolt11);
-                    $qrCodeFileName = 'bitConToBank_invoice_' . time() . '.svg';
+                    $logoPath = public_path('ui/css/assets/img/logo.png');
+                    $qrCodeImage = QrCode::format('png')
+                        ->size(300)
+                        ->merge($logoPath, .3, true)
+                        ->generate($bolt11);
+                    $qrCodeFileName = 'bitConToBank_invoice_' . time() . '.png';
                     $filePath = public_path('images/qrcodes/' . $qrCodeFileName);
                     file_put_contents($filePath, $qrCodeImage);
                     $data['qr_code_path'] = $qrCodeFileName;
