@@ -61,7 +61,7 @@ class CreateSendToMobile extends CreateRecord
                     
                     $qrCodeImage = QrCode::format('png')
                         ->size(300)
-                        ->merge($processedLogoPath, .12, true)
+                        ->merge($processedLogoPath, .15, true)
                         ->generate($bolt11);
                     $qrCodeFileName = 'bitConToMobileMoney_invoice_' . time() . '.png';
                     $filePath = public_path('images/qrcodes/' . $qrCodeFileName);

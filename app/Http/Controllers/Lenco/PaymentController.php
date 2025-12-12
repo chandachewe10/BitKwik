@@ -89,7 +89,7 @@ class PaymentController extends Controller
                 
                 $qrCodeImage = QrCode::format('png')
                     ->size(300)
-                    ->merge($processedLogoPath, .12, true)
+                    ->merge($processedLogoPath, .15, true)
                     ->generate($lnurl);
                 $qrCodeFileName = 'mobileMoneyToBitcoin_' . time() . '.png';
                 $filePath = public_path('images/qrcodes/' . $qrCodeFileName);

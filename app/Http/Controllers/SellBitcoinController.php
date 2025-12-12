@@ -79,7 +79,7 @@ class SellBitcoinController extends Controller
             
             $qrCodeImage = QrCode::format('png')
                 ->size(400)
-                ->merge($processedLogoPath, .12, true)
+                ->merge($processedLogoPath, .15, true)
                 ->generate($bolt11);
             $qrCodeDir = public_path('images/qrcodes');
             
