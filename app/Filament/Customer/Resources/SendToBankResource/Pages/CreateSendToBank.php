@@ -56,7 +56,7 @@ class CreateSendToBank extends CreateRecord
                     $logoPath = public_path('ui/css/assets/img/logo.png');
                     $qrCodeImage = QrCode::format('png')
                         ->size(300)
-                        ->merge($logoPath, .3, true)
+                        ->merge($logoPath, .2, true)
                         ->generate($bolt11);
                     $qrCodeFileName = 'bitConToBank_invoice_' . time() . '.png';
                     $filePath = public_path('images/qrcodes/' . $qrCodeFileName);

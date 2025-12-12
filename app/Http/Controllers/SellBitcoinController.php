@@ -76,7 +76,7 @@ class SellBitcoinController extends Controller
             $logoPath = public_path('ui/css/assets/img/logo.png');
             $qrCodeImage = QrCode::format('png')
                 ->size(400)
-                ->merge($logoPath, .3, true)
+                ->merge($logoPath, .2, true)
                 ->generate($bolt11);
             $qrCodeDir = public_path('images/qrcodes');
             
