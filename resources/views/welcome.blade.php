@@ -811,6 +811,7 @@
         let liveConversionRate = {{ config('services.bitcoin.conversion_rate') }}; // Default fallback rate (SAT to ZMW)
         let btcUsdRate = null;
         const usdToZmwRate = 24; // Approximate USD to ZMW rate (can be made configurable)
+        const useOpenNodeExchangeRate = @json(config('services.bitcoin.use_open_node_exchange_rate'));
 
         // Fetch live exchange rates on page load
         async function fetchExchangeRates() {
@@ -908,8 +909,10 @@
             }
         }
 
-        // Fetch rates when page loads
-        fetchExchangeRates();
+        // Fetch rates when page loads (only if enabled via config/ENV)
+        if (useOpenNodeExchangeRate) {
+            fetchExchangeRates();
+        }
 
         // Tab switching
         function switchTab(tab) {
