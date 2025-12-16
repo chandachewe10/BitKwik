@@ -58,6 +58,7 @@ return [
         'version' => env('WHATSAPP_VERSION', 'v19.0'), // WhatsApp Business API version
         'business_phone_number_id' => env('WHATSAPP_BUSINESS_PHONE_NUMBER_ID'), // Your WhatsApp Business Phone Number ID
         'token' => env('WHATSAPP_TOKEN'), // WhatsApp Business API Access Token
+        'base_uri' => env('WHATSAPP_BASE_URI', 'https://graph.facebook.com'), // WhatsApp Business API base URL
     ],
 
     'bitcoin' => [
