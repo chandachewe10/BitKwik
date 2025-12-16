@@ -66,8 +66,8 @@ export default function BuyScreen() {
   }, [amountKwacha, conversionRate]);
 
   const handleBuy = async () => {
-    if (!phone || !amountKwacha || parseFloat(amountKwacha) < 2) {
-      Alert.alert('Validation Error', 'Please enter a valid phone number and amount (minimum 2 ZMW)');
+    if (!phone || !amountKwacha || parseFloat(amountKwacha) < 10) {
+      Alert.alert('Validation Error', 'Please enter a valid phone number and amount (minimum 10 ZMW)');
       return;
     }
 
@@ -202,7 +202,7 @@ export default function BuyScreen() {
 
         <View style={styles.infoBadge}>
           <Text style={styles.infoText}>
-            Rate: 1 ZMW = ~{(1 / conversionRate).toFixed(2)} SATS | Min: 2 ZMW
+            Rate: 1 ZMW = ~{(1 / conversionRate).toFixed(2)} SATS | Min: 10 ZMW
           </Text>
         </View>
 

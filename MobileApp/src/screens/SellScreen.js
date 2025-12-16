@@ -69,8 +69,8 @@ export default function SellScreen() {
   }, [amountSats, conversionRate]);
 
   const handleSell = async () => {
-    if (!phone || !amountSats || parseFloat(amountSats) < 200) {
-      Alert.alert('Validation Error', 'Please enter a valid phone number and amount (minimum 200 SATS)');
+    if (!phone || !amountSats || parseFloat(amountSats) < 500) {
+      Alert.alert('Validation Error', 'Please enter a valid phone number and amount (minimum 500 SATS)');
       return;
     }
 
@@ -169,7 +169,7 @@ export default function SellScreen() {
 
         <View style={styles.infoBadge}>
           <Text style={styles.infoText}>
-            Rate: 1 SAT = {conversionRate.toFixed(4)} ZMW | Min: 200 SATS
+            Rate: 1 SAT = {conversionRate.toFixed(4)} ZMW | Min: 500 SATS
           </Text>
         </View>
 

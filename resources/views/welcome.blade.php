@@ -648,7 +648,7 @@
 
                     <div class="info-badge">
                         <i class="bi bi-info-circle"></i>
-                        <span>Rate: 1 ZMW = ~{{ number_format(1 / config('services.bitcoin.conversion_rate'), 2) }} SATS | Min: 2 ZMW</span>
+                        <span>Rate: 1 ZMW = ~{{ number_format(1 / config('services.bitcoin.conversion_rate'), 2) }} SATS | Min: 10 ZMW</span>
                     </div>
 
                     <input type="hidden" name="total_amount" id="buy-total">
@@ -675,6 +675,9 @@
                     <div class="form-group">
                         <label class="form-label">Mobile Money Number</label>
                         <input type="tel" name="phone" class="form-control" placeholder="09XXXXXXXX" required>
+                        <small style="color: var(--text-gray); font-size: 0.875rem; margin-top: 0.25rem; display: block;">
+                            Phone number to recieve the mobile money payments
+                        </small>
                     </div>
 
                     <div class="form-group">
@@ -725,7 +728,7 @@
 
                     <div class="info-badge">
                         <i class="bi bi-info-circle"></i>
-                        <span>Rate: 1 SAT = {{ config('services.bitcoin.conversion_rate') }} ZMW | Min: 200 SATS</span>
+                        <span>Rate: 1 SAT = {{ config('services.bitcoin.conversion_rate') }} ZMW | Min: 500 SATS</span>
                                 </div>
 
                     <input type="hidden" name="amount_sats" id="sell-sats-hidden">
@@ -852,8 +855,8 @@
 
         // Update rate display with live rates
         function updateRateDisplay() {
-            const buyRateText = `Rate: 1 ZMW = ~${(1 / liveConversionRate).toFixed(2)} SATS | Min: 2 ZMW`;
-            const sellRateText = `Rate: 1 SAT = ${liveConversionRate.toFixed(4)} ZMW | Min: 200 SATS`;
+            const buyRateText = `Rate: 1 ZMW = ~${(1 / liveConversionRate).toFixed(2)} SATS | Min: 10 ZMW`;
+            const sellRateText = `Rate: 1 SAT = ${liveConversionRate.toFixed(4)} ZMW | Min: 500 SATS`;
             
             const buyInfoBadge = document.querySelector('#buy-card .info-badge span');
             const sellInfoBadge = document.querySelector('#sell-card .info-badge span');
@@ -926,7 +929,7 @@
         function calculateBuy() {
             const amountKwacha = parseFloat(document.getElementById('buy-amount').value) || 0;
             
-            if (amountKwacha < 2) {
+            if (amountKwacha < 10) {
                 document.getElementById('buy-calc').style.display = 'none';
                 return;
             }
@@ -960,7 +963,7 @@
         function calculateSell() {
             const amountSats = parseFloat(document.getElementById('sell-sats').value) || 0;
             
-            if (amountSats < 200) {
+            if (amountSats < 500) {
                 document.getElementById('sell-calc').style.display = 'none';
                 return;
             }
@@ -1000,8 +1003,8 @@
             
             // Ensure all hidden fields are set
             const amountKwacha = document.getElementById('buy-amount').value;
-            if (!amountKwacha || parseFloat(amountKwacha) < 2) {
-                showErrorModal('Validation Error', 'Please enter an amount of at least 2 ZMW');
+            if (!amountKwacha || parseFloat(amountKwacha) < 10) {
+                showErrorModal('Validation Error', 'Please enter an amount of at least 10 ZMW');
                 return;
             }
             
@@ -1116,8 +1119,8 @@
             
             // Validate amount
             const amountSats = document.getElementById('sell-sats').value;
-            if (!amountSats || parseFloat(amountSats) < 200) {
-                alert('Please enter an amount of at least 200 SATS');
+            if (!amountSats || parseFloat(amountSats) < 500) {
+                alert('Please enter an amount of at least 500 SATS');
                 return;
             }
             
@@ -1150,12 +1153,12 @@
             };
             
             // Validate required fields
-            if (!data.phone || data.amount_sats < 200 || !data.total_sats) {
+            if (!data.phone || data.amount_sats < 500 || !data.total_sats) {
                 btn.disabled = false;
                 btn.classList.remove('btn-loading');
                 btn.style.pointerEvents = '';
                 btn.innerHTML = originalText;
-                alert('Please fill in phone number and ensure amount is at least 200 SATS. Make sure to click outside the amount field to calculate.');
+                alert('Please fill in phone number and ensure amount is at least 500 SATS. Make sure to click outside the amount field to calculate.');
                 return;
             }
             
