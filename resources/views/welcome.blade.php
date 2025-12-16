@@ -709,7 +709,7 @@
                             <span id="sell-sats-display">0</span>
                                 </div>
                         <div class="calc-row">
-                            <span>Service Fee (8%):</span>
+                            <span>Service Fee (15%):</span>
                             <span id="sell-fee-display">0 SATS</span>
                             </div>
                         <div class="calc-row">
@@ -938,7 +938,7 @@
             }
 
             const conversionRate = liveConversionRate; // Use live SAT to ZMW rate
-            const serviceFeeRate = {{ config('services.bitcoin.service_fee_rate') }}; // Service fee rate
+            const serviceFeeRate = {{ config('services.bitcoin.service_fee_rate') }}; // Service fee rate (buy)
             const networkFee = {{ config('services.bitcoin.buy_network_fee') }}; // Network fee for buying
 
             const amountSats = amountKwacha / conversionRate;
@@ -972,7 +972,7 @@
             }
 
             const conversionRate = liveConversionRate; // Use live SAT to ZMW rate
-            const serviceFeeRate = {{ config('services.bitcoin.service_fee_rate') }}; // Service fee rate
+            const serviceFeeRate = {{ config('services.bitcoin.sell_service_fee_rate') }}; // Service fee rate (sell)
             const networkFee = {{ config('services.bitcoin.sell_network_fee') }}; // Network fee for selling
 
             const amountBtc = amountSats / 100000000;
