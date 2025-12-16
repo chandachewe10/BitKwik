@@ -595,7 +595,7 @@
                         <label class="form-label">Phone Number</label>
                         <input type="tel" name="phone" id="buy-phone" class="form-control" placeholder="09XXXXXXXX" required>
                         <small style="color: var(--text-gray); font-size: 0.875rem; margin-top: 0.25rem; display: block;">
-                            QR code will be sent to this number via WhatsApp after payment
+                            Phone number to make the mobile money payments
                         </small>
                     </div>
 
